@@ -11,7 +11,13 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     dplyr,
+    generator,
     labelled,
+    randomNames,
     rlang,
-    tidyr
+    sf,
+    tidyr,
+    wakefield
 RoxygenNote: 7.1.1
+Depends: 
+    R (>= 2.10)
