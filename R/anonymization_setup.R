@@ -419,8 +419,8 @@ create_preproc_r <- function(path_to_data,file,pattern) {
     file_name = paste(gsub(pattern, "", z[length(z)]), sep = "", collapse = "_"),
     path = file.path(path_to_data, file),
     r_script = file.path("02_Pre-processing scripts",gsub(paste0(pattern,"$"),".R",file)),
-    xlsx_var_class <- file.path("01_Variable classification",
-                                paste0(paste(z[1:length(z) - 1], sep = "", collapse = "_"),
+    xlsx_var_class=file.path("01_Variable classification",
+                                paste0(paste(z[1:length(z) - 1],"_VarClas", sep = "", collapse = "_"),
                                        ".xlsx")),
     msg=paste("PREPROCESSING: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
     to_save=file.path("03_Pre-processed data",
@@ -429,61 +429,13 @@ create_preproc_r <- function(path_to_data,file,pattern) {
   )
 
 
-
-
   file.create(file_attributes$r_script)
 
   fileConn<-file(file_attributes$r_script)
-  writeLines(c("#--------------------------------------------------------------------------",
-               "#| ANonymization of the 2020 Anual Agricultural Survey of Uganda (AAS)    |",
-               "#| By Amsata NIANG, amsata.niang@fao.org                                  |",
-               "#| November 2022                                                          |",
-               "#--------------------------------------------------------------------------",
-               glue("# {file_attributes$msg}"),
-               "#|------------------------------------------------------------------------|",
-               "","","",
-               "rm(list=ls())",
-               "library(dplyr)",
-               "library(tidyr)",
-               "library(questionr)",
-               "library(labelled)",
-               "library(readxl)",
-               "library(tidyr)",
-               "library(haven)",
-               "","","",
-               "purrr::walk(file.path(\"_R\",list.files(path=\"_R\",pattern = \".R$\")),source)",
-               glue::glue("cat(paste0(\" \\033[0;\",32,\"m\",\"{file_attributes$msg}\",\"\\033[0m\",\"\\n\"))"),"",
-               glue::glue("data=read_dta(\"{file_attributes$path}\")"),
-               glue::glue("variable_classification=read_excel(path=\"{file_attributes$xlsx_var_class}\",
-                                   sheet =\"{file_attributes$file_name}\") %>% dplyr::select(Name:Questions)"),"",
-               "#******************************************************************",
-               "# Data processing before removing variables classified as DI or D *",
-               "#******************************************************************",
-               "#check for duplicates",
-               " # is_id(data,c())",
-               "#COMMENT:",
-               "","",
-               "#*****************************************************************",
-               "# Removing variable classified as DI of D                        *",
-               "#*****************************************************************",
-               "variables_to_delete=variable_classification %>% filter(Classification %in% c(\"DI\",\"D\")) %>% pull(Name)",
-               "variables_to_delete=variables_to_delete[!is.na(variables_to_delete)]",
-               "variables_to_delete",
-               "data=data %>% dplyr::select(-any_of(variables_to_delete))",
-               "","",
-               "#*****************************************************************",
-               "# Labelling variables and values or correcting labels, if any    *",
-               "#*****************************************************************",
-               "data=data %>% set_variable_labels()","",
-               "data=data %>% set_value_labels()",
-               "","",
-               "#*****************************************************************",
-               "#                        saving the processed data                ",
-               "#*****************************************************************",
-               "labelled::look_for(data)","",
-               glue::glue("data=write_dta(data,\"{file_attributes$to_save}\")")
-  ),
-  fileConn)
+  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","preprocessing.txt",package = "agrisvyr")),
+                                collapse = "\n")))
+             ,
+             fileConn)
   close(fileConn)
 
 }
@@ -508,4 +460,67 @@ generate_preproc_r <- function(path_to_data,data_format="stata") {
 
   purrr::walk(data_files,function(x){create_preproc_r(path_to_data,x,pattern)})
 
+}
+
+
+
+create_ano_r <- function(path_to_data,file,pattern) {
+
+  z <- unlist(strsplit(file, "/"))
+  file_attributes = list(
+    file_name = paste(gsub(pattern, "", z[length(z)]), sep = "", collapse = "_"),
+    path = file.path(path_to_data, file),
+    r_script = file.path("02_Pre-processing scripts",gsub(paste0(pattern,"$"),".R",file)),
+    xlsx_var_class=file.path("01_Variable classification",
+                                paste0(paste(z[1:length(z) - 1], sep = "", collapse = "_"),
+                                       ".xlsx")),
+    msg=paste("PREPROCESSING: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
+    to_save=file.path("03_Pre-processed data",
+                      paste0(paste(gsub(pattern, "", file[length(file)]), sep = "",
+                                   collapse = "_"),"_proc.dta"))
+  )
+
+
+
+
+  file.create(file_attributes$r_script)
+
+  fileConn<-file(file_attributes$r_script)
+  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","preprocessing.txt",package = "agrisvyr")),
+                                collapse = "\n")))
+,
+  fileConn)
+  close(fileConn)
+
+}
+
+
+
+
+#' Generate the template of the sdc report
+#'
+#' @param directory directory of anonymization folders
+#' @param svy_name name of the survey
+#' @param author institution
+#'
+#' @return
+#' @export
+#'
+#' @examples
+generate_report_template <- function(directory=getwd(),svy_name="urvey",author="Amsata"){
+
+  stopifnot(dir.exists("05_Anonymization report"))
+
+  file <- file.path("05_Anonymization report","sdc_report.rmd")
+  file.create(file)
+
+  fileConn<-file(file)
+  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","sdc_report.txt",package = "agrisvyr")),
+                                collapse = "\n"),.open = "{{",.close = "}}"))
+             ,
+             fileConn)
+  close(fileConn)
+
+  # deparse(substitute(my_object))
+  # create logo https://www.youtube.com/watch?v=O34vzdHOaEk
 }
