@@ -338,8 +338,8 @@ create_wb <- function(data,wb_file) {
 #' @param data_format format of the data (default is stata)
 #'
 #' @return
-#' @import  purrr
-#' @import plyr
+#' @importFrom   purrr walk
+#' @importFrom  plyr rbind.fill
 #' @export
 #'
 #' @examples
@@ -370,5 +370,142 @@ generate_varclas <- function(path_to_data,data_format="stata") {
   #create the different unique wb
 
   purrr::walk(unique_wb, function(x){create_wb(data_summary,x)})
+
+}
+
+
+#' Copy the structure of a folder
+#'
+#' @param from directory to copy
+#' @param to directory where the folder are copied
+#'
+#' @return
+#' @importFrom R.utils copyDirectory
+#' @importFrom purrr walk
+#' @export
+#'
+#' @examples
+copy_data_folder=function(from,to){
+
+  if(dir.exists(from)==FALSE | dir.exists(to)==FALSE){
+    stop("one of the specified directory does not exits")
+  }
+
+  if(length(base::list.files(to,recursive = TRUE))!=0) {
+    base::unlink(to,recursive = TRUE)
+  }
+  R.utils::copyDirectory(from,to)
+  purrr::walk(file.path(to,list.files(to,recursive = TRUE)),base::file.remove)
+}
+
+
+
+
+#' Create a simple  preprocessing R script for a given dataset
+#'
+#' @param path_to_data  path to the data to be anonymized
+#' @param file name of the data file
+#' @param pattern extension of the data file
+#'
+#' @return
+#' @importFrom glue glue
+#' @export
+#'
+#' @examples
+create_preproc_r <- function(path_to_data,file,pattern) {
+
+  z <- unlist(strsplit(file, "/"))
+  file_attributes = list(
+    file_name = paste(gsub(pattern, "", z[length(z)]), sep = "", collapse = "_"),
+    path = file.path(path_to_data, file),
+    r_script = file.path("02_Pre-processing scripts",gsub(paste0(pattern,"$"),".R",file)),
+    xlsx_var_class <- file.path("01_Variable classification",
+                                paste0(paste(z[1:length(z) - 1], sep = "", collapse = "_"),
+                                       ".xlsx")),
+    msg=paste("PREPROCESSING: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
+    to_save=file.path("03_Pre-processed data",
+                      paste0(paste(gsub(pattern, "", file[length(file)]), sep = "",
+                                   collapse = "_"),"_proc.dta"))
+  )
+
+
+
+
+  file.create(file_attributes$r_script)
+
+  fileConn<-file(file_attributes$r_script)
+  writeLines(c("#--------------------------------------------------------------------------",
+               "#| ANonymization of the 2020 Anual Agricultural Survey of Uganda (AAS)    |",
+               "#| By Amsata NIANG, amsata.niang@fao.org                                  |",
+               "#| November 2022                                                          |",
+               "#--------------------------------------------------------------------------",
+               glue("# {file_attributes$msg}"),
+               "#|------------------------------------------------------------------------|",
+               "","","",
+               "rm(list=ls())",
+               "library(dplyr)",
+               "library(tidyr)",
+               "library(questionr)",
+               "library(labelled)",
+               "library(readxl)",
+               "library(tidyr)",
+               "library(haven)",
+               "","","",
+               "purrr::walk(file.path(\"_R\",list.files(path=\"_R\",pattern = \".R$\")),source)",
+               glue::glue("cat(paste0(\" \\033[0;\",32,\"m\",\"{file_attributes$msg}\",\"\\033[0m\",\"\\n\"))"),"",
+               glue::glue("data=read_dta(\"{file_attributes$path}\")"),
+               glue::glue("variable_classification=read_excel(path=\"{file_attributes$xlsx_var_class}\",
+                                   sheet =\"{file_attributes$file_name}\") %>% dplyr::select(Name:Questions)"),"",
+               "#******************************************************************",
+               "# Data processing before removing variables classified as DI or D *",
+               "#******************************************************************",
+               "#check for duplicates",
+               " # is_id(data,c())",
+               "#COMMENT:",
+               "","",
+               "#*****************************************************************",
+               "# Removing variable classified as DI of D                        *",
+               "#*****************************************************************",
+               "variables_to_delete=variable_classification %>% filter(Classification %in% c(\"DI\",\"D\")) %>% pull(Name)",
+               "variables_to_delete=variables_to_delete[!is.na(variables_to_delete)]",
+               "variables_to_delete",
+               "data=data %>% dplyr::select(-any_of(variables_to_delete))",
+               "","",
+               "#*****************************************************************",
+               "# Labelling variables and values or correcting labels, if any    *",
+               "#*****************************************************************",
+               "data=data %>% set_variable_labels()","",
+               "data=data %>% set_value_labels()",
+               "","",
+               "#*****************************************************************",
+               "#                        saving the processed data                ",
+               "#*****************************************************************",
+               "labelled::look_for(data)","",
+               glue::glue("data=write_dta(data,\"{file_attributes$to_save}\")")
+  ),
+  fileConn)
+  close(fileConn)
+
+}
+
+
+#' Generate preprocessing scripts
+#'
+#' @param path_to_data path to data files
+#' @param data_format data format
+#'
+#' @return
+#' @importFrom purrr walk
+#' @export
+#'
+#' @examples
+generate_preproc_r <- function(path_to_data,data_format="stata") {
+
+  stopifnot(dir.exists("02_Pre-processing scripts"))
+  if(data_format=="stata") pattern=".dta"
+
+  data_files=list.files(path_to_data,pattern=paste0(pattern,"$"),recursive = TRUE)
+
+  purrr::walk(data_files,function(x){create_preproc_r(path_to_data,x,pattern)})
 
 }
