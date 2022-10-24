@@ -10,9 +10,14 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    data.tree,
     dplyr,
     generator,
+    haven,
     labelled,
+    openxlsx,
+    plyr,
+    purrr,
     randomNames,
     rlang,
     sf,
