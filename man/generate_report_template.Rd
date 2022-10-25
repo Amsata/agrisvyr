@@ -6,8 +6,8 @@
 \usage{
 generate_report_template(
   directory = getwd(),
-  svy_name = "urvey",
-  author = "Amsata"
+  svy_name = "Survey",
+  author = "FAO"
 )
 }
 \arguments{

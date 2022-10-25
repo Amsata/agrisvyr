@@ -562,11 +562,11 @@ generate_ano_r <- function(path_to_data,data_format="stata") {
 #' @export
 #'
 #' @examples
-generate_report_template <- function(directory=getwd(),svy_name="urvey",author="Amsata"){
+generate_report_template <- function(directory=getwd(),svy_name="Survey",author="FAO"){
 
-  stopifnot(dir.exists("04_Anonymization report"))
+  stopifnot(dir.exists("05_Anonymization report"))
 
-  file <- file.path("04_Anonymization report","sdc_report.rmd")
+  file <- file.path("05_Anonymization report","sdc_report.rmd")
   file.create(file)
 
   fileConn<-file(file)
