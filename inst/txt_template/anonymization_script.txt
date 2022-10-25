@@ -1,0 +1,39 @@
+#--------------------------------------------------------------------------",
+#| Anonymization of the 2019 Annual Agricultural Survey of Uganda (AAS)   |",
+#| By Amsata NIANG, amsata.niang@fao.org                                  |",
+#| November 2022                                                          |",
+#--------------------------------------------------------------------------",
+# {file_attributes$msg}
+#|------------------------------------------------------------------------|",
+
+rm(list=ls())
+library(sdcMicro)
+library(dplyr)
+library(tidyr)
+library(readxl)
+library(haven)
+library(questionr)
+library(labelled)
+
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
+cat(paste0(" \033[0;",32,"m","{file_attributes$msg}","\033[0m","\n"))
+
+#*****************************************************************
+# Load microdata to be anonymized                                *
+#*****************************************************************
+
+inputdata=readMicrodata(path="{file_attributes$path}",type="stata", convertCharToFac=FALSE, drop_all_missings=FALSE)
+#*****************************************************************
+# Load variable classification                                   *
+#*****************************************************************
+variable_classification=read_excel(path="{file_attributes$xlsx_var_class}",
+                                   sheet ="{file_attributes$file_name}") %>% select(Name:Questions)
+
+ano_variable=variable_classification %>% filter(Classification %in% c("Q","L")) %>% pull(Name)
+ano_variable=ano_variable[!is.na(ano_variable)]
+ano_variable
+
+#*****************************************************************
+# saving anonymized data                                         *
+#*****************************************************************
+write_dta(inputdata,"{file_attributes$to_save}")

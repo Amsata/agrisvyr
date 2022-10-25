@@ -38,9 +38,9 @@ create_folder=function(directory,overwrite=FALSE){
 create_ano_folders <- function(path=getwd(),overwrite=FALSE) {
   folders=c("01_Variable classification","02_Pre-processing scripts",
             "03_Pre-processed data","04_Anonymization scripts",
-            "05_Anonymization report","06_Anonymized data",
+            "04_Anonymization report","06_Anonymized data",
             "07_Files description","08_Information loss report",
-            "09_Temporary_files","10_Miscellaneous")
+            "09_Temporary_files","10_Miscellaneous","09_Temporary_files/temp_ano")
 
   purrr::walk(folders,create_folder,overwrite=overwrite)
 }
@@ -418,10 +418,10 @@ create_preproc_r <- function(path_to_data,file,pattern) {
   file_attributes = list(
     file_name = paste(gsub(pattern, "", z[length(z)]), sep = "", collapse = "_"),
     path = file.path(path_to_data, file),
-    r_script = file.path("02_Pre-processing scripts",gsub(paste0(pattern,"$"),".R",file)),
+    r_script = file.path("02_Pre-processing scripts",gsub(paste0(pattern,"$"),"_proc.R",file)),
     xlsx_var_class=file.path("01_Variable classification",
-                                paste0(paste(z[1:length(z) - 1],"_VarClas", sep = "", collapse = "_"),
-                                       ".xlsx")),
+                                paste0(paste(z[1:length(z) - 1], sep = "", collapse = "_"),
+                                       "_VarClas.xlsx")),
     msg=paste("PREPROCESSING: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
     to_save=file.path("03_Pre-processed data",
                       paste0(paste(gsub(pattern, "", file[length(file)]), sep = "",
@@ -464,38 +464,93 @@ generate_preproc_r <- function(path_to_data,data_format="stata") {
 
 
 
+#' Create anonymization script for a data file
+#'
+#' @param path_to_data path to the data folder
+#' @param file data file for which to create anonymization script
+#' @param pattern extension of the data file
+#'
+#' @return
+#' @export
+#'
+#' @examples
 create_ano_r <- function(path_to_data,file,pattern) {
 
   z <- unlist(strsplit(file, "/"))
   file_attributes = list(
     file_name = paste(gsub(pattern, "", z[length(z)]), sep = "", collapse = "_"),
-    path = file.path(path_to_data, file),
-    r_script = file.path("02_Pre-processing scripts",gsub(paste0(pattern,"$"),".R",file)),
+    path = file.path("03_Pre-processed data",
+                     paste0(paste(gsub(pattern, "", file[length(file)]), sep = "",
+                                  collapse = "_"),"_proc.dta")),
+    r_script = file.path("04_Anonymization scripts",gsub(paste0(pattern,"$"),"_ano.R",file)),
     xlsx_var_class=file.path("01_Variable classification",
                                 paste0(paste(z[1:length(z) - 1], sep = "", collapse = "_"),
-                                       ".xlsx")),
-    msg=paste("PREPROCESSING: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
-    to_save=file.path("03_Pre-processed data",
+                                       "_VarClas.xlsx")),
+    msg=paste("ANONYMIZATION: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
+    to_save=file.path("09_Temporary_files/temp_ano",
                       paste0(paste(gsub(pattern, "", file[length(file)]), sep = "",
-                                   collapse = "_"),"_proc.dta"))
+                                   collapse = "_"),"_tmp.dta"))
   )
-
-
-
 
   file.create(file_attributes$r_script)
 
   fileConn<-file(file_attributes$r_script)
-  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","preprocessing.txt",package = "agrisvyr")),
+  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","anonymization_script.txt",package = "agrisvyr")),
                                 collapse = "\n")))
 ,
   fileConn)
   close(fileConn)
 
+  file.create("04_Anonymization scripts/_RUN_anonymization.R")
+  conec=file("04_Anonymization scripts/_RUN_anonymization.R")
+
+  writeLines(
+    c(
+      "# Clean the folder and recreate it before saving processed data",
+      "list_data=list.files(\"03_Pre-processed data\",recursive = TRUE)",
+      "path_list_data=paste0(\"03_Pre-processed data/\",list_data)",
+      "purrr::walk(path_list_data,file.remove)","","","",
+      "#Run all pre-processing",
+      "list_script=list.files(\"02_Pre-processing scripts\",pattern = \"_proc.R$\",recursive = TRUE)",
+      "path_script=paste0(\"02_Pre-processing scripts/\",list_script)",
+      "purrr::walk(path_script,source)","","","",
+      "#run anonymization scripts and save to temporary fies",
+      "ano_script=list.files(\"04_Anonymization scripts\",pattern = \"_ano.R$\",recursive = TRUE)",
+      "path_ano_script=paste0(\"04_Anonymization scripts/\",ano_script)",
+      "purrr::walk(path_ano_script,source)","","","",
+      "#Run final anonhmization",
+      "source(\"04_Anonymization scripts/final.R\")"
+
+    ),
+    conec
+  )
+  close(conec)
+
+
 }
 
 
 
+
+#' Generate all anonymization template scripts
+#'
+#' @param path_to_data path to the data folder
+#' @param data_format data format
+#'
+#' @return
+#' @export
+#'
+#' @examples
+generate_ano_r <- function(path_to_data,data_format="stata") {
+
+  stopifnot(dir.exists("04_Anonymization scripts"))
+  if(data_format=="stata") pattern=".dta"
+
+  data_files=list.files(path_to_data,pattern=paste0(pattern,"$"),recursive = TRUE)
+
+  purrr::walk(data_files,function(x){create_ano_r(path_to_data,x,pattern)})
+
+}
 
 #' Generate the template of the sdc report
 #'
@@ -509,9 +564,9 @@ create_ano_r <- function(path_to_data,file,pattern) {
 #' @examples
 generate_report_template <- function(directory=getwd(),svy_name="urvey",author="Amsata"){
 
-  stopifnot(dir.exists("05_Anonymization report"))
+  stopifnot(dir.exists("04_Anonymization report"))
 
-  file <- file.path("05_Anonymization report","sdc_report.rmd")
+  file <- file.path("04_Anonymization report","sdc_report.rmd")
   file.create(file)
 
   fileConn<-file(file)
@@ -523,4 +578,7 @@ generate_report_template <- function(directory=getwd(),svy_name="urvey",author="
 
   # deparse(substitute(my_object))
   # create logo https://www.youtube.com/watch?v=O34vzdHOaEk
+  # https://www.pinterest.com/pin/475340935669859089/
+  # https://www.youtube.com/watch?v=r3uKkmU4VQE
 }
+
