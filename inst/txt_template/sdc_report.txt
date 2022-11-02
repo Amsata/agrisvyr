@@ -1,6 +1,6 @@
 ---
-title: "Anonymization of {{svy_name}}"
-author: '{{author}}'
+title: "Anonymization of {{agrisvy@svyName}}"
+author: '{{agrisvy@author}}'
 date: "`r Sys.Date()`"
 output:
   pdf_document: default

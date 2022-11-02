@@ -4,10 +4,10 @@
 \alias{setup_anonymization}
 \title{set up the anonymization working directory by creating folders and files}
 \usage{
-setup_anonymization(path_to_data, overwrite)
+setup_anonymization(agrisvy, overwrite)
 }
 \arguments{
-\item{path_to_data}{path to the data to be anonymized}
+\item{agrisvy}{}
 
 \item{overwrite}{overwrite existing folders}
 }

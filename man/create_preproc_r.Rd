@@ -4,14 +4,10 @@
 \alias{create_preproc_r}
 \title{Create a simple  preprocessing R script for a given dataset}
 \usage{
-create_preproc_r(path_to_data, file, pattern)
+create_preproc_r(agrisvy, file)
 }
 \arguments{
-\item{path_to_data}{path to the data to be anonymized}
-
 \item{file}{name of the data file}
-
-\item{pattern}{extension of the data file}
 }
 \description{
 Create a simple  preprocessing R script for a given dataset

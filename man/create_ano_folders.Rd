@@ -4,11 +4,10 @@
 \alias{create_ano_folders}
 \title{Create anonymization working folders}
 \usage{
-create_ano_folders(path = getwd(), overwrite = FALSE)
+create_ano_folders(agrisvy, overwrite = FALSE)
 }
 \arguments{
-\item{path}{directory to create the folders. the defaut is the current
-working directory}
+\item{agrisvy}{}
 
 \item{overwrite}{should existing folders be overwitten}
 }

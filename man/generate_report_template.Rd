@@ -4,18 +4,10 @@
 \alias{generate_report_template}
 \title{Generate the template of the sdc report}
 \usage{
-generate_report_template(
-  directory = getwd(),
-  svy_name = "Survey",
-  author = "FAO"
-)
+generate_report_template(agrisvy)
 }
 \arguments{
-\item{directory}{directory of anonymization folders}
-
-\item{svy_name}{name of the survey}
-
-\item{author}{institution}
+\item{agrisvy}{}
 }
 \description{
 Generate the template of the sdc report

@@ -4,12 +4,10 @@
 \alias{generate_preproc_r}
 \title{Generate preprocessing scripts}
 \usage{
-generate_preproc_r(path_to_data, data_format = "stata")
+generate_preproc_r(agrisvy)
 }
 \arguments{
-\item{path_to_data}{path to data files}
-
-\item{data_format}{data format}
+\item{agrisvy}{}
 }
 \description{
 Generate preprocessing scripts

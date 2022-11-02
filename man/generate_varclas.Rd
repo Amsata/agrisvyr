@@ -4,12 +4,10 @@
 \alias{generate_varclas}
 \title{Create Excel file for variable classification for a given data folder}
 \usage{
-generate_varclas(path_to_data, data_format = "stata")
+generate_varclas(agrisvy)
 }
 \arguments{
-\item{path_to_data}{path to data folder}
-
-\item{data_format}{format of the data (default is stata)}
+\item{agrisvy}{}
 }
 \description{
 Create Excel file for variable classification for a given data folder

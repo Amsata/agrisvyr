@@ -4,7 +4,7 @@
 \alias{create_wb}
 \title{Create an Excel file for variable classification for a given data folder}
 \usage{
-create_wb(data, wb_file)
+create_wb(agrisvy, data, wb_file)
 }
 \arguments{
 \item{data}{a dataframe containing information on the file tree}

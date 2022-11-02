@@ -4,12 +4,10 @@
 \alias{generate_ano_r}
 \title{Generate all anonymization template scripts}
 \usage{
-generate_ano_r(path_to_data, data_format = "stata")
+generate_ano_r(agrisvy)
 }
 \arguments{
-\item{path_to_data}{path to the data folder}
-
-\item{data_format}{data format}
+\item{agrisvy}{}
 }
 \description{
 Generate all anonymization template scripts
