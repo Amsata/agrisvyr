@@ -19,7 +19,7 @@ library(kableExtra)
 library(glue)
 library(rlang)
 options(scipen = 999)
-source("format_table.R")
+#source("format_table.R")
 options(knitr.duplicate.label = "allow")
 
 ```
@@ -31,9 +31,9 @@ options(knitr.duplicate.label = "allow")
 
 * Datasets of the survey
 ```{r dataset-f,echo=FALSE}
-data=as.data.frame(read_excel(path="datasets.xlsx"))
+#data=as.data.frame(read_excel(path="datasets.xlsx"))
 
-data%>% kbl() 
+#data%>% kbl() 
 
 ```
 

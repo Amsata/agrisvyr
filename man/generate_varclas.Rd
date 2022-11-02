@@ -11,9 +11,6 @@ generate_varclas(path_to_data, data_format = "stata")
 
 \item{data_format}{format of the data (default is stata)}
 }
-\value{
-
-}
 \description{
 Create Excel file for variable classification for a given data folder
 }

@@ -38,7 +38,7 @@ create_folder=function(directory,overwrite=FALSE){
 create_ano_folders <- function(path=getwd(),overwrite=FALSE) {
   folders=c("01_Variable classification","02_Pre-processing scripts",
             "03_Pre-processed data","04_Anonymization scripts",
-            "04_Anonymization report","06_Anonymized data",
+            "05_Anonymization report","06_Anonymized data",
             "07_Files description","08_Information loss report",
             "09_Temporary_files","10_Miscellaneous","09_Temporary_files/temp_ano")
 
@@ -580,5 +580,31 @@ generate_report_template <- function(directory=getwd(),svy_name="Survey",author=
   # create logo https://www.youtube.com/watch?v=O34vzdHOaEk
   # https://www.pinterest.com/pin/475340935669859089/
   # https://www.youtube.com/watch?v=r3uKkmU4VQE
+  #https://andrewmaclachlan.github.io/CASA0005repo/explaining-spatial-patterns.html
+  #https://github.com/rstudio/cheatsheets/tree/main/powerpoints
+}
+
+
+
+#' set up the anonymization working directory by creating folders and files
+#'
+#' @param path_to_data path to the data to be anonymized
+#' @param overwrite overwrite existing folders
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setup_anonymization <- function(path_to_data, overwrite) {
+  create_ano_folders(overwrite=overwrite)
+  generate_varclas(path_to_data)
+  copy_data_folder(from = path_to_data, to = "02_Pre-processing scripts")
+  copy_data_folder(from = path_to_data, to = "03_Pre-processed data")
+  generate_preproc_r(path_to_data)
+  copy_data_folder(from = path_to_data, to = "04_Anonymization scripts")
+  copy_data_folder(from = path_to_data, to = "09_Temporary_files/temp_ano")
+  generate_ano_r(path_to_data)
+  generate_report_template()
+
 }
 

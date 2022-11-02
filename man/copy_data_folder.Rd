@@ -11,9 +11,6 @@ copy_data_folder(from, to)
 
 \item{to}{directory where the folder are copied}
 }
-\value{
-
-}
 \description{
 Copy the structure of a folder
 }

@@ -21,6 +21,3 @@ a dataframe
 \description{
 Replace structural missing value by a given level
 }
-\examples{
-
-}

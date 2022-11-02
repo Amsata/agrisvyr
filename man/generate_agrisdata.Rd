@@ -11,9 +11,6 @@ generate_agrisdata(n = 60, na_prob = 5e-04)
 
 \item{na_prob}{proportion of random missing data introduced in the data}
 }
-\value{
-
-}
 \description{
 Generate a sample geo-reference data of agris survey based on the generic questionnaire
 }

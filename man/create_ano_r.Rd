@@ -13,9 +13,6 @@ create_ano_r(path_to_data, file, pattern)
 
 \item{pattern}{extension of the data file}
 }
-\value{
-
-}
 \description{
 Create anonymization script for a data file
 }

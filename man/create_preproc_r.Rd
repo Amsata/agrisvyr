@@ -13,9 +13,6 @@ create_preproc_r(path_to_data, file, pattern)
 
 \item{pattern}{extension of the data file}
 }
-\value{
-
-}
 \description{
 Create a simple  preprocessing R script for a given dataset
 }

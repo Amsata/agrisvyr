@@ -11,9 +11,6 @@ generate_preproc_r(path_to_data, data_format = "stata")
 
 \item{data_format}{data format}
 }
-\value{
-
-}
 \description{
 Generate preprocessing scripts
 }

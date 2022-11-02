@@ -9,9 +9,6 @@ labels(fileName)
 \arguments{
 \item{fileName}{dataset name}
 }
-\value{
-
-}
 \description{
 Extract label of all variable of a dataset
 }

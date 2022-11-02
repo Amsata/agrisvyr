@@ -11,9 +11,6 @@ gen_names(sex, first_last)
 
 \item{first_last}{takes "first", "last" or "both"}
 }
-\value{
-
-}
 \description{
 Generate first name and last name based on sex
 }

@@ -11,9 +11,6 @@ create_wb(data, wb_file)
 
 \item{wb_file}{name the workbook of a data folder}
 }
-\value{
-
-}
 \description{
 Create an Excel file for variable classification for a given data folder
 }

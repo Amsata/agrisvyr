@@ -17,9 +17,6 @@ generate_report_template(
 
 \item{author}{institution}
 }
-\value{
-
-}
 \description{
 Generate the template of the sdc report
 }
