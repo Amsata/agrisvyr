@@ -58,6 +58,7 @@ createAgrisvy(
 }
 \value{
 a agrisvy object
+ @importFrom methods new
 }
 \description{
 Create an agrisvy object

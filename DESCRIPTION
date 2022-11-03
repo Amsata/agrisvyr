@@ -18,6 +18,7 @@ Imports:
     kableExtra,
     knitr,
     labelled,
+    methods,
     openxlsx,
     plyr,
     purrr,
@@ -26,6 +27,7 @@ Imports:
     rlang,
     sdcMicro,
     sf,
+    stats,
     tidyr,
     wakefield
 RoxygenNote: 7.2.1

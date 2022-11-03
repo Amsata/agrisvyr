@@ -7,22 +7,17 @@
 #'
 #'
 #' @examples
-create_folder=function(directory,overwrite=FALSE){
-
-  if(isTRUE(dir.exists(directory)) & isFALSE(overwrite)) {
+create_folder <- function(directory, overwrite = FALSE) {
+  if (isTRUE(dir.exists(directory)) & isFALSE(overwrite)) {
     stop(glue::glue("Directory {directory} already exists!"))
   } else {
-
-  if(isTRUE(dir.exists(directory))){
-
-    unlink(directory,recursive = TRUE)
-    dir.create(directory)
-  } else {
-
-    dir.create(directory)
+    if (isTRUE(dir.exists(directory))) {
+      unlink(directory, recursive = TRUE)
+      dir.create(directory)
+    } else {
+      dir.create(directory)
+    }
   }
-  }
-
 }
 
 #' Create anonymization working folders
@@ -34,25 +29,24 @@ create_folder=function(directory,overwrite=FALSE){
 #' @export
 #'
 #' @examples
-create_ano_folders <- function(agrisvy,overwrite=FALSE) {
+create_ano_folders <- function(agrisvy, overwrite = FALSE) {
+  # stopifnot(inherits(agrisvy,"agrisvy"))
 
-  #stopifnot(inherits(agrisvy,"agrisvy"))
+  folders_path <- c(
+    varClassDir(agrisvy),
+    preProcScriptDir(agrisvy),
+    preprocDataDir(agrisvy),
+    anoScriptDir(agrisvy),
+    anoreportDir(agrisvy),
+    anoDataDir(agrisvy),
+    fileDesDir(agrisvy),
+    infoLossReport(agrisvy),
+    tempfileDir(agrisvy),
+    aobDir(agrisvy),
+    file.path(tempfileDir(agrisvy), "temp_ano")
+  )
 
-  folders=c(agrisvy@varClassDir,
-            agrisvy@preProcScriptDir,
-            agrisvy@preprocDataDir,
-            agrisvy@anoScriptDir,
-            agrisvy@anoreportDir,
-            agrisvy@anoDataDir,
-            agrisvy@fileDesDir,
-            agrisvy@infoLossReport,
-            agrisvy@tempfileDir,
-            agrisvy@aobDir,
-            file.path(agrisvy@tempfileDir,"temp_ano"))
-
-  folders_path=file.path(agrisvy@workingDir,folders)
-
-  purrr::walk(folders_path,create_folder,overwrite=overwrite)
+  purrr::walk(folders_path, create_folder, overwrite = overwrite)
 }
 
 
@@ -63,11 +57,12 @@ create_ano_folders <- function(agrisvy,overwrite=FALSE) {
 #' @return
 #'
 #' @examples
-labels <- function(fileName){
-  curData <- read_dta(fileName, encoding = 'latin1')
+labels <- function(fileName) {
+  curData <- read_dta(fileName, encoding = "latin1")
   curLabels <- data.frame(
     "name"  = names(curData),
-    "label" = sapply(curData, function(x) attr(x, "label"))  %>% as.character())
+    "label" = sapply(curData, function(x) attr(x, "label")) %>% as.character()
+  )
   return(curLabels)
 }
 
@@ -81,54 +76,52 @@ labels <- function(fileName){
 #' @import openxlsx
 #' @import haven
 #' @examples
-create_wb <- function(agrisvy,data,wb_file) {
-
+create_wb <- function(agrisvy, data, wb_file) {
   # #stopifnot(inherits(agrisvy,"agrisvy"))
 
-  hd1 = openxlsx::createStyle(
-    fontName = "Arial",
-    fontSize = 11,
-    fontColour = "black",
-    numFmt = "GENERAL",
-    border = c("top", "bottom", "left", "right"),
-    borderColour = getOption("openxlsx.borderColour", "black"),
-    borderStyle = getOption("openxlsx.borderStyle", "thin"),
-    bgFill = NULL,
-    fgFill = "grey",
-    halign = "center",
-    valign = "center",
+  hd1 <- openxlsx::createStyle(
+    fontName       = "Arial",
+    fontSize       = 11,
+    fontColour     = "black",
+    numFmt         = "GENERAL",
+    border         = c("top", "bottom", "left", "right"),
+    borderColour   = getOption("openxlsx.borderColour", "black"),
+    borderStyle    = getOption("openxlsx.borderStyle", "thin"),
+    bgFill         = NULL,
+    fgFill         = "grey",
+    halign         = "center",
+    valign         = "center",
     textDecoration = "bold",
-    wrapText = TRUE,
-    textRotation = NULL,
-    indent = NULL,
-    locked = NULL,
-    hidden = NULL
+    wrapText       = TRUE,
+    textRotation   = NULL,
+    indent         = NULL,
+    locked         = NULL,
+    hidden         = NULL
   )
 
-  hd2 = openxlsx::createStyle(
-    fontName = "Arial",
-    fontSize = 11,
-    fontColour = "black",
-    numFmt = "GENERAL",
-    border = c("top", "bottom", "left", "right"),
-    borderColour = getOption("openxlsx.borderColour", "black"),
-    borderStyle = getOption("openxlsx.borderStyle", "thin"),
-    bgFill = NULL,
-    fgFill = "yellow",
-    halign = "center",
-    valign = "center",
+  hd2 <- openxlsx::createStyle(
+    fontName       = "Arial",
+    fontSize       = 11,
+    fontColour     = "black",
+    numFmt         = "GENERAL",
+    border         = c("top", "bottom", "left", "right"),
+    borderColour   = getOption("openxlsx.borderColour", "black"),
+    borderStyle    = getOption("openxlsx.borderStyle", "thin"),
+    bgFill         = NULL,
+    fgFill         = "yellow",
+    halign         = "center",
+    valign         = "center",
     textDecoration = "bold",
-    wrapText = TRUE,
-    textRotation = NULL,
-    indent = NULL,
-    locked = NULL,
-    hidden = NULL
+    wrapText       = TRUE,
+    textRotation   = NULL,
+    indent         = NULL,
+    locked         = NULL,
+    hidden         = NULL
   )
 
 
-  df = data %>% dplyr::filter(workbook %in% wb_file)
-
-  fileNames = df$file_name
+  df <- data %>% dplyr::filter(workbook %in% wb_file)
+  fileNames <- df$file_name
   wb <- openxlsx::createWorkbook()
 
   for (i in 1:length(fileNames)) {
@@ -141,25 +134,28 @@ create_wb <- function(agrisvy,data,wb_file) {
         c = "",
         d = ""
       ))
-    #colnames(curDat) <- c("Variable name", "Variable label", "Anonymization", "Comments")
+    # colnames(curDat) <- c("Variable name", "Variable label", "Anonymization", "Comments")
     colnames(curDat) <-
-      c("Name",
+      c(
+        "Name",
         "Label",
         "Classification",
         "Comments",
         "Anonymization",
-        "Questions")
+        "Questions"
+      )
 
-    #prefill know quasi-identifiers like region, zardi etc.
-    predef_Q = c("region", "zardi", "sub_region")
-    curDat = curDat %>% mutate(Classification = Classification %>%
-                                 labelled::recode_if(Name %in% predef_Q, "Q"))
+    # prefill know quasi-identifiers like region, zardi etc.
+    predef_Q <- c("region", "zardi", "sub_region")
+    curDat <- curDat %>% mutate(Classification = Classification %>%
+      labelled::recode_if(Name %in% predef_Q, "Q"))
 
     openxlsx::writeData(wb,
-              sheet = fileNames[i],
-              x = curDat,
-              headerStyle = hd1)
-    classification = data.frame(cbind(
+      sheet = fileNames[i],
+      x = curDat,
+      headerStyle = hd1
+    )
+    classification <- data.frame(cbind(
       c(
         "Sampling Weight",
         "Direct identifier",
@@ -173,100 +169,100 @@ create_wb <- function(agrisvy,data,wb_file) {
       c("W", "DI", "Q", "ID", "D", "S", "L", "-")
     ))
 
-    names(classification) = c("Classification category", "symbol")
+    names(classification) <- c("Classification category", "symbol")
     openxlsx::writeData(
-      wb,
-      sheet = fileNames[i],
-      classification,
-      startCol = 8,
+      wb          =wb,
+      sheet       = fileNames[i],
+      x           =classification,
+      startCol    = 8,
       headerStyle = hd2
     )
     openxlsx::setColWidths(
-      wb,
-      sheet = fileNames[i],
-      cols = c(1, 2, 3, 4, 5, 8, 9),
+      wb     = wb,
+      sheet  = fileNames[i],
+      cols   = c(1, 2, 3, 4, 5, 8, 9),
       widths = c(25, 50, 16, 16, 16, 30, 15)
     )
     openxlsx::addStyle(
-      wb,
-      sheet = fileNames[i],
-      style = createStyle(
-        fontSize = 9,
-        fontName = "Arial",
-        halign = "left",
-        valign = "center"
+      wb         = wb,
+      sheet      = fileNames[i],
+      style      = createStyle(
+      fontSize   = 9,
+      fontName   = "Arial",
+      halign     = "left",
+      valign     = "center"
       ),
-      cols = 1:9,
-      rows = 1:nrow(curDat) + 1,
+      cols       = 1:9,
+      rows       = 1:nrow(curDat) + 1,
       gridExpand = TRUE,
-      stack = TRUE
+      stack      = TRUE
     )
 
     openxlsx::addStyle(
-      wb,
-      sheet = fileNames[i],
-      style = createStyle(
-        fontSize = 12,
-        fontName = "Arial",
-        halign = "Center",
-        valign = "center",
-        textDecoration = "bold",
-        fontColour = "#0000FF"
+      wb               = wb,
+      sheet            = fileNames[i],
+      style            = createStyle(
+      fontSize         = 12,
+      fontName         = "Arial",
+      halign           = "Center",
+      valign           = "center",
+      textDecoration   = "bold",
+      fontColour       = "#0000FF"
       ),
-      cols = 3,
-      rows = 1:nrow(curDat) + 1,
+      cols       = 3,
+      rows       = 1:nrow(curDat) + 1,
       gridExpand = TRUE,
-      stack = TRUE
+      stack      = TRUE
     )
 
     openxlsx::addStyle(
-      wb,
-      sheet = fileNames[i],
-      style = createStyle(
-        fontSize = 10,
-        fontName = "Arial",
-        halign = "Center",
-        valign = "center",
+      wb           = wb,
+      sheet        = fileNames[i],
+      style        = createStyle(
+        fontSize   = 10,
+        fontName   = "Arial",
+        halign     = "Center",
+        valign     = "center",
         fontColour = "#000080"
       ),
-      cols = 4,
-      rows = 1:nrow(curDat) + 1,
+      cols       = 4,
+      rows       = 1:nrow(curDat) + 1,
       gridExpand = TRUE,
-      stack = TRUE
+      stack      = TRUE
     )
 
     openxlsx::addStyle(
-      wb,
-      sheet = fileNames[i],
-      style = createStyle(
-        fontSize = 11,
-        fontName = "Arial",
-        halign = "Center",
-        valign = "center",
+      wb               =wb,
+      sheet            = fileNames[i],
+      style            = createStyle(
+        fontSize       = 11,
+        fontName       = "Arial",
+        halign         = "Center",
+        valign         = "center",
         textDecoration = "bold",
-        fontColour = "#008000"
+        fontColour     = "#008000"
       ),
-      cols = 5,
-      rows = 1:nrow(curDat) + 1,
+      cols       = 5,
+      rows       = 1:nrow(curDat) + 1,
       gridExpand = TRUE,
-      stack = TRUE
+      stack      = TRUE
     )
 
     # Color text in red if variable is classified ad D
     openxlsx::conditionalFormatting(
-      wb,
-      sheet = fileNames[i],
-      cols = 3,
-      rows = 1:nrow(curDat) + 1,
-      type = "beginsWith",
-      rule = "D",
-      style = createStyle(
-        fontSize = 12,
-        fontName = "Arial",
-        halign = "Center",
-        valign = "center",
-        textDecoration = "bold",
-        fontColour = "#FF0000"
+      wb             =wb,
+      sheet          = fileNames[i],
+      cols           = 3,
+      rows           = 1:nrow(curDat) + 1,
+      type           = "beginsWith",
+      rule           = "D",
+      style          = createStyle(
+      fontSize       = 12,
+      fontName       = "Arial",
+      halign         = "Center",
+      valign         = "center",
+      textDecoration = "bold",
+      fontColour     = "#FF0000"
       )
     )
 
@@ -282,65 +278,65 @@ create_wb <- function(agrisvy,data,wb_file) {
 
     # Color text in green if variable is classified ad Q
     openxlsx::conditionalFormatting(
-      wb,
-      sheet = fileNames[i],
-      cols = 3,
-      rows = 1:nrow(curDat) + 1,
-      type = "contains",
-      rule = "Q",
-      style = createStyle(
-        fontSize = 12,
-        fontName = "Arial",
-        halign = "Center",
-        valign = "center",
-        textDecoration = "bold",
-        fontColour = "#008000"
+      wb             = wb,
+      sheet          = fileNames[i],
+      cols           = 3,
+      rows           = 1:nrow(curDat) + 1,
+      type           = "contains",
+      rule           = "Q",
+      style          = createStyle(
+      fontSize       = 12,
+      fontName       = "Arial",
+      halign         = "Center",
+      valign         = "center",
+      textDecoration = "bold",
+      fontColour     = "#008000"
       )
     )
 
     # Color text in green if variable is classified ad L
     openxlsx::conditionalFormatting(
-      wb,
-      sheet = fileNames[i],
-      cols = 3,
-      rows = 1:nrow(curDat) + 1,
-      type = "contains",
-      rule = "L",
-      style = createStyle(
-        fontSize = 12,
-        fontName = "Arial",
-        halign = "Center",
-        valign = "center",
-        textDecoration = "bold",
-        fontColour = "#008000"
+      wb             = wb,
+      sheet          = fileNames[i],
+      cols           = 3,
+      rows           = 1:nrow(curDat) + 1,
+      type           = "contains",
+      rule           = "L",
+      style          = createStyle(
+      fontSize       = 12,
+      fontName       = "Arial",
+      halign         = "Center",
+      valign         = "center",
+      textDecoration = "bold",
+      fontColour     = "#008000"
       )
     )
 
     # Color text in green if variable is classified ad S
     openxlsx::conditionalFormatting(
-      wb,
-      sheet = fileNames[i],
-      cols = 3,
-      rows = 1:nrow(curDat) + 1,
-      type = "contains",
-      rule = "S",
-      style = createStyle(
-        fontSize = 12,
-        fontName = "Arial",
-        halign = "Center",
-        valign = "center",
-        textDecoration = "bold",
-        fontColour = "#008000"
+      wb             = wb,
+      sheet          = fileNames[i],
+      cols           = 3,
+      rows           = 1:nrow(curDat) + 1,
+      type           = "contains",
+      rule           = "S",
+      style          = createStyle(
+      fontSize       = 12,
+      fontName       = "Arial",
+      halign         = "Center",
+      valign         = "center",
+      textDecoration = "bold",
+      fontColour     = "#008000"
       )
     )
-
-
   }
 
   openxlsx::saveWorkbook(wb,
-                         file.path(agrisvy@workingDir,agrisvy@varClassDir,
-                                   glue::glue("{wb_file}_VarClas.xlsx")),
-                         overwrite = TRUE)
+    file.path(varClassDir(agrisvy),
+      glue::glue("{wb_file}_VarClas.xlsx")
+    ),
+    overwrite = TRUE
+  )
 }
 
 
@@ -355,33 +351,37 @@ create_wb <- function(agrisvy,data,wb_file) {
 #'
 #' @examples
 generate_varclas <- function(agrisvy) {
+  # stopifnot(inherits(agrisvy,"agrisvy"))
 
-  #stopifnot(inherits(agrisvy,"agrisvy"))
 
+  data_files   <- list.files(file.path(DataPath(agrisvy)),
+                             pattern = glue::glue("{agrisvy@type}$"),
+                             recursive = TRUE)
 
-  data_files = list.files(file.path(agrisvy@workingDir,agrisvy@path), pattern = glue::glue("{agrisvy@type}$"), recursive = TRUE)
+  x            <- lapply(strsplit(data_files, "/"), function(z) as.data.frame(t(z)))
+  x1           <- rbind.fill(x)
 
-  x <-lapply(strsplit(data_files, "/"), function(z)as.data.frame(t(z)))
-  x1 <- rbind.fill(x)
-
-  wb = lapply(x, function(z) {
+  wb           <- lapply(x, function(z) {
     paste(z[1:length(z) - 1], sep = "", collapse = "_")
   })
 
-  unique_wb = unique(unlist(wb))
+  unique_wb    <- unique(unlist(wb))
 
-  data_summary = data.frame(
-    file_name = unlist(lapply(x, function(z) {
-      paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_")
-    })),
-    path = file.path(agrisvy@workingDir,agrisvy@path, data_files),
-    workbook = unlist(wb)
+  file_name = unlist(lapply(x, function(z) {
+    paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_")
+  }))
+
+  data_summary <- data.frame(
+    file_name = file_name,
+    path      = file.path(DataPath(agrisvy), data_files),
+    workbook  = unlist(wb)
   )
 
-  #create the different unique wb
+  # create the different unique wb
 
-  purrr::walk(unique_wb, function(x){create_wb(agrisvy,data_summary,x)})
-
+  purrr::walk(unique_wb, function(x) {
+    create_wb(agrisvy, data_summary, x)
+  })
 }
 
 
@@ -396,19 +396,18 @@ generate_varclas <- function(agrisvy) {
 #' @export
 #'
 #' @examples
-copyDirStr=function(from,to){
-
-  if(dir.exists(from)==FALSE | dir.exists(to)==FALSE){
+copyDirStr <- function(from, to) {
+  if (dir.exists(from) == FALSE | dir.exists(to) == FALSE) {
     stop("one of the specified directory does not exits")
   }
 
-  if(length(base::list.files(to,recursive = TRUE))!=0) {
-    base::unlink(to,recursive = TRUE)
+  if (length(base::list.files(to, recursive = TRUE)) != 0) {
+    base::unlink(to, recursive = TRUE)
   }
-  dir_list=list.dirs(from,full.names = FALSE)
-  dir_list=dir_list[2:length(dir_list)]
+  dir_list <- list.dirs(from, full.names = FALSE)
+  dir_list <- dir_list[2:length(dir_list)]
 
-  purrr::walk(file.path(to,dir_list),base::dir.create)
+  purrr::walk(file.path(to, dir_list), base::dir.create)
 }
 
 
@@ -424,32 +423,45 @@ copyDirStr=function(from,to){
 #' @export
 #'
 #' @examples
-create_preproc_r <- function(agrisvy,file) {
-
+create_preproc_r <- function(agrisvy, file) {
   z <- unlist(strsplit(file, "/"))
-  file_attributes = list(
-    file_name = paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_"),
-    path = file.path(agrisvy@workingDir,agrisvy@path, file),
-    r_script = file.path(agrisvy@workingDir,agrisvy@preProcScriptDir,gsub(paste0(agrisvy@type,"$"),"_proc.R",file)),
-    xlsx_var_class=file.path(agrisvy@workingDir,agrisvy@varClassDir,
-                                paste0(paste(z[1:length(z) - 1], sep = "", collapse = "_"),
-                                       "_VarClas.xlsx")),
-    msg=paste("PREPROCESSING: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
-    to_save=file.path("03_Pre-processed data",
-                      paste0(paste(gsub(agrisvy@type, "", file[length(file)]), sep = "",
-                                   collapse = "_"),"_proc.dta"))
+
+  file_attributes <- list(
+    file_name      = paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_"),
+    path           = file.path(DataPath(agrisvy), file),
+    r_script       = file.path(preProcScriptDir(agrisvy), gsub(paste0(agrisvy@type, "$"), "_proc.R", file)),
+    xlsx_var_class = file.path(varClassDir(agrisvy),
+                               paste0(paste(z[1:length(z) - 1], sep = "",
+                                            collapse = "_"),
+                                      "_VarClas.xlsx"
+                                      )
+                               ),
+    msg            = paste("PREPROCESSING: ", paste(unlist(strsplit(file, "/")),
+                                                    collapse = "=>")
+                           ),
+    to_save        = file.path("03_Pre-processed data",
+                               paste0(paste(gsub(agrisvy@type,
+                                                 "",
+                                                 file[length(file)]),
+                                            sep = "", collapse = "_"),
+                                      "_proc.dta")
+                               )
   )
 
 
   file.create(file_attributes$r_script)
 
-  fileConn<-file(file_attributes$r_script)
-  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","preprocessing.txt",package = "agrisvyr"),warn=FALSE),
-                                collapse = "\n")))
-             ,
-             fileConn)
-  close(fileConn)
+  fileConn <- file(file_attributes$r_script)
 
+  writeLines(
+    c(glue::glue(paste(readLines(system.file("txt_template",
+                                             "preprocessing.txt",
+                                             package = "agrisvyr"), warn = FALSE),
+      collapse = "\n"
+    ))),
+    fileConn
+  )
+  close(fileConn)
 }
 
 
@@ -463,15 +475,18 @@ create_preproc_r <- function(agrisvy,file) {
 #'
 #' @examples
 generate_preproc_r <- function(agrisvy) {
+  # stopifnot(inherits(agrisvy,"agrisvy"))
 
-  #stopifnot(inherits(agrisvy,"agrisvy"))
+  stopifnot(dir.exists(preProcScriptDir(agrisvy)))
 
-  stopifnot(dir.exists(file.path(agrisvy@workingDir,agrisvy@preProcScriptDir)))
+  data_files <- list.files(DataPath(agrisvy),
+                           pattern = paste0(agrisvy@type, "$"),
+                           recursive = TRUE
+                           )
 
-  data_files=list.files(file.path(agrisvy@workingDir,agrisvy@path),pattern=paste0(agrisvy@type,"$"),recursive = TRUE)
-
-  purrr::walk(data_files,function(x){create_preproc_r(agrisvy,x)})
-
+  purrr::walk(data_files, function(x) {
+    create_preproc_r(agrisvy, x)
+  })
 }
 
 
@@ -485,59 +500,75 @@ generate_preproc_r <- function(agrisvy) {
 #' @export
 #'
 #' @examples
-create_ano_r <- function(agrisvy,file) {
+create_ano_r <- function(agrisvy, file) {
 
   z <- unlist(strsplit(file, "/"))
-  file_attributes = list(
-    file_name = paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_"),
-    path = file.path(agrisvy@workingDir,agrisvy@preprocDataDir,
-                     paste0(paste(gsub(agrisvy@type, "", file[length(file)]), sep = "",
-                                  collapse = "_"),"_proc.dta")),
-    r_script = file.path(agrisvy@workingDir,agrisvy@anoScriptDir,gsub(paste0(agrisvy@type,"$"),"_ano.R",file)),
-    xlsx_var_class=file.path(agrisvy@workingDir,agrisvy@varClassDir,
-                                paste0(paste(z[1:length(z) - 1], sep = "", collapse = "_"),
-                                       "_VarClas.xlsx")),
-    msg=paste("ANONYMIZATION: ",paste(unlist(strsplit(file, "/")),collapse = "=>")),
-    to_save=file.path(agrisvy@workingDir,agrisvy@tempfileDir,"temp_ano",
-                      paste0(paste(gsub(agrisvy@type, "", file[length(file)]), sep = "",
-                                   collapse = "_"),"_tmp.dta"))
+
+  file_attributes <- list(
+    file_name      = paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_"),
+    path           = file.path(preprocDataDir(agrisvy),
+                               paste0(paste(gsub(agrisvy@type, "",
+                                                 file[length(file)]),
+                                            sep = "",collapse = "_" ),
+                                      "_proc.dta")
+                               ),
+    r_script       = file.path(anoScriptDir(agrisvy),
+                               gsub(paste0(agrisvy@type, "$"),
+                                    "_ano.R", file)),
+    xlsx_var_class = file.path(varClassDir(agrisvy),
+                               paste0(paste(z[1:length(z) - 1],
+                                            sep = "", collapse = "_"),
+                                      "_VarClas.xlsx")
+                               ),
+    msg            = paste("ANONYMIZATION: ",
+                           paste(unlist(strsplit(file, "/")),
+                           collapse = "=>")),
+    to_save        = file.path(tempfileDir(agrisvy),
+                               "temp_ano",
+                               paste0(paste(gsub(agrisvy@type, "",
+                                                 file[length(file)]),
+                                            sep = "", collapse = "_"),
+                                      "_tmp.dta"))
   )
 
   file.create(file_attributes$r_script)
 
-  fileConn<-file(file_attributes$r_script)
-  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","anonymization_script.txt",package = "agrisvyr"),warn=FALSE),
-                                collapse = "\n")))
-,
-  fileConn)
+  fileConn <- file(file_attributes$r_script)
+  writeLines(
+    c(glue::glue(paste(readLines(system.file("txt_template",
+                                             "anonymization_script.txt",
+                                             package = "agrisvyr"),
+                                 warn = FALSE
+                                 ),
+      collapse = "\n"
+    ))),
+    fileConn
+  )
   close(fileConn)
 
-  file.create(file.path(agrisvy@workingDir,agrisvy@anoScriptDir,"_RUN_anonymization.R"))
-  conec=file(file.path(agrisvy@workingDir,agrisvy@anoScriptDir,"_RUN_anonymization.R"))
+  file.create(file.path(anoScriptDir(agrisvy), "_RUN_anonymization.R"))
+  conec <- file(file.path(anoScriptDir(agrisvy), "_RUN_anonymization.R"))
 
   writeLines(
     c(
       "# Clean the folder and recreate it before saving processed data",
       "list_data=list.files(\"03_Pre-processed data\",recursive = TRUE)",
       "path_list_data=paste0(\"03_Pre-processed data/\",list_data)",
-      "purrr::walk(path_list_data,file.remove)","","","",
+      "purrr::walk(path_list_data,file.remove)", "", "", "",
       "#Run all pre-processing",
       "list_script=list.files(\"02_Pre-processing scripts\",pattern = \"_proc.R$\",recursive = TRUE)",
       "path_script=paste0(\"02_Pre-processing scripts/\",list_script)",
-      "purrr::walk(path_script,source)","","","",
+      "purrr::walk(path_script,source)", "", "", "",
       "#run anonymization scripts and save to temporary fies",
       "ano_script=list.files(\"04_Anonymization scripts\",pattern = \"_ano.R$\",recursive = TRUE)",
       "path_ano_script=paste0(\"04_Anonymization scripts/\",ano_script)",
-      "purrr::walk(path_ano_script,source)","","","",
+      "purrr::walk(path_ano_script,source)", "", "", "",
       "#Run final anonhmization",
       "source(\"04_Anonymization scripts/final.R\")"
-
     ),
     conec
   )
   close(conec)
-
-
 }
 
 
@@ -552,15 +583,18 @@ create_ano_r <- function(agrisvy,file) {
 #'
 #' @examples
 generate_ano_r <- function(agrisvy) {
+  # stopifnot(inherits(agrisvy,"agrisvy"))
 
-  #stopifnot(inherits(agrisvy,"agrisvy"))
+  stopifnot(dir.exists(anoScriptDir(agrisvy)))
 
-  stopifnot(dir.exists(file.path(agrisvy@workingDir,agrisvy@anoScriptDir)))
+  data_files <- list.files(DataPath(agrisvy),
+                           pattern = glue::glue("{agrisvy@type}$"),
+                           recursive = TRUE
+                           )
 
-  data_files=list.files(file.path(agrisvy@workingDir,agrisvy@path),pattern=glue::glue("{agrisvy@type}$"),recursive = TRUE)
-
-  purrr::walk(data_files,function(x){create_ano_r(agrisvy,x)})
-
+  purrr::walk(data_files, function(x) {
+    create_ano_r(agrisvy, x)
+  })
 }
 
 #' Generate the template of the sdc report
@@ -571,26 +605,31 @@ generate_ano_r <- function(agrisvy) {
 #' @export
 #'
 #' @examples
-generate_report_template <- function(agrisvy){
+generate_report_template <- function(agrisvy) {
+  stopifnot(dir.exists(anoreportDir(agrisvy)))
 
-  stopifnot(dir.exists(file.path(agrisvy@workingDir,agrisvy@anoreportDir)))
-
-  file <- file.path(agrisvy@workingDir,agrisvy@anoreportDir,"sdc_report.rmd")
+  file <- file.path(anoreportDir(agrisvy), "sdc_report.rmd")
   file.create(file)
 
-  fileConn<-file(file)
-  writeLines(c(glue::glue(paste(readLines(system.file("txt_template","sdc_report.txt",package = "agrisvyr"),warn=FALSE),
-                                collapse = "\n"),.open = "{{",.close = "}}"))
-             ,
-             fileConn)
+  fileConn <- file(file)
+  writeLines(
+    c(glue::glue(paste(readLines(system.file("txt_template",
+                                             "sdc_report.txt",
+                                             package = "agrisvyr"),
+                                 warn = FALSE
+                                 ),
+      collapse = "\n"
+    ), .open = "{{", .close = "}}")),
+    fileConn
+  )
   close(fileConn)
 
   # deparse(substitute(my_object))
   # create logo https://www.youtube.com/watch?v=O34vzdHOaEk
   # https://www.pinterest.com/pin/475340935669859089/
   # https://www.youtube.com/watch?v=r3uKkmU4VQE
-  #https://andrewmaclachlan.github.io/CASA0005repo/explaining-spatial-patterns.html
-  #https://github.com/rstudio/cheatsheets/tree/main/powerpoints
+  # https://andrewmaclachlan.github.io/CASA0005repo/explaining-spatial-patterns.html
+  # https://github.com/rstudio/cheatsheets/tree/main/powerpoints
 }
 
 
@@ -604,19 +643,15 @@ generate_report_template <- function(agrisvy){
 #' @export
 #'
 #' @examples
-
 setup_anonymization <- function(agrisvy, overwrite) {
-
   # stopifnot(inherits(agrisvy,"agrisvy"))
-  create_ano_folders(agrisvy,overwrite=overwrite)
+  create_ano_folders(agrisvy, overwrite = overwrite)
   generate_varclas(agrisvy)
-  copyDirStr(from = agrisvy@path, to =file.path(agrisvy@workingDir,agrisvy@preProcScriptDir))
-  copyDirStr(from =  agrisvy@path, to = file.path(agrisvy@workingDir,agrisvy@preprocDataDir))
+  copyDirStr(from = DataPath(agrisvy), to = preProcScriptDir(agrisvy))
+  copyDirStr(from = DataPath(agrisvy), to = preprocDataDir(agrisvy))
   generate_preproc_r(agrisvy)
-  copyDirStr(from = agrisvy@path, to = file.path(agrisvy@workingDir,agrisvy@anoScriptDir))
-  copyDirStr(from = agrisvy@path, to = file.path(agrisvy@workingDir,agrisvy@tempfileDir,"temp_ano"))
+  copyDirStr(from = DataPath(agrisvy), to = anoScriptDir(agrisvy))
+  copyDirStr(from = DataPath(agrisvy), to = file.path(tempfileDir(agrisvy), "temp_ano"))
   generate_ano_r(agrisvy)
   generate_report_template(agrisvy)
-
 }
-

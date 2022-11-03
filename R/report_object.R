@@ -68,6 +68,7 @@ setIs("sdcReportObj", "sdcReportObjOrNULL")
 #' @param childName
 #'
 #' @return
+#' @importFrom methods new
 #' @export
 #'
 #' @examples
@@ -252,6 +253,7 @@ setMethod("renderKanoTab",signature = "sdcReportObj",
 #' @import knitr
 #' @import kableExtra
 #' @importFrom dplyr %>%
+#' @importFrom stats median quantile
 #' @export
 #' @examples
 RiskIndSUmmary=function(sdc,df=FALSE,title=""){
@@ -320,8 +322,9 @@ setMethod("renderRiskIndSUmmary",signature = "sdcReportObj",
 #' @return
 #' a data frame
 #' @import knitr
-#' @kableExtra
+#' @import  kableExtra
 #' @importFrom dplyr %>%
+#' @import sdcMicro
 #' @export
 #'
 #' @examples
