@@ -333,7 +333,7 @@ HierRiskSummary=function(sdc,dfl=FALSE,title=""){
   df=cbind(data.frame(sdc@origData[,sdc@hhId]),
            data.frame(sdc@risk$individual[,"hier_risk"]))
   names(df)=c("hier_id","risk")
-  df=df %>% dplyr::distinct(hier_id,risk)
+  df=df %>% dplyr::distinct(.data$hier_id,.data$risk)
   res=rbind(
     data.frame(Indicator="Mean",Value=paste0(round(mean(df[, "risk"]),4)*100,"%")),
     data.frame(Indicator="Min",Value=paste0(round(min(df[, "risk"]),4),"%")),
