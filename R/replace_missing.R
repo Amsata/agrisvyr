@@ -6,9 +6,9 @@
 #' @param label label of the structural missing value
 #'
 #' @return a dataframe
-#' @importFrom dplyr %>%
-#' @importFrom rlang :=
-#' @importFrom rlang ensym
+#' @importFrom dplyr %>% pull mutate
+#' @importFrom rlang := as_string ensym
+
 #' @export
 #'
 #' @examples

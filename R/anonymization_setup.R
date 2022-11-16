@@ -32,7 +32,7 @@ create_folder <- function(directory, overwrite = FALSE) {
 create_ano_folders <- function(agrisvy, overwrite = FALSE) {
   # stopifnot(inherits(agrisvy,"agrisvy"))
 
-  folders_path <- c(
+  folders_path <- c(file.path(agrisvy@workingDir,"_R"),
     varClassDir(agrisvy),
     preProcScriptDir(agrisvy),
     preprocDataDir(agrisvy),
@@ -74,7 +74,8 @@ labels <- function(fileName) {
 #'
 #' @return
 #' @import openxlsx
-#' @import haven
+#' @importFrom dplyr filter %>%
+#' @rawNamespace import(cli, except=c(cnum_ansi_colors))
 #' @examples
 create_wb <- function(agrisvy, data, wb_file) {
   # #stopifnot(inherits(agrisvy,"agrisvy"))
@@ -123,6 +124,8 @@ create_wb <- function(agrisvy, data, wb_file) {
   df <- data %>% dplyr::filter(workbook %in% wb_file)
   fileNames <- df$file_name
   wb <- openxlsx::createWorkbook()
+
+  # cli_progress_bar("Generating variable classification", total = length(fileNames))
 
   for (i in 1:length(fileNames)) {
     openxlsx::addWorksheet(wb, fileNames[i])
@@ -174,7 +177,7 @@ create_wb <- function(agrisvy, data, wb_file) {
       wb          =wb,
       sheet       = fileNames[i],
       x           =classification,
-      startCol    = 8,
+      startCol    = 7,
       headerStyle = hd2
     )
     openxlsx::setColWidths(
@@ -329,6 +332,8 @@ create_wb <- function(agrisvy, data, wb_file) {
       fontColour     = "#008000"
       )
     )
+    # cli_progress_update()
+
   }
 
   openxlsx::saveWorkbook(wb,
@@ -436,10 +441,8 @@ create_preproc_r <- function(agrisvy, file) {
                                       "_VarClas.xlsx"
                                       )
                                ),
-    msg            = paste("PREPROCESSING: ", paste(unlist(strsplit(file, "/")),
-                                                    collapse = "=>")
-                           ),
-    to_save        = file.path("03_Pre-processed data",
+    msg            =paste(unlist(strsplit(file, "/")), collapse = "=>"),
+    to_save        = file.path(preprocDataDir(agrisvy),
                                paste0(paste(gsub(agrisvy@type,
                                                  "",
                                                  file[length(file)]),
@@ -520,9 +523,7 @@ create_ano_r <- function(agrisvy, file) {
                                             sep = "", collapse = "_"),
                                       "_VarClas.xlsx")
                                ),
-    msg            = paste("ANONYMIZATION: ",
-                           paste(unlist(strsplit(file, "/")),
-                           collapse = "=>")),
+    msg            = paste(unlist(strsplit(file, "/")),collapse = "=>"),
     to_save        = file.path(tempfileDir(agrisvy),
                                "temp_ano",
                                paste0(paste(gsub(agrisvy@type, "",
@@ -569,6 +570,8 @@ create_ano_r <- function(agrisvy, file) {
     conec
   )
   close(conec)
+
+
 }
 
 
@@ -630,6 +633,8 @@ generate_report_template <- function(agrisvy) {
   # https://www.youtube.com/watch?v=r3uKkmU4VQE
   # https://andrewmaclachlan.github.io/CASA0005repo/explaining-spatial-patterns.html
   # https://github.com/rstudio/cheatsheets/tree/main/powerpoints
+  #https://github.com/r-lib/cli
+  #https://github.com/r-lib/crayon
 }
 
 
@@ -640,6 +645,7 @@ generate_report_template <- function(agrisvy) {
 #' @param agrisvy
 #'
 #' @return
+#' @importFrom  haven read_dta write_dta
 #' @export
 #'
 #' @examples
@@ -654,4 +660,181 @@ setup_anonymization <- function(agrisvy, overwrite) {
   copyDirStr(from = DataPath(agrisvy), to = file.path(tempfileDir(agrisvy), "temp_ano"))
   generate_ano_r(agrisvy)
   generate_report_template(agrisvy)
+
+  saveRDS(agrisvy,file.path(agrisvy@workingDir,"_R",paste0(deparse(substitute(agrisvy)),".rds")))
+
+  set_up=file.path(agrisvy@workingDir,"_R","_setup.R")
+
+  fileConn <- file(set_up)
+
+  writeLines(
+    c(glue::glue("setwd(\"{agrisvy@workingDir}\")"),"",
+      glue::glue("{deparse(substitute(agrisvy))} <-readRDS(\"_R/{deparse(substitute(agrisvy))}.rds\")")),
+    fileConn
+  )
+  close(fileConn)
+
+  #Run first prerocessing
+  runPreproc(agrisvy)
+
+
+  #run ano-----------
+  #clear data
+  list_data=list.files(file.path(tempfileDir(agrisvy),"temp_ano"),recursive = TRUE)
+  path_list_data=file.path(file.path(tempfileDir(agrisvy),"temp_ano"),list_data)
+
+  if (length(path_list_data)!=0) {
+    purrr::walk(path_list_data,file.remove)
+  }
+
+  #Run all pre-processing
+  list_script=list.files(anoScriptDir(agrisvy),pattern = "_ano.R$",recursive = TRUE)
+  path_script=file.path(anoScriptDir(agrisvy),list_script)
+
+  if(length(path_script)!=0){
+    purrr::walk(path_script,source)
+  }
+
+  #----------
+  #generate final.R ano file
+
+
+  temp_ano_files=list.files(file.path(tempfileDir(agrisvy),"temp_ano"),pattern = ".dta$",recursive = TRUE)
+
+  path_ano_temp_files=file.path(tempfileDir(agrisvy),"temp_ano",temp_ano_files)
+
+  # read_files=paste0("data=read_dta(\"",path_ano_temp_files,"\")")
+  read_files=glue::glue("data=read_dta(\"{path_ano_temp_files}\")")
+  dataset=gsub("_tmp","",temp_ano_files)
+  ano_dataset=paste0(gsub(agrisvy@type,
+                          "",
+                          dataset),
+                     "_ano.dta")
+
+  # save_files=paste0("write_dta(data,\"07_Anonymized data/","ano_",dataset,"\")")
+  save_files=glue::glue("write_dta(data,\"{anoDataDir(agrisvy)}/{ano_dataset}\")")
+  ff=paste(read_files,save_files,sep = ",")
+
+  final=c("#--------------------------------------------------------------------------",
+          "#| ANonymization of the 2019 Anual Agricultural Survey of Uganda (AAS)    |",
+          "#| By Amsata NIANG, amsata.niang@fao.org                                  |",
+          "#| November 2022                                                          |",
+          "#--------------------------------------------------------------------------",
+          "#|FINALIZATION OF ANONYMIZATION",
+          "#|-----------------------------|",
+          "","","",
+          "#|----------------------------------------|",
+          "#| PREPROCESSING                          |",
+          "#|----------------------------------------|","",
+          "rm(list=ls())",
+          "library(agrisvyr)",
+          "library(dplyr)",
+          "library(tidyr)",
+          "library(readxl)",
+          "library(haven)",
+          "library(questionr)",
+          "library(labelled)",
+          "","",
+          "#|----------------------------------------|","","")
+  for (i in seq_along(dataset)) {
+
+    final=c(final,
+            "#*****************************************************************",
+            paste0("# finalizing the naonymization of ",dataset[i]),
+            "#*****************************************************************","",
+            glue::glue("finMessage(\"{dataset[i]}\")"),"",
+            read_files[i],"","","",save_files[i],"")
+
+  }
+
+  file.create(file.path(anoScriptDir(agrisvy),"final.R"))
+
+  conn=file(file.path(anoScriptDir(agrisvy),"final.R"))
+
+  writeLines(
+    final,
+    conn
+  )
+
+  close(conn)
+
+#-------------------------------------
+
+  copyDirStr(from = DataPath(agrisvy), to = anoDataDir(agrisvy))
+  source(file.path(anoScriptDir(agrisvy),"final.R"))
+
+
 }
+
+
+#' Run all the pre-processing scripts
+#'
+#' @param agrisvy an agris survey objects
+#'
+#' @return
+#' logical
+#' @importFrom purrr walk
+#' @export
+#'
+#' @examples
+#'
+runPreproc <- function(agrisvy){
+  #clear data
+  list_data=list.files(preprocDataDir(agrisvy),recursive = TRUE)
+  path_list_data=file.path(preprocDataDir(agrisvy),list_data)
+
+  if (length(path_list_data)!=0) {
+    purrr::walk(path_list_data,file.remove)
+  }
+
+  #Run all pre-processing
+  list_script=list.files(preProcScriptDir(agrisvy),pattern = ".R$",recursive = TRUE)
+  path_script=file.path(preProcScriptDir(agrisvy),list_script)
+
+  if(length(path_script)!=0){
+    purrr::walk(path_script,source)
+  }
+
+}
+
+
+
+#' Run all anonymization scripts
+#'
+#' @param agrisvy
+#'
+#' @return
+#' @export
+#'
+#' @examples
+runAnon <- function(agrisvy){
+
+  #clear data
+  list_data=list.files(file.path(tempfileDir(agrisvy),"temp_ano"),recursive = TRUE)
+  path_list_data=file.path(file.path(tempfileDir(agrisvy),"temp_ano"),list_data)
+
+  if (length(path_list_data)!=0) {
+    purrr::walk(path_list_data,file.remove)
+  }
+
+  #Run all pre-processing
+  list_script=list.files(anoScriptDir(agrisvy),pattern = "_ano.R$",recursive = TRUE)
+  path_script=file.path(anoScriptDir(agrisvy),list_script)
+
+  if(length(path_script)!=0){
+    purrr::walk(path_script,source)
+  }
+
+
+  #clear data
+  list_data=list.files(anoDataDir(agrisvy),recursive = TRUE)
+  path_list_data=file.path(anoDataDir(agrisvy),list_data)
+
+  if (length(path_list_data)!=0) {
+    purrr::walk(path_list_data,file.remove)
+  }
+
+  source(file.path(anoScriptDir(agrisvy),"final.R"))
+
+}
+

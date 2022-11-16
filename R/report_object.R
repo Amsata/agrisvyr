@@ -13,7 +13,7 @@
 #' @return
 #' @import sdcMicro
 #' @importClassesFrom sdcMicro  sdcMicroObj
-#' @import dplyr
+#' @importFrom  dplyr %>% distinct
 #' @export
 #'
 #' @examples
@@ -118,7 +118,7 @@ close(fileConn)
 #' @return
 #' @import sdcMicro
 #' @import knitr
-#' @import kableExtra
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling column_spec
 #' @importFrom dplyr  %>%
 #' @export
 #'
@@ -133,12 +133,12 @@ GlobRiskTab=function(sdc,df=FALSE,title="") {
     data.frame(`Risk type`="Expect. num. re.", Value=paste0(round( sdc@risk$global$risk_ER, 2)))
   )%>%
     #formating the table
-    kbl(align='rc',caption=title,booktabs = T) %>%
-    kable_classic_2(full_width = F) %>%
-    column_spec(1, width = "12em", bold = T, border_right = T) %>%
-    column_spec(2, width = "8em") %>%
+    kableExtra::kbl(align='rc',caption=title,booktabs = T) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
+    kableExtra::column_spec(1, width = "12em", bold = T, border_right = T) %>%
+    kableExtra::column_spec(2, width = "8em") %>%
     # kable_styling(position = "float_right") %>%
-    kable_styling(latex_options = "HOLD_position")
+    kableExtra::kable_styling(latex_options = "HOLD_position")
 
   if(df){
     res=rbind(
@@ -163,7 +163,7 @@ setGeneric("RenderGlobalRisk", function(obj,time="initial") standardGeneric("Ren
 #' @return
 #' @import sdcMicro
 #' @import knitr
-#' @import  kableExtra
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr  %>%
 #' @export
 #'
@@ -190,7 +190,7 @@ setMethod("RenderGlobalRisk",signature = "sdcReportObj",
 #' @return
 #' @import sdcMicro
 #' @import knitr
-#' @import kableExtra
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
 #' @export
 #'
@@ -204,9 +204,10 @@ KanoTab=function(sdcObj,df=FALSE,levels=c(2,3,5),title="") {
                          " (", 100 * round(sum((sdcObj@risk$individual[, "fk"]) < k)/nrow(sdcObj@origData), 4), "%)"))
   }
 
-  res=do.call("rbind",lapply(levels,KanoRow)) %>% kbl(caption = title) %>%
-    kable_classic_2(full_width = F) %>%
-    kable_styling(latex_options = "HOLD_position")
+  res=do.call("rbind",lapply(levels,KanoRow)) %>%
+    kableExtra::kbl(caption = title) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
 
   if(df){
     res=as.data.frame(do.call("rbind",lapply(levels,KanoRow)))
@@ -225,7 +226,7 @@ setGeneric("renderKanoTab",function(obj,levels=c(2,3,5),time="initial") standard
 #' a dtaframe
 #'
 #' @import knitr
-#' @import kableExtra
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom  dplyr %>%
 #' @export
 #'
@@ -251,7 +252,7 @@ setMethod("renderKanoTab",signature = "sdcReportObj",
 #' @return
 #' a dataframe
 #' @import knitr
-#' @import kableExtra
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
 #' @importFrom stats median quantile
 #' @export
@@ -266,9 +267,9 @@ RiskIndSUmmary=function(sdc,df=FALSE,title=""){
     data.frame(Indicator="3rd quartile",Value=paste0(round(quantile(sdc@risk$individual[, "risk"],0.75)*100,4),"%")),
     data.frame(Indicator="Max",Value=paste0(round(max(sdc@risk$individual[, "risk"]),4)*100,"%"))
 
-  ) %>% kbl(caption=title,booktabs=TRUE) %>%
-    kable_classic_2(full_width = F) %>%
-    kable_styling(latex_options = "HOLD_position")
+  ) %>% kableExtra::kbl(caption=title,booktabs=TRUE) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
 
   if(df){
 
@@ -295,7 +296,7 @@ setGeneric("renderRiskIndSUmmary",function(obj,time="initial") standardGeneric("
 #'
 #' @return
 #' @import knitr
-#' @import kableExtra
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
 #' @export
 #'
@@ -321,9 +322,8 @@ setMethod("renderRiskIndSUmmary",signature = "sdcReportObj",
 #'
 #' @return
 #' a data frame
-#' @import knitr
-#' @import  kableExtra
-#' @importFrom dplyr %>%
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling
+#' @importFrom dplyr %>% distinct
 #' @import sdcMicro
 #' @export
 #'
@@ -342,9 +342,9 @@ HierRiskSummary=function(sdc,dfl=FALSE,title=""){
     data.frame(Indicator="3rd quartile",Value=paste0(round(quantile(df[, "risk"],0.75)*100,4),"%")),
     data.frame(Indicator="Max",Value=paste0(round(max(df[, "risk"]),4)*100,"%"))
 
-  ) %>% kbl(caption=title,booktabs=TRUE) %>%
-    kable_classic_2(full_width = F) %>%
-    kable_styling(latex_options = "HOLD_position")
+  ) %>% kableExtra::kbl(caption=title,booktabs=TRUE) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
 
   if(dfl){
 
@@ -371,7 +371,7 @@ setGeneric("renderHierRiskSummary",function(obj,time="initial") standardGeneric(
 #' a dataframe
 #'
 #' @import knitr
-#' @import kableExtra
+#' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
 #' @export
 #'

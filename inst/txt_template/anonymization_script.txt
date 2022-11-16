@@ -16,7 +16,10 @@ library(questionr)
 library(labelled)
 
 purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
-cat(paste0(" \033[0;",32,"m","{file_attributes$msg}","\033[0m","\n"))
+
+#cat(paste0(" \033[0;",32,"m","{file_attributes$msg}","\033[0m","\n"))
+
+sdcMessage("{file_attributes$msg}")
 
 #*****************************************************************
 # Load microdata to be anonymized                                *

@@ -37,6 +37,7 @@ gen_names=function(sex,first_last){
 #' @importFrom dplyr left_join
 #' @importFrom dplyr group_by
 #' @importFrom dplyr ungroup
+#' @importFrom dplyr %>%
 #' @import sf
 #' @importFrom wakefield r_sample
 #' @importFrom wakefield id

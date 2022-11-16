@@ -69,9 +69,9 @@ methods::setClass(
     varClassDir      = "01_Variable classification",
     preProcScriptDir = "02_Pre-processing scripts",
     preprocDataDir   = "03_Pre-processed data",
-    anoScriptDir     = "04_Anonymization report",
-    anoDataDir       = "04_Anonymization scripts",
-    anoreportDir     = "06_Anonymized data",
+    anoScriptDir     = "04_Anonymization scripts",
+    anoDataDir       = "05_Anonymized data",
+    anoreportDir     = "06_Anonymization report",
     fileDesDir       = "07_Files description",
     infoLossReport   = "08_Information loss report",
     tempfileDir      = "09_Temporary_files",
@@ -97,18 +97,18 @@ methods::setClass(
 #' @export
 #'
 #' @examples
-setMethod("show",signature="agrisvy",function(obj){
+setMethod("show",signature="agrisvy",function(object){
 
-  cat(is(obj)[[1]],"\n",
-      "Survey name: ",obj@svyName,"\n")
+  cat(is(object)[[1]],"\n",
+      "Survey name: ",object@svyName,"\n")
 
-  cat(is(obj)[[1]],"\n",
+  cat(is(object)[[1]],"\n",
       "Number of datasets: ",
-      length(list.files(DataPath(obj),
-                        pattern = obj@type,recursive = TRUE))
+      length(list.files(DataPath(object),
+                        pattern = object@type,recursive = TRUE))
       ,"\n")
 
-  showTree(obj)
+  showTree(object)
 
 })
 
@@ -157,7 +157,7 @@ createAgrisvy <- function(svyName          = "[Survey name]",
   stopifnot(!is.null(path))
   stopifnot(!is.null(type))
   stopifnot(!is.null(workingDir))
-  stopifnot(dir.exists(file.path(workingDir, path)) == TRUE)
+  stopifnot(dir.exists(path) == TRUE)
 
 
   obj <- new("agrisvy")
@@ -197,7 +197,7 @@ setGeneric("varClassDir", function(obj) standardGeneric("varClassDir"))
 setMethod("varClassDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@varClassDir)
+      file.path(obj@varClassDir)
     }
 )
 
@@ -216,7 +216,7 @@ setGeneric("preProcScriptDir", function(obj) standardGeneric("preProcScriptDir")
 setMethod("preProcScriptDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@preProcScriptDir)
+      file.path(obj@preProcScriptDir)
     }
 )
 
@@ -234,7 +234,7 @@ setGeneric("preprocDataDir", function(obj) standardGeneric("preprocDataDir"))
 setMethod("preprocDataDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@preprocDataDir)
+      file.path(obj@preprocDataDir)
     }
 )
 
@@ -254,7 +254,7 @@ setGeneric("anoScriptDir", function(obj) standardGeneric("anoScriptDir"))
 setMethod("anoScriptDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@anoScriptDir)
+      file.path(obj@anoScriptDir)
     }
 )
 
@@ -273,7 +273,7 @@ setGeneric("anoreportDir", function(obj) standardGeneric("anoreportDir"))
 setMethod("anoreportDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@anoreportDir)
+      file.path(obj@anoreportDir)
     }
 )
 
@@ -292,7 +292,7 @@ setGeneric("anoDataDir", function(obj) standardGeneric("anoDataDir"))
 setMethod("anoDataDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@anoDataDir)
+      file.path(obj@anoDataDir)
     }
 )
 
@@ -310,7 +310,7 @@ setGeneric("fileDesDir", function(obj) standardGeneric("fileDesDir"))
 setMethod("fileDesDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@fileDesDir)
+      file.path(obj@fileDesDir)
     }
 )
 
@@ -329,7 +329,7 @@ setGeneric("infoLossReport", function(obj) standardGeneric("infoLossReport"))
 setMethod("infoLossReport",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@infoLossReport)
+      file.path(obj@infoLossReport)
     }
 )
 
@@ -348,7 +348,7 @@ setGeneric("tempfileDir", function(obj) standardGeneric("tempfileDir"))
 setMethod("tempfileDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@tempfileDir)
+      file.path(obj@tempfileDir)
     }
 )
 
@@ -367,7 +367,7 @@ setGeneric("aobDir", function(obj) standardGeneric("aobDir"))
 setMethod("aobDir",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@aobDir)
+      file.path(obj@aobDir)
     }
 )
 
@@ -386,6 +386,6 @@ setGeneric("DataPath", function(obj) standardGeneric("DataPath"))
 setMethod("DataPath",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@workingDir, obj@path)
+      file.path(obj@path)
     }
 )

@@ -7,7 +7,7 @@
 #' @param agrisvy
 #'
 #' @return
-#' @import plyr
+#' @importFrom  plyr rbind.fill
 #' @importFrom  data.tree as.Node
 #' @export
 #'

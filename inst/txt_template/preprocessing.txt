@@ -8,6 +8,7 @@
 
 rm(list=ls())
 library(dplyr)
+library(agrisvyr)
 library(tidyr)
 library(questionr)
 library(labelled)
@@ -15,8 +16,14 @@ library(readxl)
 library(tidyr)
 library(haven)
 
-purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
-cat(paste0(" \033[0;",32,"m","{file_attributes$msg}","\033[0m","\n"))
+purrr::walk(file.path("{agrisvy@workingDir}/_R",
+            list.files(path="{agrisvy@workingDir}/_R",
+            pattern = ".R$")),
+            source)
+
+#cat(paste0(" \033[0;",32,"m","{file_attributes$msg}","\033[0m","\n"))
+
+preprocMessage("{file_attributes$msg}")
 
 data=read_dta("{file_attributes$path}")
 
@@ -55,7 +62,7 @@ data=data %>% set_variable_labels()
 data=data %>% set_value_labels()
 
 #*****************************************************************
-#         saving the processed data 
+#         saving the processed data
 #*****************************************************************
 labelled::look_for(data)
 write_dta(data,"{file_attributes$to_save}")

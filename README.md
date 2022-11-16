@@ -17,7 +17,7 @@ install.packages("agrisvyr")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+https://amsata.github.io/agrisvyr/index.html
 
 ``` r
 library(agrisvyr)

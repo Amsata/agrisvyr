@@ -10,6 +10,8 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    cli,
+    crayon,
     data.tree,
     dplyr,
     generator,
