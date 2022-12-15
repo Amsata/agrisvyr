@@ -147,9 +147,9 @@ createAgrisvy <- function(svyName          = "[Survey name]",
                           varClassDir      = "01_Variable classification",
                           preProcScriptDir = "02_Pre-processing scripts",
                           preprocDataDir   = "03_Pre-processed data",
-                          anoScriptDir     = "04_Anonymization report",
-                          anoDataDir       = "04_Anonymization scripts",
-                          anoreportDir     = "06_Anonymized data",
+                          anoScriptDir     = "04_Anonymization scripts",
+                          anoDataDir       = "05_Anonymized data",
+                          anoreportDir     = "06_Anonymization report",
                           fileDesDir       = "07_Files description",
                           infoLossReport   = "08_Information loss report",
                           tempfileDir      = "09_Temporary_files",
@@ -389,3 +389,129 @@ setMethod("DataPath",
       file.path(obj@path)
     }
 )
+
+
+#' Put all data files in a list
+#'
+#' @param path path to data folder
+#' @param type extension of the data
+#'
+#' @return
+#' @importFrom dplyr %>% filter
+#' @export
+#'
+#' @examples
+genDataList <- function(path,type){
+
+  # path=anoDataDir(agrisvy)
+
+  d=unlist(strsplit(path[1],"/"))
+  d=gsub(" ","_",d[length(d)])
+
+  pattern=path[2]
+
+  data_files = list.files(path, pattern = type, recursive = TRUE)
+
+  x <-lapply(strsplit(data_files, "/"), function(z) as.data.frame(t(z)))
+  x1 <- rbind.fill(x)
+
+  wb = lapply(x, function(z) {
+    z=z[!is.na(z)]
+    paste(z[1:length(z) - 1], sep = "", collapse = "_")
+  })
+  wb=unlist(wb)
+  wb[which(wb=="")] <- d
+
+  unique_wb = unique(wb)
+
+
+
+  data_summary = data.frame(
+    file_name = unlist(lapply(x, function(z) {
+      paste(gsub(type, "", z[length(z)]), sep = "", collapse = "_")
+    })),
+    path = file.path(path, data_files),
+    workbook = unlist(wb)
+  )
+
+  data_list=lapply(unique_wb, function(x){
+    df=data_summary %>% dplyr::filter(workbook==x)
+    res=lapply(df$path,read_dta)
+    names(res)=df$file_name
+    return(res)
+  })
+  names(data_list)=unique_wb
+
+return(data_list)
+}
+
+
+
+#' Archive the anonymized data inside an agrisvy object
+#'
+#' @param agrisvy an agrisvy object
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ArchiveAnoData=function(agrisvy){
+
+  agrisMsg("ARCHIVING","Anonymized data")
+
+  # https://stackoverflow.com/questions/58332390/r-save-within-a-function-preserve-the-original-inputs-name
+  originalName <- deparse(substitute(agrisvy))
+
+  data_list=genDataList(anoDataDir(agrisvy),agrisvy@type)
+  agrisvy@anoData=data_list
+  assign(originalName, agrisvy,envir = .GlobalEnv)
+  #TODO: add a message to mention that the agrisvy has been updated
+  saveRDS(agrisvy,as.character(file.path(agrisvy@workingDir,"_R",paste0(originalName,".rds"))))
+  source(file.path(agrisvy@workingDir,"_R","_setup.R"))
+}
+
+
+
+#' Archive the clean data inside an agrisvy object
+#'
+#' @param agrisvy
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ArchiveCleanData=function(agrisvy){
+
+  agrisMsg("ARCHIVING","Cleaned data")
+
+  originalName <- deparse(substitute(agrisvy))
+  data_list=genDataList(DataPath(agrisvy),agrisvy@type)
+  agrisvy@cleanData=data_list
+  assign(originalName, agrisvy)
+
+  saveRDS(agrisvy,as.character(file.path(agrisvy@workingDir,"_R",paste0(originalName,".rds"))))
+  source(file.path(agrisvy@workingDir,"_R","_setup.R"))
+}
+
+
+#' Archive the preprocessed data inside an agrisvy object
+#'
+#' @param agrisvy
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ArchiveProcData=function(agrisvy){
+
+  agrisMsg("ARCHIVING","pre-processed data")
+
+  originalName <- deparse(substitute(agrisvy))
+
+  data_list=genDataList(preprocDataDir(agrisvy),agrisvy@type)
+  agrisvy@proData=data_list
+  assign(originalName, agrisvy)
+
+  saveRDS(agrisvy,file.path(agrisvy@workingDir,"_R",paste0(originalName,".rds")))
+  source(file.path(agrisvy@workingDir,"_R","_setup.R"))
+}

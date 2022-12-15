@@ -4,12 +4,19 @@
 \alias{generate_agrisdata}
 \title{Generate a sample geo-reference data of agris survey based on the generic questionnaire}
 \usage{
-generate_agrisdata(n = 60, na_prob = 5e-04)
+generate_agrisdata(
+  shpfile,
+  level = 3,
+  geo_id = c("ID_1", "ID_2", "ID_3"),
+  geo_name = c("NAME_1", "NAME_2", "NAME_3"),
+  np = 30,
+  na_prob = 5e-04
+)
 }
 \arguments{
-\item{n}{size of sample point per geographic unit}
-
 \item{na_prob}{proportion of random missing data introduced in the data}
+
+\item{n}{size of sample point per geographic unit}
 }
 \description{
 Generate a sample geo-reference data of agris survey based on the generic questionnaire

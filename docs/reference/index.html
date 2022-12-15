@@ -28,6 +28,25 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/agrisvy_data.html">Generate simulated FAO AgriSurvey Data</a>
+    </li>
+    <li>
+      <a href="../articles/agrisvy_tutorials.html">Practical learning tutorials</a>
+    </li>
+    <li>
+      <a href="../articles/aut_report.html">Automating SDC report generation</a>
+    </li>
+    <li>
+      <a href="../articles/sdc_agrisvy.html">Speed up microdata anonymization process</a>
+    </li>
+  </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -45,6 +64,14 @@
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
+          <p><code><a href="addSpace.html">addSpace()</a></code> </p>
+        </td>
+        <td><p>Cpmplete with space</p></td>
+      </tr><tr><td>
+          <p><code><a href="agrisMsg.html">agrisMsg()</a></code> </p>
+        </td>
+        <td><p>generate a message</p></td>
+      </tr><tr><td>
           <p><code><a href="agrisvy-class.html">agrisvy-class</a></code> </p>
         </td>
         <td><p>Create an S4 object that store information about the survey</p></td>
@@ -64,6 +91,18 @@
           <p><code><a href="aobDir-agrisvy-method.html">aobDir(<i>&lt;agrisvy&gt;</i>)</a></code> </p>
         </td>
         <td><p>Give the complete path of the aobDir directory</p></td>
+      </tr><tr><td>
+          <p><code><a href="ArchiveAnoData.html">ArchiveAnoData()</a></code> </p>
+        </td>
+        <td><p>Archive the anonymized data inside an agrisvy object</p></td>
+      </tr><tr><td>
+          <p><code><a href="ArchiveCleanData.html">ArchiveCleanData()</a></code> </p>
+        </td>
+        <td><p>Archive the clean data inside an agrisvy object</p></td>
+      </tr><tr><td>
+          <p><code><a href="ArchiveProcData.html">ArchiveProcData()</a></code> </p>
+        </td>
+        <td><p>Archive the preprocessed data inside an agrisvy object</p></td>
       </tr><tr><td>
           <p><code><a href="copyDirStr.html">copyDirStr()</a></code> </p>
         </td>
@@ -105,6 +144,22 @@
         </td>
         <td><p>Give the complete path of the fileDesDir directory</p></td>
       </tr><tr><td>
+          <p><code><a href="finMessage.html">finMessage()</a></code> </p>
+        </td>
+        <td><p>Print initial message in finalization of anonymization</p></td>
+      </tr><tr><td>
+          <p><code><a href="genAllFileDes.html">genAllFileDes()</a></code> </p>
+        </td>
+        <td><p>Generate file description for the data</p></td>
+      </tr><tr><td>
+          <p><code><a href="genDataFolderDes.html">genDataFolderDes()</a></code> </p>
+        </td>
+        <td><p>Generate a worbook containing description of all data in the folder</p></td>
+      </tr><tr><td>
+          <p><code><a href="genDataList.html">genDataList()</a></code> </p>
+        </td>
+        <td><p>Put all data files in a list</p></td>
+      </tr><tr><td>
           <p><code><a href="generate_agrisdata.html">generate_agrisdata()</a></code> </p>
         </td>
         <td><p>Generate a sample geo-reference data of agris survey based on the generic questionnaire</p></td>
@@ -124,6 +179,10 @@
           <p><code><a href="generate_varclas.html">generate_varclas()</a></code> </p>
         </td>
         <td><p>Create Excel file for variable classification for a given data folder</p></td>
+      </tr><tr><td>
+          <p><code><a href="genFileDes.html">genFileDes()</a></code> </p>
+        </td>
+        <td><p>Generate file description for a given dataset</p></td>
       </tr><tr><td>
           <p><code><a href="gen_names.html">gen_names()</a></code> </p>
         </td>
@@ -149,9 +208,21 @@
         </td>
         <td><p>Extract label of all variable of a dataset</p></td>
       </tr><tr><td>
+          <p><code><a href="label_geo_name.html">label_geo_name()</a></code> </p>
+        </td>
+        <td><p>Label a geo name</p></td>
+      </tr><tr><td>
+          <p><code><a href="label_val_gen.html">label_val_gen()</a></code> </p>
+        </td>
+        <td><p>Generate a function to label specific variable</p></td>
+      </tr><tr><td>
           <p><code><a href="preprocDataDir-agrisvy-method.html">preprocDataDir(<i>&lt;agrisvy&gt;</i>)</a></code> </p>
         </td>
         <td><p>give the complete path of the preprocDataDir directory</p></td>
+      </tr><tr><td>
+          <p><code><a href="preprocMessage.html">preprocMessage()</a></code> </p>
+        </td>
+        <td><p>Print a initial info message during preprocessing</p></td>
       </tr><tr><td>
           <p><code><a href="preProcScriptDir-agrisvy-method.html">preProcScriptDir(<i>&lt;agrisvy&gt;</i>)</a></code> </p>
         </td>
@@ -181,9 +252,21 @@
         </td>
         <td><p>a  dataframe containing the summary of individual risk</p></td>
       </tr><tr><td>
+          <p><code><a href="runAnon.html">runAnon()</a></code> </p>
+        </td>
+        <td><p>Run all anonymization scripts</p></td>
+      </tr><tr><td>
+          <p><code><a href="runPreproc.html">runPreproc()</a></code> </p>
+        </td>
+        <td><p>Run all the pre-processing scripts</p></td>
+      </tr><tr><td>
           <p><code><a href="saveReprtObj.html">saveReprtObj()</a></code> </p>
         </td>
         <td><p>Title</p></td>
+      </tr><tr><td>
+          <p><code><a href="sdcMessage.html">sdcMessage()</a></code> </p>
+        </td>
+        <td><p>Print initial info message during anonymization</p></td>
       </tr><tr><td>
           <p><code><a href="setup_anonymization.html">setup_anonymization()</a></code> </p>
         </td>
@@ -192,6 +275,10 @@
           <p><code><a href="show-agrisvy-method.html">show(<i>&lt;agrisvy&gt;</i>)</a></code> </p>
         </td>
         <td><p>Print agrisvy object</p></td>
+      </tr><tr><td>
+          <p><code><a href="showFolderTree.html">showFolderTree()</a></code> </p>
+        </td>
+        <td><p>Print folder file in tree format</p></td>
       </tr><tr><td>
           <p><code><a href="showTree.html">showTree()</a></code> </p>
         </td>

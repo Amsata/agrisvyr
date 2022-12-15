@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Specifying-imports-and-exports
+# Getting srtarted with `agrisvyr`
 
 ```{r setup}
 library(agrisvyr)

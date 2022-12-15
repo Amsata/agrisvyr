@@ -9,7 +9,7 @@
 #' @examples
 create_folder <- function(directory, overwrite = FALSE) {
   if (isTRUE(dir.exists(directory)) & isFALSE(overwrite)) {
-    stop(glue::glue("Directory {directory} already exists!"))
+    message(glue::glue("Directory {directory} already exists!"))
   } else {
     if (isTRUE(dir.exists(directory))) {
       unlink(directory, recursive = TRUE)
@@ -30,6 +30,9 @@ create_folder <- function(directory, overwrite = FALSE) {
 #'
 #' @examples
 create_ano_folders <- function(agrisvy, overwrite = FALSE) {
+
+  agrisMsg("INITIAL SETUP","creating folders")
+  setwd(agrisvy@workingDir)
   # stopifnot(inherits(agrisvy,"agrisvy"))
 
   folders_path <- c(file.path(agrisvy@workingDir,"_R"),
@@ -55,7 +58,7 @@ create_ano_folders <- function(agrisvy, overwrite = FALSE) {
 #' @param fileName dataset name
 #'
 #' @return
-#'
+#' @export
 #' @examples
 labels <- function(fileName) {
   curData <- read_dta(fileName, encoding = "latin1")
@@ -75,9 +78,12 @@ labels <- function(fileName) {
 #' @return
 #' @import openxlsx
 #' @importFrom dplyr filter %>%
-#' @rawNamespace import(cli, except=c(cnum_ansi_colors))
+#' @importFrom cli cli_progress_bar cli_progress_update
 #' @examples
 create_wb <- function(agrisvy, data, wb_file) {
+
+  agrisMsg("VARIABLE CLASSIFICATION",paste0("Creating workbook ",wb_file))
+
   # #stopifnot(inherits(agrisvy,"agrisvy"))
 
   hd1 <- openxlsx::createStyle(
@@ -125,9 +131,10 @@ create_wb <- function(agrisvy, data, wb_file) {
   fileNames <- df$file_name
   wb <- openxlsx::createWorkbook()
 
-  # cli_progress_bar("Generating variable classification", total = length(fileNames))
+  cli_progress_bar("Generating variable classification", total = length(fileNames))
 
   for (i in 1:length(fileNames)) {
+    cli_progress_update()
     openxlsx::addWorksheet(wb, fileNames[i])
     curDat <- labels(df$path[i])
     curDat <-
@@ -332,7 +339,6 @@ create_wb <- function(agrisvy, data, wb_file) {
       fontColour     = "#008000"
       )
     )
-    # cli_progress_update()
 
   }
 
@@ -457,9 +463,9 @@ create_preproc_r <- function(agrisvy, file) {
   fileConn <- file(file_attributes$r_script)
 
   writeLines(
-    c(glue::glue(paste(readLines(system.file("txt_template",
-                                             "preprocessing.txt",
-                                             package = "agrisvyr"), warn = FALSE),
+      c(glue::glue(paste(readLines(system.file("txt_template",
+                                               "preprocessing.txt",
+                                               package = "agrisvyr"), warn = FALSE),
       collapse = "\n"
     ))),
     fileConn
@@ -479,6 +485,7 @@ create_preproc_r <- function(agrisvy, file) {
 #' @examples
 generate_preproc_r <- function(agrisvy) {
   # stopifnot(inherits(agrisvy,"agrisvy"))
+  agrisMsg("INITIAL SETUP","generating pre-processing R sripts")
 
   stopifnot(dir.exists(preProcScriptDir(agrisvy)))
 
@@ -500,6 +507,8 @@ generate_preproc_r <- function(agrisvy) {
 #' @param file data file for which to create anonymization script
 #'
 #' @return
+#' @importFrom cli cli_h2
+#' @importFrom  crayon blue
 #' @export
 #'
 #' @examples
@@ -586,6 +595,9 @@ create_ano_r <- function(agrisvy, file) {
 #'
 #' @examples
 generate_ano_r <- function(agrisvy) {
+
+  agrisMsg("INITIAL SETUP","generating R sripts for anonymization")
+
   # stopifnot(inherits(agrisvy,"agrisvy"))
 
   stopifnot(dir.exists(anoScriptDir(agrisvy)))
@@ -635,6 +647,7 @@ generate_report_template <- function(agrisvy) {
   # https://github.com/rstudio/cheatsheets/tree/main/powerpoints
   #https://github.com/r-lib/cli
   #https://github.com/r-lib/crayon
+  # https://github.com/tidyverse/purrr/issues/149
 }
 
 
@@ -657,6 +670,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
   copyDirStr(from = DataPath(agrisvy), to = preprocDataDir(agrisvy))
   generate_preproc_r(agrisvy)
   copyDirStr(from = DataPath(agrisvy), to = anoScriptDir(agrisvy))
+  copyDirStr(from = DataPath(agrisvy), to = anoDataDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = file.path(tempfileDir(agrisvy), "temp_ano"))
   generate_ano_r(agrisvy)
   generate_report_template(agrisvy)
@@ -726,7 +740,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
           "#|----------------------------------------|",
           "#| PREPROCESSING                          |",
           "#|----------------------------------------|","",
-          "rm(list=ls())",
+          glue::glue("rm(list = setdiff(ls(),\"{deparse(substitute(agrisvy))}\"))"),
           "library(agrisvyr)",
           "library(dplyr)",
           "library(tidyr)",
@@ -760,9 +774,14 @@ setup_anonymization <- function(agrisvy, overwrite) {
 
 #-------------------------------------
 
-  copyDirStr(from = DataPath(agrisvy), to = anoDataDir(agrisvy))
   source(file.path(anoScriptDir(agrisvy),"final.R"))
 
+ #generate files description
+  genAllFileDes(agrisvy)
+  #archive data
+  # ArchiveAnoData(agrisvy)
+  # ArchiveCleanData(agrisvy)
+  # ArchiveProcData(agrisvy)
 
 }
 
@@ -818,7 +837,6 @@ runAnon <- function(agrisvy){
   }
 
   #Run all pre-processing
-  list_script=list.files(anoScriptDir(agrisvy),pattern = "_ano.R$",recursive = TRUE)
   path_script=file.path(anoScriptDir(agrisvy),list_script)
 
   if(length(path_script)!=0){

@@ -1,12 +1,13 @@
-#--------------------------------------------------------------------------
-#| ANonymization of the 2020 Anual Agricultural Survey of Uganda (AAS)    |
-#| By Amsata NIANG, amsata.niang@fao.org    |
-#| November 2022             |
-#--------------------------------------------------------------------------
-# {file_attributes$msg}
-#|------------------------------------------------------------------------|
+#'*|----------------------------------------------------------------------------|*
+#'*|--| Anonymization of {addSpace(agrisvy@svyName,26)}
+#'*|--| Author: {addSpace(agrisvy@author,17)}
+#'*|--| Date: {addSpace(Sys.Date(),20)}
+#'*|----------------------------------------------------------------------------|*
+#'*|--| Dataset: {addSpace(file_attributes$msg,18)}
+#'*|----------------------------------------------------------------------------|*
 
-rm(list=ls())
+rm(list = setdiff(ls(),"{deparse(substitute(agrisvy))}"))
+
 library(dplyr)
 library(agrisvyr)
 library(tidyr)
@@ -21,7 +22,6 @@ purrr::walk(file.path("{agrisvy@workingDir}/_R",
             pattern = ".R$")),
             source)
 
-#cat(paste0(" \033[0;",32,"m","{file_attributes$msg}","\033[0m","\n"))
 
 preprocMessage("{file_attributes$msg}")
 

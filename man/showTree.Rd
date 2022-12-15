@@ -4,7 +4,7 @@
 \alias{showTree}
 \title{Print the tree of a directory}
 \usage{
-showTree(agrisvy)
+showTree(agrisvy, folders_path = NULL)
 }
 \arguments{
 \item{agrisvy}{}

@@ -4,16 +4,37 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/articles/06_Anonymization report/sdc_report.html</loc>
+  </url>
+  <url>
     <loc>/articles/agrisvyr.html</loc>
   </url>
   <url>
+    <loc>/articles/agrisvy_data.html</loc>
+  </url>
+  <url>
+    <loc>/articles/agrisvy_tutorials.html</loc>
+  </url>
+  <url>
+    <loc>/articles/aut_report.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>/articles/sdc_agrisvy.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
   </url>
   <url>
     <loc>/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/addSpace.html</loc>
+  </url>
+  <url>
+    <loc>/reference/agrisMsg.html</loc>
   </url>
   <url>
     <loc>/reference/agrisvy-class.html</loc>
@@ -29,6 +50,15 @@
   </url>
   <url>
     <loc>/reference/aobDir-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ArchiveAnoData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ArchiveCleanData.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ArchiveProcData.html</loc>
   </url>
   <url>
     <loc>/reference/copyDirStr.html</loc>
@@ -61,6 +91,18 @@
     <loc>/reference/fileDesDir-agrisvy-method.html</loc>
   </url>
   <url>
+    <loc>/reference/finMessage.html</loc>
+  </url>
+  <url>
+    <loc>/reference/genAllFileDes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/genDataFolderDes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/genDataList.html</loc>
+  </url>
+  <url>
     <loc>/reference/generate_agrisdata.html</loc>
   </url>
   <url>
@@ -74,6 +116,9 @@
   </url>
   <url>
     <loc>/reference/generate_varclas.html</loc>
+  </url>
+  <url>
+    <loc>/reference/genFileDes.html</loc>
   </url>
   <url>
     <loc>/reference/gen_names.html</loc>
@@ -97,7 +142,16 @@
     <loc>/reference/labels.html</loc>
   </url>
   <url>
+    <loc>/reference/label_geo_name.html</loc>
+  </url>
+  <url>
+    <loc>/reference/label_val_gen.html</loc>
+  </url>
+  <url>
     <loc>/reference/preprocDataDir-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/preprocMessage.html</loc>
   </url>
   <url>
     <loc>/reference/preProcScriptDir-agrisvy-method.html</loc>
@@ -121,13 +175,25 @@
     <loc>/reference/RiskIndSUmmary.html</loc>
   </url>
   <url>
+    <loc>/reference/runAnon.html</loc>
+  </url>
+  <url>
+    <loc>/reference/runPreproc.html</loc>
+  </url>
+  <url>
     <loc>/reference/saveReprtObj.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sdcMessage.html</loc>
   </url>
   <url>
     <loc>/reference/setup_anonymization.html</loc>
   </url>
   <url>
     <loc>/reference/show-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/showFolderTree.html</loc>
   </url>
   <url>
     <loc>/reference/showTree.html</loc>

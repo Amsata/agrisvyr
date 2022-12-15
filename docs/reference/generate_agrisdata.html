@@ -28,6 +28,25 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/agrisvy_data.html">Generate simulated FAO AgriSurvey Data</a>
+    </li>
+    <li>
+      <a href="../articles/agrisvy_tutorials.html">Practical learning tutorials</a>
+    </li>
+    <li>
+      <a href="../articles/aut_report.html">Automating SDC report generation</a>
+    </li>
+    <li>
+      <a href="../articles/sdc_agrisvy.html">Speed up microdata anonymization process</a>
+    </li>
+  </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -47,17 +66,24 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_agrisdata</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">60</span>, na_prob <span class="op">=</span> <span class="fl">5e-04</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_agrisdata</span><span class="op">(</span></span>
+<span>  <span class="va">shpfile</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  geo_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID_1"</span>, <span class="st">"ID_2"</span>, <span class="st">"ID_3"</span><span class="op">)</span>,</span>
+<span>  geo_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NAME_1"</span>, <span class="st">"NAME_2"</span>, <span class="st">"NAME_3"</span><span class="op">)</span>,</span>
+<span>  np <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  na_prob <span class="op">=</span> <span class="fl">5e-04</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>n</dt>
-<dd><p>size of sample point per geographic unit</p></dd>
-
-
-<dt>na_prob</dt>
+    <dl><dt>na_prob</dt>
 <dd><p>proportion of random missing data introduced in the data</p></dd>
+
+
+<dt>n</dt>
+<dd><p>size of sample point per geographic unit</p></dd>
 
 </dl></div>
 

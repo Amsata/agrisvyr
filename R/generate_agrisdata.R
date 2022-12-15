@@ -24,7 +24,34 @@ gen_names=function(sex,first_last){
 
 
 
+#' Label a geo name
+#'
+#' @param data geo ref data
+#' @param label label
+#' @param level level
+#' @param agris_var agris var
+#'
+#' @return
+#' @importFrom  dplyr select distinct rename
+#' @importFrom rlang := sym
+#' @importFrom sf st_drop_geometry
+#' @export
+#'
+#' @examples
+label_geo_name=function(data,label,level,agris_var){
+  id_sym=sym(level)
+  name_sym=sym(label)
 
+  df=data %>% st_drop_geometry() %>% dplyr::select(id:={{id_sym}},name:={{name_sym}}) %>%
+    dplyr::distinct(id,name)
+
+  label_name=label_val_gen(df$name,df$id)
+
+  data=data %>% label_name({{name_sym}}) %>% dplyr::select(-{{id_sym}}) %>%
+    dplyr::rename({{agris_var}}:={{name_sym}})
+
+  return(data)
+}
 #' Generate a sample geo-reference data of agris survey based on the generic questionnaire
 #'
 #' @param n size of sample point per geographic unit
@@ -52,22 +79,40 @@ gen_names=function(sex,first_last){
 #' @export
 #'
 #' @examples
-generate_agrisdata <- function(n=60,na_prob=0.0005){
+generate_agrisdata <- function(shpfile, level=3,
+                               geo_id=c("ID_1","ID_2","ID_3"),
+                               geo_name=c("NAME_1","NAME_2","NAME_3"),
+                               np=30,na_prob=0.0005){
 
-df=agrisvyr:::SEN3_shp
+# df=agrisvyr:::SEN3_shp
 
-points=st_sample(df, size = n:(n+1), type = "random") %>% sf::st_as_sf()
+shpfile=shpfile %>% dplyr::select(all_of(c(geo_id,geo_name)))
 
-xy=as.data.frame(sf::st_coordinates(points))
+if (level==1){
+  shpfile=shpfile %>% label_geo_name(geo_name[1],geo_id[1],Q13a) %>%
+    dplyr::mutate(Q13b=NA,Q13c=NA)
+}
 
-final_points=points %>% sf::st_join(df) %>%
-  dplyr::bind_cols(xy) %>%
-  sf::st_drop_geometry() %>%
-  dplyr::select(GEO_ID=CCN_3,Q13a=NAME_1,Q13b=NAME_2,Q13c=NAME_3,Q19a=X,Q19b=Y) %>%
-  dplyr::mutate(Q17_id=sample(df$CCN_3,size = nrow(xy),replace = TRUE)) %>%
-  dplyr::left_join(st_drop_geometry(df) %>%
-                     dplyr::select(Q17d=NAME_1,Q17c=NAME_2,Q17b=NAME_3,GEO_ID=CCN_3)) %>%
-  dplyr::select(-GEO_ID)
+if(level==2){
+
+  shpfile=shpfile %>% label_geo_name(geo_name[1],geo_id[1],Q13a)
+  shpfile=shpfile %>% label_geo_name(geo_name[2],geo_id[2],Q13b) %>%
+    dplyr::mutate(Q13c=NA)
+}
+
+if(level==3){
+  shpfile=shpfile %>% label_geo_name(geo_name[1],geo_id[1],Q13a)
+  shpfile=shpfile %>% label_geo_name(geo_name[2],geo_id[2],Q13b)
+  shpfile=shpfile %>% label_geo_name(geo_name[3],geo_id[3],Q13c)
+}
+
+
+points=shpfile %>%st_sample(shpfile, size = np:(np+1), type = "random") %>% sf::st_as_sf()
+points_df=as.data.frame(st_coordinates(points))
+
+final_points=points %>% sf::st_join(shpfile) %>%
+  bind_cols(points_df) %>% dplyr::rename(Q19a=X,Q19b=Y) %>%
+  dplyr::mutate(Q17d=Q13a,Q17c=Q13b,Q17b=Q13c)
 
 n=nrow(final_points)
 
@@ -211,13 +256,13 @@ data=final_points %>% dplyr::bind_cols(wakefield::r_data_frame(
   #* ***************************************************************************
   #If Q10 = 1 or 2 GO TO Q12, otherwise GO TO Q14
   dplyr::mutate(Q12a=Q12a %>% labelled::recode_if(!(Q10=="Legal person"),NA),
-         Q12b=Q12b %>% labelled::recode_if(!(Q10=="Legal person"),NA),
-         Q12c=Q12c %>% labelled::recode_if(!(Q10=="Legal person"),NA),
-         Q12d=Q12d %>% labelled::recode_if(!(Q10=="Legal person"),NA),
-         Q13a=Q13a %>% labelled::recode_if(!(Q10=="Legal person"),NA),
-         Q13b=Q13b %>% labelled::recode_if(!(Q10=="Legal person"),NA),
-         Q13c=Q13c %>% labelled::recode_if(!(Q10=="Legal person"),NA),
-         Q14=Q14 %>% labelled::recode_if((Q10=="Legal person"),NA),
+         Q12b=Q12b %>% labelled::recode_if((Q10=="Legal person"),NA),
+         Q12c=Q12c %>% labelled::recode_if((Q10=="Legal person"),NA),
+         Q12d=Q12d %>% labelled::recode_if((Q10=="Legal person"),NA),
+         Q13a=Q13a %>% labelled::recode_if((Q10=="Legal person"),NA),
+         Q13b=Q13b %>% labelled::recode_if((Q10=="Legal person"),NA),
+         Q13c=Q13c %>% labelled::recode_if((Q10=="Legal person"),NA),
+         Q14=Q14 %>% labelled::recode_if(!(Q10=="Legal person"),NA),
          #If Q17 = 1 → Go to Q18
          Q17=Q17 %>% labelled::recode_if(!(Q10=="Legal person"),"Different from the address of the Holder"),
          Q17a=Q17a %>% labelled::recode_if((Q17=="Same as the address of the Holder"),NA),
@@ -242,4 +287,5 @@ data=final_points %>% dplyr::bind_cols(wakefield::r_data_frame(
   # perturbate by including some missing information
   wakefield::r_na(prob = 0.0005)
 
+return(data)
 }

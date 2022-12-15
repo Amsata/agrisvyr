@@ -72,39 +72,71 @@ setIs("sdcReportObj", "sdcReportObjOrNULL")
 #' @export
 #'
 #' @examples
-saveReprtObj=function(intialObj=NULL,
-                                finalObj=NULL,
-                                unit=NULL,
-                                hierarchy=NULL,
-                                global=TRUE,
-                                individual=TRUE,
-                                suda=FALSE,
-                                hierarchical=FALSE,
-                                childName=NULL) {
+saveReprtObj <- function(agrisvy,
+                      intialObj=NULL,
+                      finalObj    =NULL,
+                      unit        =NULL,
+                      hierarchy   =NULL,
+                      global      =TRUE,
+                      individual  =TRUE,
+                      suda        =FALSE,
+                      hierarchical=FALSE,
+                      childName   =NULL) {
 
             obj <- new("sdcReportObj")
 
-if (!is.null(intialObj)) obj@intialObj <- intialObj
-if (!is.null(finalObj)) obj@finalObj <- finalObj
-if (!is.null(unit)) obj@unit <- unit
-if (!is.null(hierarchy)) obj@hierarchy <- hierarchy
-if (!is.null(global)) obj@global <- global
+if (!is.null(intialObj)) obj@intialObj   <- intialObj
+if (!is.null(finalObj)) obj@finalObj     <- finalObj
+if (!is.null(unit)) obj@unit             <- unit
+if (!is.null(hierarchy)) obj@hierarchy   <- hierarchy
+if (!is.null(global)) obj@global         <- global
 if (!is.null(individual)) obj@individual <- individual
 if (!is.null(individual)) obj@individual <- individual
-if (!is.null(suda)) obj@suda <- suda
+if (!is.null(suda)) obj@suda             <- suda
 
 
-saveRDS(obj,glue("05_Anonymization report/{childName}.rds"))
+saveRDS(obj,glue("{anoreportDir(agrisvy)}/{childName}.rds"))
 
-file <- file.path("05_Anonymization report",glue::glue("child_{childName}.rmd"))
+file <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
 file.create(file)
 
 fileConn<-file(file)
-writeLines(c(glue::glue(paste(readLines(system.file("txt_template","sdc_report_child.txt",package = "agrisvyr")),
+writeLines(c(glue::glue(paste(readLines(system.file("txt_template",
+                                                    "sdc_report_child.txt",
+                                                    package = "agrisvyr")),
                               collapse = "\n"),.open = "{{",.close = "}}"))
            ,
            fileConn)
 close(fileConn)
+#---------------------------------
+
+rpt_file=file.path(anoreportDir(agrisvy),"sdc_report.rmd")
+
+sdc_rpt=readLines(rpt_file)
+appended=grep(glue::glue("child_{childName}.rds"),sdc_rpt)
+
+
+if(length(appended)!=0){
+  sdc_rpt=sdc_rpt[-c((appended-1):(appended+2))]
+}
+
+ind=grep("# Other anonymization measures of",sdc_rpt)
+
+before=sdc_rpt[1:(ind-1)]
+
+after=sdc_rpt[ind:length(sdc_rpt)]
+
+new_sdc_rpt=c(before,
+              "",
+              glue::glue("```{r,child='child_{{childName}}.rds'}",.open = "{{",.close = "}}"),"```","",
+              after)
+
+
+fileConn<-file(rpt_file)
+writeLines(new_sdc_rpt,fileConn)
+close(fileConn)
+
+
 
 }
 

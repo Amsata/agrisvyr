@@ -3,5 +3,9 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   agrisvyr: agrisvyr.html
-last_built: 2022-11-06T22:10Z
+  agrisvy_data: agrisvy_data.html
+  agrisvy_tutorials: agrisvy_tutorials.html
+  aut_report: aut_report.html
+  sdc_agrisvy: sdc_agrisvy.html
+last_built: 2022-12-01T06:34Z
 
