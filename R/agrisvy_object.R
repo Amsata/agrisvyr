@@ -143,17 +143,7 @@ createAgrisvy <- function(svyName          = "[Survey name]",
                           language         = "en",
                           workingDir       = NULL,
                           path             = NULL,
-                          type             = NULL,
-                          varClassDir      = "01_Variable classification",
-                          preProcScriptDir = "02_Pre-processing scripts",
-                          preprocDataDir   = "03_Pre-processed data",
-                          anoScriptDir     = "04_Anonymization scripts",
-                          anoDataDir       = "05_Anonymized data",
-                          anoreportDir     = "06_Anonymization report",
-                          fileDesDir       = "07_Files description",
-                          infoLossReport   = "08_Information loss report",
-                          tempfileDir      = "09_Temporary_files",
-                          aobDir           = "10_Miscellaneous") {
+                          type             = NULL) {
   stopifnot(!is.null(path))
   stopifnot(!is.null(type))
   stopifnot(!is.null(workingDir))
@@ -168,17 +158,45 @@ createAgrisvy <- function(svyName          = "[Survey name]",
   obj@workingDir       <- workingDir
   obj@path             <- path
   obj@type             <- type
-  obj@varClassDir      <- varClassDir
-  obj@preProcScriptDir <- preProcScriptDir
-  obj@preprocDataDir   <- preprocDataDir
-  obj@anoScriptDir     <- anoScriptDir
-  obj@anoreportDir     <- anoreportDir
-  obj@anoDataDir       <- anoDataDir
-  obj@fileDesDir       <- fileDesDir
-  obj@infoLossReport   <- infoLossReport
-  obj@tempfileDir      <- tempfileDir
-  obj@aobDir           <- aobDir
 
+  if(obj@language=="en") {
+    obj@varClassDir      <- "01.Variable classification"
+    obj@preProcScriptDir <- "02.Pre-processing scripts"
+    obj@preprocDataDir   <- "03.Pre-processed data"
+    obj@anoScriptDir     <- "04.Anonymization scripts"
+    obj@anoreportDir     <- "06.Anonymization report"
+    obj@anoDataDir       <- "05.Anonymized data"
+    obj@fileDesDir       <- "07.Files description"
+    obj@infoLossReport   <- "08.Information loss report"
+    obj@tempfileDir      <- "09.Temporary files"
+    obj@aobDir           <- "10.Miscellaneous"
+  }
+
+  if(obj@language=="fr") {
+    obj@varClassDir      <- "01.Classification des variables"
+    obj@preProcScriptDir <- "02.Scripts de pre-traitement"
+    obj@preprocDataDir   <- "03.Donnees pre-traitees"
+    obj@anoScriptDir     <- "04.Scripts anonymization"
+    obj@anoreportDir     <- "06.Raport anonymization"
+    obj@anoDataDir       <- "05.Donnees anonymisees"
+    obj@fileDesDir       <- "07.Description des fichiers"
+    obj@infoLossReport   <- "08.Raport sur la perte d_information"
+    obj@tempfileDir      <- "09.Fichiers temporaires"
+    obj@aobDir           <- "10.Divers fichiers"
+  }
+
+  if(obj@language=="es") {
+    obj@varClassDir      <- "01.Clasificacion de variables"
+    obj@preProcScriptDir <- "02.Guiones de preprocesamiento"
+    obj@preprocDataDir   <- "03.Datos preprocesados"
+    obj@anoScriptDir     <- "04.Guiones de anonimizacion"
+    obj@anoreportDir     <- "06.Informe de anonimizacion"
+    obj@anoDataDir       <- "05.Datos anonimizados"
+    obj@fileDesDir       <- "07.Descripcion de archivos"
+    obj@infoLossReport   <- "08.Informe de perdida de informacion"
+    obj@tempfileDir      <- "09.Archivos temporales"
+    obj@aobDir           <- "10.varios archivos"
+  }
   obj
 }
 

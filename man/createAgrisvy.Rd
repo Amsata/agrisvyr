@@ -10,17 +10,7 @@ createAgrisvy(
   language = "en",
   workingDir = NULL,
   path = NULL,
-  type = NULL,
-  varClassDir = "01_Variable classification",
-  preProcScriptDir = "02_Pre-processing scripts",
-  preprocDataDir = "03_Pre-processed data",
-  anoScriptDir = "04_Anonymization scripts",
-  anoDataDir = "05_Anonymized data",
-  anoreportDir = "06_Anonymization report",
-  fileDesDir = "07_Files description",
-  infoLossReport = "08_Information loss report",
-  tempfileDir = "09_Temporary_files",
-  aobDir = "10_Miscellaneous"
+  type = NULL
 )
 }
 \arguments{
