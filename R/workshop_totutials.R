@@ -81,6 +81,7 @@ generateLabFiles=function(agrisvy,overwrite){
 #'
 #' @return
 #' @importFrom purrr walk
+#' @importFrom quarto quarto_render
 #' @export
 #'
 #' @examples

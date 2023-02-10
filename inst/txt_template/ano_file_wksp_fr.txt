@@ -36,6 +36,7 @@ de l'arbitrage risque-utilisé du jeu de données concerné.
 library(sdcMicro)
 library(dplyr)
 library(labelled)
+library(agrisvyr)
 
 purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
 
@@ -65,7 +66,7 @@ groupAndRename(obj=obj_{{file_attributes$file_name}}, var=, before=, after=, add
 ```{r}
 #| eval: false
 globalRecode(obj=obj_{{file_attributes$file_name}}, column=, breaks=)
-table(get.sdcMicroObj(obj=obj_{{file_attributes$file_name}}, type="manipKeyVars")var)
+table(get.sdcMicroObj(obj=obj_{{file_attributes$file_name}}, type="manipKeyVars")$var)
 ```
 
 ### supression local
