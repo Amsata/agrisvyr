@@ -25,26 +25,6 @@ createAgrisvy(
 \item{path}{path do the microdata of the survey}
 
 \item{type}{extension of the micro data example ".dta" for stata, ".sav" for SPSS}
-
-\item{varClassDir}{name of the variable classification folder}
-
-\item{preProcScriptDir}{name of the pre-processing scripts folder}
-
-\item{preprocDataDir}{name of the preprocessed data folder}
-
-\item{anoScriptDir}{name of the anonymization scripts folder}
-
-\item{anoDataDir}{name of the final anonymized data folder}
-
-\item{anoreportDir}{name of the anonymization report folder}
-
-\item{fileDesDir}{name of the file description folder}
-
-\item{infoLossReport}{name of the information loss report folder}
-
-\item{tempfileDir}{name of the temporary file folder}
-
-\item{aobDir}{name of the miscellenous folder}
 }
 \value{
 a agrisvy object

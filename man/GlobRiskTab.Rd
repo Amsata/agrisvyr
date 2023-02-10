@@ -4,7 +4,7 @@
 \alias{GlobRiskTab}
 \title{Title}
 \usage{
-GlobRiskTab(sdc, df = FALSE, title = "")
+GlobRiskTab(sdc, df = FALSE, time, obj)
 }
 \arguments{
 \item{sdc}{an object of type SdcMicroObj}

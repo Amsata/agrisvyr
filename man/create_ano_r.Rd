@@ -4,10 +4,12 @@
 \alias{create_ano_r}
 \title{Create anonymization script for a data file}
 \usage{
-create_ano_r(agrisvy, file)
+create_ano_r(agrisvy, file, md)
 }
 \arguments{
 \item{file}{data file for which to create anonymization script}
+
+\item{md}{}
 }
 \description{
 Create anonymization script for a data file

@@ -4,7 +4,7 @@
 \alias{KanoTab}
 \title{data frame containing k-anonymity information}
 \usage{
-KanoTab(sdcObj, df = FALSE, levels = c(2, 3, 5), title = "")
+KanoTab(sdcObj, df = FALSE, levels = c(2, 3, 5), time, obj)
 }
 \arguments{
 \item{sdcObj}{an sdcMicro object}

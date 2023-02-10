@@ -4,10 +4,10 @@
 \alias{generate_preproc_r}
 \title{Generate preprocessing scripts}
 \usage{
-generate_preproc_r(agrisvy)
+generate_preproc_r(agrisvy, type, obj_name)
 }
 \arguments{
-\item{agrisvy}{}
+\item{obj_name}{}
 }
 \description{
 Generate preprocessing scripts

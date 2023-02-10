@@ -4,10 +4,12 @@
 \alias{create_preproc_r}
 \title{Create a simple  preprocessing R script for a given dataset}
 \usage{
-create_preproc_r(agrisvy, file)
+create_preproc_r(agrisvy, file, type, obj_name)
 }
 \arguments{
 \item{file}{name of the data file}
+
+\item{obj_name}{}
 }
 \description{
 Create a simple  preprocessing R script for a given dataset

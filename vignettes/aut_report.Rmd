@@ -34,7 +34,7 @@ library(agrisvyr)
 
 WHen creating the anonymization working folders and files, the `agrisvyr` package create a template of report saved in the forder dedicated to contain the anonymization report.
 
-```{r}
+```{r,eval=FALSE}
 agrisvy <- agrisvyr::createAgrisvy(
   svyName = "Anual Agricultural survey (AAS) 2020",
   author = "UBOS",
@@ -76,7 +76,7 @@ Let us anonymized the member dataset and extend the sdc report and see the outpu
 
 The initial anonymization setup has already generated anonymization scripts we can use directly. We will skip the pre-processing step and anonymize the clean data as it is.
 
-```{r}
+```{r,eval=FALSE}
 #'*|----------------------------------------------------------------------------|*
 #'*|--| Anonymization of Anual Agricultural survey (AAS) 2020                   |*
 #'*|--| Author: UBOS                                                            |*

@@ -152,6 +152,65 @@ forder dedicated to contain the anonymization report.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># agrisvyr::setup_anonymization(agrisvy,overwrite = TRUE)</span></span></code></pre></div>
 <p><img src="images/sdc_report_1.jpg" width="800px" height="600px"><img src="images/sdc_report_2.jpg" width="800px" height="600px"></p>
+<p>The main template can be modified just by opening the rmarkdown
+document. After having anonymized a microdata, the main report need to
+be extended to integrate the risk analysis and the sdc methods applied
+and the original/final risk comparison.</p>
+</div>
+<div class="section level2">
+<h2 id="extending-the-sdc-report">Extending the sdc report<a class="anchor" aria-label="anchor" href="#extending-the-sdc-report"></a>
+</h2>
+<p>Let us anonymized the member dataset and extend the sdc report and
+see the output.</p>
+<p>The initial anonymization setup has already generated anonymization
+scripts we can use directly. We will skip the pre-processing step and
+anonymize the clean data as it is.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#'*|----------------------------------------------------------------------------|*</span></span>
+<span><span class="co">#'*|--| Anonymization of Anual Agricultural survey (AAS) 2020                   |*</span></span>
+<span><span class="co">#'*|--| Author: UBOS                                                            |*</span></span>
+<span><span class="co">#'*|--| Date: 2022-11-30                                                        |*</span></span>
+<span><span class="co">#'*|----------------------------------------------------------------------------|*</span></span>
+<span><span class="co">#'*|--| Dataset: Season 1=&gt;PH=&gt;SEC2_V1_MEMBERS.dta                              |*</span></span>
+<span><span class="co">#'*|----------------------------------------------------------------------------|*</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"agrisvy"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sdcTools/sdcMicro" class="external-link">sdcMicro</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org" class="external-link">readxl</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://haven.tidyverse.org" class="external-link">haven</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://juba.github.io/questionr/" class="external-link">questionr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://larmarange.github.io/labelled/" class="external-link">labelled</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">walk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/Anonymization/_R"</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/Anonymization/_R"</span>,</span>
+<span>            pattern <span class="op">=</span> <span class="st">".R$"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            <span class="va">source</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/sdcMessage.html">sdcMessage</a></span><span class="op">(</span><span class="st">"Season 1=&gt;PH=&gt;SEC2_V1_MEMBERS.dta"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#*****************************************************************</span></span>
+<span><span class="co"># Load microdata to be anonymized                                *</span></span>
+<span><span class="co">#*****************************************************************</span></span>
+<span></span>
+<span><span class="va">inputdata</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/sdcMicro/man/readMicrodata.html" class="external-link">readMicrodata</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"03_Pre-processed data/Season 1/PH/SEC2_V1_MEMBERS_proc.dta"</span>,type<span class="op">=</span><span class="st">"stata"</span>, convertCharToFac<span class="op">=</span><span class="cn">FALSE</span>, drop_all_missings<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#*****************************************************************</span></span>
+<span><span class="co"># Load variable classification                                   *</span></span>
+<span><span class="co">#*****************************************************************</span></span>
+<span><span class="va">variable_classification</span><span class="op">=</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"01_Variable classification/Season 1_PH_VarClas.xlsx"</span>,</span>
+<span>                                   sheet <span class="op">=</span><span class="st">"SEC2_V1_MEMBERS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Name</span><span class="op">:</span><span class="va">Questions</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ano_variable</span><span class="op">=</span><span class="va">variable_classification</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Classification</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q"</span>,<span class="st">"L"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">Name</span><span class="op">)</span></span>
+<span><span class="va">ano_variable</span><span class="op">=</span><span class="va">ano_variable</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ano_variable</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">ano_variable</span></span>
+<span></span>
+<span><span class="co">#*****************************************************************</span></span>
+<span><span class="co"># saving anonymized data                                         *</span></span>
+<span><span class="co">#*****************************************************************</span></span>
+<span><span class="fu"><a href="https://haven.tidyverse.org/reference/read_dta.html" class="external-link">write_dta</a></span><span class="op">(</span><span class="va">inputdata</span>,<span class="st">"09_Temporary_files/temp_ano/Season 1/PH/SEC2_V1_MEMBERS_tmp.dta"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -172,7 +231,7 @@ forder dedicated to contain the anonymization report.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

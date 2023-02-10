@@ -4,10 +4,10 @@
 \alias{generate_report_template}
 \title{Generate the template of the sdc report}
 \usage{
-generate_report_template(agrisvy)
+generate_report_template(agrisvy, type)
 }
 \arguments{
-\item{agrisvy}{}
+\item{type}{}
 }
 \description{
 Generate the template of the sdc report

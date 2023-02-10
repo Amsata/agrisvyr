@@ -121,16 +121,6 @@ setMethod("show",signature="agrisvy",function(object){
 #' @param workingDir working directory (where the folders will be created)
 #' @param path path do the microdata of the survey
 #' @param type extension of the micro data example ".dta" for stata, ".sav" for SPSS
-#' @param varClassDir name of the variable classification folder
-#' @param preProcScriptDir name of the pre-processing scripts folder
-#' @param preprocDataDir name of the preprocessed data folder
-#' @param anoScriptDir name of the anonymization scripts folder
-#' @param anoDataDir name of the final anonymized data folder
-#' @param anoreportDir name of the anonymization report folder
-#' @param fileDesDir name of the file description folder
-#' @param infoLossReport name of the information loss report folder
-#' @param tempfileDir name of the temporary file folder
-#' @param aobDir name of the miscellenous folder
 #'
 #' @return
 #' a agrisvy object
@@ -138,67 +128,67 @@ setMethod("show",signature="agrisvy",function(object){
 #' @export
 #'
 #' @examples
-createAgrisvy <- function(svyName          = "[Survey name]",
-                          author           = "[Author]",
-                          language         = "en",
-                          workingDir       = NULL,
-                          path             = NULL,
-                          type             = NULL) {
-  stopifnot(!is.null(path))
-  stopifnot(!is.null(type))
-  stopifnot(!is.null(workingDir))
-  stopifnot(dir.exists(path) == TRUE)
+  createAgrisvy <- function(svyName          = "[Survey name]",
+                            author           = "[Author]",
+                            language         = "en",
+                            workingDir       = NULL,
+                            path             = NULL,
+                            type             = NULL) {
+    stopifnot(!is.null(path))
+    stopifnot(!is.null(type))
+    stopifnot(!is.null(workingDir))
+    stopifnot(dir.exists(path) == TRUE)
 
 
-  obj <- new("agrisvy")
+    obj <- new("agrisvy")
 
-  obj@svyName          <- svyName
-  obj@author           <- author
-  obj@language         <- language
-  obj@workingDir       <- workingDir
-  obj@path             <- path
-  obj@type             <- type
+    obj@svyName          <- svyName
+    obj@author           <- author
+    obj@language         <- language
+    obj@workingDir       <- workingDir
+    obj@path             <- path
+    obj@type             <- type
 
-  if(obj@language=="en") {
-    obj@varClassDir      <- "01.Variable classification"
-    obj@preProcScriptDir <- "02.Pre-processing scripts"
-    obj@preprocDataDir   <- "03.Pre-processed data"
-    obj@anoScriptDir     <- "04.Anonymization scripts"
-    obj@anoreportDir     <- "06.Anonymization report"
-    obj@anoDataDir       <- "05.Anonymized data"
-    obj@fileDesDir       <- "07.Files description"
-    obj@infoLossReport   <- "08.Information loss report"
-    obj@tempfileDir      <- "09.Temporary files"
-    obj@aobDir           <- "10.Miscellaneous"
+    if(obj@language=="en") {
+      obj@varClassDir      <- "01.Variable classification"
+      obj@preProcScriptDir <- "02.Pre-processing scripts"
+      obj@preprocDataDir   <- "03.Pre-processed data"
+      obj@anoScriptDir     <- "04.Anonymization scripts"
+      obj@anoreportDir     <- "06.Anonymization report"
+      obj@anoDataDir       <- "05.Anonymized data"
+      obj@fileDesDir       <- "07.Files description"
+      obj@infoLossReport   <- "08.Information loss report"
+      obj@tempfileDir      <- "09.Temporary files"
+      obj@aobDir           <- "10.Miscellaneous"
+    }
+
+    if(obj@language=="fr") {
+      obj@varClassDir      <- "01.Classification des variables"
+      obj@preProcScriptDir <- "02.Scripts de pre-traitement"
+      obj@preprocDataDir   <- "03.Donnees pre-traitees"
+      obj@anoScriptDir     <- "04.Scripts anonymization"
+      obj@anoreportDir     <- "06.Raport anonymization"
+      obj@anoDataDir       <- "05.Donnees anonymisees"
+      obj@fileDesDir       <- "07.Description des fichiers"
+      obj@infoLossReport   <- "08.Raport sur la perte d_information"
+      obj@tempfileDir      <- "09.Fichiers temporaires"
+      obj@aobDir           <- "10.Divers fichiers"
+    }
+
+    if(obj@language=="es") {
+      obj@varClassDir      <- "01.Clasificacion de variables"
+      obj@preProcScriptDir <- "02.Guiones de preprocesamiento"
+      obj@preprocDataDir   <- "03.Datos preprocesados"
+      obj@anoScriptDir     <- "04.Guiones de anonimizacion"
+      obj@anoreportDir     <- "06.Informe de anonimizacion"
+      obj@anoDataDir       <- "05.Datos anonimizados"
+      obj@fileDesDir       <- "07.Descripcion de archivos"
+      obj@infoLossReport   <- "08.Informe de perdida de informacion"
+      obj@tempfileDir      <- "09.Archivos temporales"
+      obj@aobDir           <- "10.varios archivos"
+    }
+    obj
   }
-
-  if(obj@language=="fr") {
-    obj@varClassDir      <- "01.Classification des variables"
-    obj@preProcScriptDir <- "02.Scripts de pre-traitement"
-    obj@preprocDataDir   <- "03.Donnees pre-traitees"
-    obj@anoScriptDir     <- "04.Scripts anonymization"
-    obj@anoreportDir     <- "06.Raport anonymization"
-    obj@anoDataDir       <- "05.Donnees anonymisees"
-    obj@fileDesDir       <- "07.Description des fichiers"
-    obj@infoLossReport   <- "08.Raport sur la perte d_information"
-    obj@tempfileDir      <- "09.Fichiers temporaires"
-    obj@aobDir           <- "10.Divers fichiers"
-  }
-
-  if(obj@language=="es") {
-    obj@varClassDir      <- "01.Clasificacion de variables"
-    obj@preProcScriptDir <- "02.Guiones de preprocesamiento"
-    obj@preprocDataDir   <- "03.Datos preprocesados"
-    obj@anoScriptDir     <- "04.Guiones de anonimizacion"
-    obj@anoreportDir     <- "06.Informe de anonimizacion"
-    obj@anoDataDir       <- "05.Datos anonimizados"
-    obj@fileDesDir       <- "07.Descripcion de archivos"
-    obj@infoLossReport   <- "08.Informe de perdida de informacion"
-    obj@tempfileDir      <- "09.Archivos temporales"
-    obj@aobDir           <- "10.varios archivos"
-  }
-  obj
-}
 
 
 setGeneric("varClassDir", function(obj) standardGeneric("varClassDir"))

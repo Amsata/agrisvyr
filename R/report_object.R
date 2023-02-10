@@ -95,9 +95,9 @@ if (!is.null(individual)) obj@individual <- individual
 if (!is.null(suda)) obj@suda             <- suda
 
 
-saveRDS(obj,glue("{anoreportDir(agrisvy)}/{childName}.rds"))
+saveRDS(obj,glue("{agrisvy@workingDir}/{anoreportDir(agrisvy)}/child_{childName}.rds"))
 
-file <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
+file <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
 file.create(file)
 
 fileConn<-file(file)
@@ -110,17 +110,24 @@ writeLines(c(glue::glue(paste(readLines(system.file("txt_template",
 close(fileConn)
 #---------------------------------
 
-rpt_file=file.path(anoreportDir(agrisvy),"sdc_report.rmd")
+rpt_file=file.path(agrisvy@workingDir,anoreportDir(agrisvy),"sdc_report.rmd")
 
 sdc_rpt=readLines(rpt_file)
-appended=grep(glue::glue("child_{childName}.rds"),sdc_rpt)
+appended=grep(glue::glue("child_{childName}.rmd"),sdc_rpt)
 
 
 if(length(appended)!=0){
   sdc_rpt=sdc_rpt[-c((appended-1):(appended+2))]
 }
 
+if (agrisvy@language=="en"){
+
 ind=grep("# Other anonymization measures of",sdc_rpt)
+}
+
+if (agrisvy@language=="fr"){
+  ind=grep("# Autres mesures d'anonymisation",sdc_rpt)
+}
 
 before=sdc_rpt[1:(ind-1)]
 
@@ -128,7 +135,7 @@ after=sdc_rpt[ind:length(sdc_rpt)]
 
 new_sdc_rpt=c(before,
               "",
-              glue::glue("```{r,child='child_{{childName}}.rds'}",.open = "{{",.close = "}}"),"```","",
+              glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
               after)
 
 
@@ -156,7 +163,10 @@ close(fileConn)
 #'
 #' @examples
 
-GlobRiskTab=function(sdc,df=FALSE,title="") {
+GlobRiskTab=function(sdc,df=FALSE,time,obj) {
+# TODO: ameliorate
+  title=paste0(time," global disclosure risk")
+
   res=rbind(
     data.frame(
       `Risk type`="Global risk",
@@ -206,9 +216,8 @@ setMethod("RenderGlobalRisk",signature = "sdcReportObj",
       if (time=="initial") sdcObj=obj@intialObj
       if (time=="final") sdcObj=obj@finalObj
 
-      title=glue::glue("{time} global disclosure risk of {obj@unit}")
 
-      GlobRiskTab(sdcObj,df=FALSE,title = title)
+      GlobRiskTab(sdcObj,df=FALSE,time,obj)
 
           })
 
@@ -228,7 +237,10 @@ setMethod("RenderGlobalRisk",signature = "sdcReportObj",
 #'
 #' @examples
 
-KanoTab=function(sdcObj,df=FALSE,levels=c(2,3,5),title="") {
+KanoTab=function(sdcObj,df=FALSE,levels=c(2,3,5),time,obj) {
+
+  title=paste0(time," k-anonymity")
+
   KanoRow=function(k) {
 
     data.frame(`Level of k anonymity`=k,
@@ -269,9 +281,7 @@ setMethod("renderKanoTab",signature = "sdcReportObj",
             if (time=="initial") sdcObj=obj@intialObj
             if (time=="final") sdcObj=obj@finalObj
 
-            title=glue::glue("{time} k-anonymity of {obj@unit}")
-
-            KanoTab(sdcObj,df=FALSE,levels = levels,title = title)
+            KanoTab(sdcObj,df=FALSE,levels = levels,time,obj)
           })
 
 
@@ -289,7 +299,9 @@ setMethod("renderKanoTab",signature = "sdcReportObj",
 #' @importFrom stats median quantile
 #' @export
 #' @examples
-RiskIndSUmmary=function(sdc,df=FALSE,title=""){
+RiskIndSUmmary=function(sdc,df=FALSE,time,obj){
+  title=paste0("Summary of the", time, "individual risk")
+
 
   res=rbind(
     data.frame(Indicator="Mean",Value=paste0(round(mean(sdc@risk$individual[, "risk"]),4)*100,"%")),
@@ -339,9 +351,7 @@ setMethod("renderRiskIndSUmmary",signature = "sdcReportObj",
             if (time == "initial") sdcObj = obj@intialObj
             if (time == "final") sdcObj = obj@finalObj
 
-            title=glue::glue(" Summary of the {time} individual risk of {obj@unit}")
-
-            RiskIndSUmmary(sdcObj,df = FALSE,title = title)
+            RiskIndSUmmary(sdcObj,df = FALSE,time,obj)
           })
 
 
@@ -360,8 +370,9 @@ setMethod("renderRiskIndSUmmary",signature = "sdcReportObj",
 #' @export
 #'
 #' @examples
-HierRiskSummary=function(sdc,dfl=FALSE,title=""){
+HierRiskSummary=function(sdc,dfl=FALSE,time,obj){
 
+  title=paste0("Summary of the",time, "hierarchical risk")
   df=cbind(data.frame(sdc@origData[,sdc@hhId]),
            data.frame(sdc@risk$individual[,"hier_risk"]))
   names(df)=c("hier_id","risk")
@@ -414,7 +425,5 @@ setMethod("renderHierRiskSummary",signature = "sdcReportObj",
             if (time == "initial") sdcObj = obj@intialObj
             if (time == "final") sdcObj = obj@finalObj
 
-            title=glue::glue(" Summary of the {time} hierarchical risk of {obj@hierarchy} from {obj@unit}")
-
-            HierRiskSummary(sdcObj,dfl = FALSE,title = title)
+            HierRiskSummary(sdcObj,dfl = FALSE,time, obj)
           })

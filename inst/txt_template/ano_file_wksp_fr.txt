@@ -1,0 +1,231 @@
+---
+title: "{{agrisvy@wkspName}}"
+title-block-banner: true
+subtitle: "{{agrisvy@subtitle}}"
+author: "{{agrisvy@organizer}}"
+abstract: |
+  This is the abstract.
+format: pdf
+editor: visual
+---
+
+# Anonymisation de la base {{file_attributes$msg}}
+
+A l'issue de l'analyse du risk de divulgation, au cas où le niveau du risk est jugé élevé, il fuadra appliquer
+des methods de control de divulgation pour réduire le risk.
+
+Les methods classic peuvent être classé en deux catégories:
++ Les méthodes non-probabilistes (réduient le niveau de détails dans le jeu de données)
+  -recodage global, codage au top ou en bas,supressions locales, etc.
++ Les méthods probabilistes (introduisent une incertitude en altérant les valeurs initiles)
+  - micro-aggrégation,ajout de bruits,permutation de lignes, etc.
+
+Dans certaines situations, il est possible d'appliquer des methods ad-hoc pour répondre à un besoins specifique
+de l'arbitrage risque-utilisé du jeu de données concerné.
+
+
+## 1. Importation de l'object `sdcMicro`
+
+
+
+```{r}
+#| eval: true
+#| warning: false
+#| message: false
+
+library(sdcMicro)
+library(dplyr)
+library(labelled)
+
+purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
+
+```
+
+```{r}
+#| eval: true
+obj_{{file_attributes$file_name}}=readRDS(file.path("../","{{agrisvy@SdcObjDir}}",
+"obj_{{file_attributes$file_name}}.rds"))
+
+obj_{{file_attributes$file_name}}_in=obj_{{file_attributes$file_name}}
+```
+
+## anonymization des quasi-identifiants catégoriques
+
+### recodage global
+
+`groupAndRename(obj, var, before, after, addNA = FALSE)`
+
+```{r}
+#| eval: false
+groupAndRename(obj=obj_{{file_attributes$file_name}}, var=, before=, after=, addNA = FALSE)
+```
+
+`globalRecode(sdc, column="water", breaks=3)`
+
+```{r}
+#| eval: false
+globalRecode(obj=obj_{{file_attributes$file_name}}, column=, breaks=)
+table(get.sdcMicroObj(obj=obj_{{file_attributes$file_name}}, type="manipKeyVars")var)
+```
+
+### supression local
+
+`localSuppression(obj, k = 2, importance = NULL, combs = NULL, ...)`
+
+`kAnon(obj, k = 2, importance = NULL, combs = NULL, ...)`
+
+```{r}
+#| eval: false
+
+localSuppression(obj=obj_{{file_attributes$file_name}}, k = 2)
+sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
+undolast(obj_{{file_attributes$file_name}})
+localSuppression(obj=obj_{{file_attributes$file_name}}, k = 2,importance=)
+sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
+
+```
+
+## Anonymisation des quasi-identifiants numeriques
+
+### Micro-aggregation
+
+```{r}
+#| eval: false
+
+microaggregation(
+  obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}}),
+  variables = NULL,
+  aggr = 3,
+  strata_variables = NULL,
+  method = "mdav",
+  weights = NULL,
+  nc = 8,
+  clustermethod = "clara",
+  measure = "mean",
+  trim = 0,
+  varsort = 1,
+  transf = "log"
+)
+```
+
+### Ajout de bruit
+
+`addNoise(obj, variables = NULL, noise = 150, method = "additive", ...)
+`
+
+```{r}
+#| eval: false
+
+addNoise(obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
+, variables = , noise = 150, method = "additive")
+
+```
+
+### codage au top
+
+`topBotCoding(obj, value, replacement, kind = "top", column = NULL)
+`
+```{r}
+#| eval: false
+topBotCoding(obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
+, value, replacement, kind = "top", column = )
+
+```
+
+### PRAM
+
+```{r}
+#| eval: false
+pram(obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
+, variables = , strata_variables = NULL, pd = 0.8, alpha = 0.5)
+
+```
+
+### record swapping
+
+```{r}
+#| eval: false
+
+recordSwap(
+  data,
+  hid,
+  hierarchy,
+  similar,
+  swaprate = 0.05,
+  risk = NULL,
+  risk_threshold = 0,
+  k_anonymity = 3,
+  risk_variables = NULL,
+  carry_along = NULL,
+  return_swapped_id = FALSE,
+  log_file_name = "TRS_logfile.txt",
+  seed = NULL,
+  ...
+)
+
+data(testdata2)
+sdc <- createSdcObj(testdata2,
+  keyVars=c('urbrur','roof','walls','water','electcon','relat','sex'),
+  numVars=c('expend','income','savings'), w='sampling_weight')
+sdc <- shuffle(sdc, method=c('ds'),regmethod= c('lm'), covmethod=c('spearman'),
+		form=savings+expend ~ urbrur+walls)
+
+
+sdc <- createSdcObj(
+  dat = testdata2,
+  keyVars = c("urbrur", "roof", "walls", "water", "electcon", "relat", "sex"),
+  numVars = c("expend", "income", "savings"),
+  w = "sampling_weight")
+sdc <- rankSwap(sdc)
+
+```
+
+
+## Extraction de la base anonymisée
+
+```{r}
+#| eval: true
+
+donnee_ano=extractManipData(obj_{{file_attributes$file_name}})
+
+```
+
+
+## Mettre à jour le rapport d'anonymization
+
+```{r}
+#| eval: true
+obj_{{file_attributes$file_name}}_fin=obj_{{file_attributes$file_name}}
+saveReprtObj(
+  agrisvy={{paste0(obj_name)}},
+  intialObj = obj_{{file_attributes$file_name}}_in,
+  finalObj = obj_{{file_attributes$file_name}}_fin,
+  unit = "{{file_attributes$file_name}}",
+  hierarchy = NULL,
+  global = TRUE,
+  individual = TRUE,
+  suda = FALSE,
+  hierarchical = FALSE,
+  childName = "{{file_attributes$file_name}}"
+)
+
+```
+
+
+
+## Post-traitement
+
+```{r}
+#| eval: false
+
+```
+
+## Sauvegrder la base anonymisée
+
+```{r}
+#| eval: true
+
+haven::write_dta(donnee_ano,file.path("../","{{anoDataDir(agrisvy)}}",
+"{{file_attributes$file_name}}_ano.dta"))
+
+```

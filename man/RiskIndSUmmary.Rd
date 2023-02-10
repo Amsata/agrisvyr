@@ -4,7 +4,7 @@
 \alias{RiskIndSUmmary}
 \title{a  dataframe containing the summary of individual risk}
 \usage{
-RiskIndSUmmary(sdc, df = FALSE, title = "")
+RiskIndSUmmary(sdc, df = FALSE, time, obj)
 }
 \arguments{
 \item{sdc}{an sdcMicro Object}

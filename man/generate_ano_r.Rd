@@ -4,10 +4,10 @@
 \alias{generate_ano_r}
 \title{Generate all anonymization template scripts}
 \usage{
-generate_ano_r(agrisvy)
+generate_ano_r(agrisvy, md = FALSE)
 }
 \arguments{
-\item{agrisvy}{}
+\item{md}{}
 }
 \description{
 Generate all anonymization template scripts

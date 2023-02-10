@@ -4,7 +4,7 @@
 \alias{HierRiskSummary}
 \title{summary of hierarchical risk}
 \usage{
-HierRiskSummary(sdc, dfl = FALSE, title = "")
+HierRiskSummary(sdc, dfl = FALSE, time, obj)
 }
 \arguments{
 \item{sdc}{an sdcMicro Object}

@@ -31,24 +31,14 @@ library(agrisvyr)
 # Agrisvy object
 
 
-```{r}
+```{r,eval=FALSE}
 agrisvy <- agrisvyr::createAgrisvy(
   svyName = "Anual Agricultural survey (AAS) 2020",
   author = "UBOS",
   language = "en",
   workingDir = "C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/Anonymization",
   path = "C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/2_Cleaned data",
-  type = ".dta",
-  varClassDir = "01_Variable classification",
-  preProcScriptDir = "02_Pre-processing scripts",
-  preprocDataDir = "03_Pre-processed data",
-  anoScriptDir = "04_Anonymization scripts",
-  anoDataDir = "05_Anonymized data",
-  anoreportDir = "06_Anonymization report",
-  fileDesDir = "07_Files description",
-  infoLossReport = "08_Information loss report",
-  tempfileDir = "09_Temporary_files",
-  aobDir = "10_Miscellaneous"
+  type = ".dta"
 )
 ```
 

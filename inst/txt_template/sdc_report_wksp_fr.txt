@@ -1,0 +1,114 @@
+---
+title: "Anonymization of {{agrisvy@wkspName}}"
+subtitle: "{{agrisvy@subtitle}}"
+author: "{{agrisvy@organizer}}"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(sdcMicro)
+library(agrisvyr)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(kableExtra)
+library(glue)
+library(rlang)
+options(scipen = 999)
+#source("format_table.R")
+options(knitr.duplicate.label = "allow")
+
+```
+
+# Introduction
+
+**[Décrivez l'enquête en indiquant les principaux objectifs, le nombre de cycles et/ou de saisons, le plan d'échantillonnage et la période de collecte des données pour les différents cycles et saisons. Ces informations peuvent être tirées du rapport de l'enquête s'il est déjà publié.]**
+
+**Les jeux de données de l'enquête**
+
+```{r dataset-f,echo=FALSE}
+#data=as.data.frame(read_excel(path="datasets.xlsx"))
+
+#data%>% kbl()
+
+```
+
+**[Rappeler l'engagement de l'institut sur la diffusion des microdonnées et rappeler la nécessité pour la DDC de protéger la confidentialité des répondants]**
+
+
+# Analyse du scenario de divulgation des informations
+
+L'anonymisation ou le contrôle de la divulgation statistique est un processus de traitement des données visant à réduire le risque de divulgation d'inforation des répondants. Dans le candre de l'enquête **[SPECIFIER]**, les principaux entités qui doivent être protégée la legislation sont **[LISTER 1]**. Cependant, les informations de ces unités statistiques peuvent être indirectement divulguées à travers certaines unités liées telles **[LISTER 2]**. À cet égard, en plus d'empêcher la ré-identification des **[unités lister en LISTER 1]**, if faudra empêcher la ré-identification des **[unités lister en LISTER 2]**
+
+
+Les unités statistiques contenues dans les microdonnées peuvent être divulguées de deux manières :
+
++ Divulgation d'identité : la divulgation d'identité peut se produire si un intrus réussit à faire correspondre des enregistrements dans les microdonnées diffusées avec des ensembles de données externes contenant des informations d'identification (région, âge, sexe, nom, ou toute autre variable dans les microdonnées diffusées qui peut exister dans un registre externe).
+
++ Divulgation d'attributs : un intrus peut identifier un enregistrement sans effectuer de couplage. C'est ce qu'on appelle la divulgation d'attributs. Une situation particulière est celle des scénarios de "Nosy neighbor". Ces scénarios supposent que l'intrus possède suffisamment d'informations sur une ou plusieurs unités ; ces informations proviennent de ses connaissances personnelles. En d'autres termes, l'intrus fait partie du cercle des connaissances d'une unité statistique.
+
+L'objectif du scénario de divulgation est d'identifier les variables et les variables sensibles que l'intrus peut utiliser pour divulguer des informations. Ceci, en particulier, dépend de l'environnement dans lequel les microdonnées sont publiées.
+
+L'exercice de scénario de divulgation a été réalisé avec des collègues de Geostat et toutes les variables des différents ensembles de données ont été classées dans l'une des catégories suivantes :
+
+* `D` :  Variable à suprimmer (pas utile pour l'utilisateur)
+* `Q  :  Quasi-indentifiant (à anonymiser)
+* `ID`: Identifiant direct  (à suprimmer)
+* `S` :  Variable sensible
+* `L` :  Variable liée à un quasi-identifiant
+* `ID`: Variable ID
+* `-` :  Variable qui ne nécessite pas d'anonymisation et qui devrait être diffusée telle quelle.
+
+# Pré-traitement des données avant anonymization
+
+**[Décrivez la tâche principale à laquelle le prétraitement des données a donné lieu]**
+
+# Méthodes d'évaluation des risques de divulgation
+
+L'évaluation du risque de divulgation est l'une des étapes clés du processus de DDC. Pour évaluer le risque de divulgation de l'enquête **[SPECIFIER]**, nous avons recours aux méthodes suivantes :
+
+## Quasi-identifiants catégoriques
+
+* **k-anonymat**
+
+pour mettre en évidence l'unicité des enregistrements concernant la
+combinaison de quasi-identifiants catégoriels
+
+* **Algorithme de détection des unicités spéciales(SUDA)**
+
+d'aller au-delà de l'unicité de la combinaison de quasi-identifiants et d'examiner l'unicité dans les sous-ensembles de  combinaison de quasi-identifiants (Special Unique).
+
+*  **risk probabilistique**
+
+Évaluez le risque de divulgation comme une probabilité. Les unités ayant la même
+combinaison de clés auront le même risque
+
+* le nombre espéré de ré-identification : une mesure globale du risque
+
+## Quasi-identifiants numériques
+
+  In Dans la littérature, le risque de variable continue est calculé a posteriori. Pour
+
+la nature de la structure des données, nous mettrons l'accent sur le caractère aberrant de l'observation
+concernant les variables continues.
+
++ Indice de Gini : pour évaluer l'ampleur de l'inégalité dans certaines variables
+
++ Courbe de LorenzLa courbe de Lorenz présente les écarts de la distribution empirique par rapport à une distribution parfaitement égale comme la différence entre deux graphiques.
+
+* Une métrique personnalisée que nous avons développée pour détecter l'hétérogénéité des variables continues : la fonction d'asymétrie a été décrite par Groeneveld, R. A. et Meeden. ($right_skewedness=\lambda(\alpha)=\frac{Q(\alpha)+Q(1-\alpha)-2\times     median}{Q(1-\alpha)-Q(\alpha)}$) calculé pour les valeurs qui sont au-dessus du mode statistique (M)
+
+$$RS=\lambda_{\{x_{i}>M\}}(\alpha)=\frac{Q_{\{x_{i}>M\}}(\alpha)+Q_{\{x_{i}>M\}}(1-\alpha)-2\times median_{\{x_{i}>M\}}}{Q_{\{x_{i}>M\}}(1-\alpha)-Q_{\{x_{i}>M\}}(\alpha)}  $$ with $\alpha=0.05$
+
+Ce coefficient d'asymétrie varie de -1 à +1. Les valeurs proches de +1 indiquent la présence d'une queue droite très asymétrique dans la distribution de la variable.
+
+
+
+# Autres mesures d'anonymisation
+
