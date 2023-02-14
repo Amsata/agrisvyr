@@ -173,7 +173,7 @@ donnee=labelled::set_value_labels(donnee)
 ```{r}
 #| eval: false
 
-donnee=labelled::look_for(donnee)
+labelled::look_for(donnee)
 
 ```
 

@@ -99,11 +99,16 @@ saveRDS(obj,glue("{agrisvy@workingDir}/{anoreportDir(agrisvy)}/child_{childName}
 
 file <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
 file.create(file)
-
 fileConn<-file(file)
-writeLines(c(glue::glue(paste(readLines(system.file("txt_template",
-                                                    "sdc_report_child.txt",
-                                                    package = "agrisvyr")),
+
+if(agrisvy@language=="en"){
+  template_rpt_child=system.file("txt_template","sdc_report_child.txt",package = "agrisvyr")
+}
+
+if(agrisvy@language=="fr"){
+  template_rpt_child=system.file("txt_template","sdc_report_child_fr.txt",package = "agrisvyr")
+}
+writeLines(c(glue::glue(paste(readLines(template_rpt_child),
                               collapse = "\n"),.open = "{{",.close = "}}"))
            ,
            fileConn)

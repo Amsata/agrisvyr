@@ -49,7 +49,7 @@ agrisvyr::renderKanoTab(obj = obj,time="initial")
 
 * **Probabilistic individual risk**
 
-The average individual risk of {unit}  is **{round(mean(obj_i@risk$individual[,1])*100,2)}%**. On the other hand, the greatest individual risk of {unit} amounts to **{round(max(obj_i@risk$individual[,1])*100,2)}%** and half of the {unit} have an individual risk lower than **{round(quantile(obj_i@risk$individual[,1],0.5)*100,4)}%** and 10% of {unit} have an individual risk exceeding **{round(quantile(obj_i@risk$individual[,1],0.9)*100,2)}%**
+The average individual risk of {unit}  is **{round(mean(obj_i@risk$individual[,1])*100,2)}%**. On the other hand, the greatest individual risk of {unit} amounts to **{round(max(obj_i@risk$individual[,1])*100,2)}%** and half of the {unit} have an individual risk lower than **{round(quantile(obj_i@risk$individual[,1],0.)*100,4)}%** and 10% of {unit} have an individual risk exceeding **{round(quantile(obj_i@risk$individual[,1],0.9)*100,2)}%**
 
 ")`
 
