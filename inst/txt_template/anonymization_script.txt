@@ -6,8 +6,7 @@
 #'*|--| Dataset: {addSpace(file_attributes$msg,18)}
 #'*|----------------------------------------------------------------------------|*
 
-
-rm(list = setdiff(ls(),"{deparse(substitute(agrisvy))}"))
+rm(list = setdiff(ls(),"{obj_name}"))
 
 library(sdcMicro)
 library(dplyr)
@@ -17,12 +16,10 @@ library(haven)
 library(questionr)
 library(labelled)
 
-purrr::walk(file.path("{agrisvy@workingDir}/_R",
-            list.files(path="{agrisvy@workingDir}/_R",
-            pattern = ".R$")),
-            source)
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
 sdcMessage("{file_attributes$msg}")
+
 
 #*****************************************************************
 # Load microdata to be anonymized                                *

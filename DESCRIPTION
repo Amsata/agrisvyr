@@ -1,11 +1,12 @@
 Package: agrisvyr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: A toolbox to facilitate the implementation of microdata anonymization
 Version: 0.2.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Amsata Niang
+Maintainer: Amsata Niang <amsata.niang@fao.org>
+Description: The agrisvyr package is design to support files, folders and report generation
+    and also R script generation and pre-population for Statistical disclosure controle activity on survey 
+    data or training workshop on SDC.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -24,8 +25,11 @@ Imports:
     openxlsx,
     plyr,
     purrr,
+    quarto,
+    questionr,
     R.utils,
     randomNames,
+    readxl,
     rlang,
     sdcMicro,
     sf,

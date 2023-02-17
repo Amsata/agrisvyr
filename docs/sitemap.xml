@@ -40,6 +40,9 @@
     <loc>/reference/agrisvy-class.html</loc>
   </url>
   <url>
+    <loc>/reference/agriswksp-class.html</loc>
+  </url>
+  <url>
     <loc>/reference/anoDataDir-agrisvy-method.html</loc>
   </url>
   <url>
@@ -67,6 +70,9 @@
     <loc>/reference/createAgrisvy.html</loc>
   </url>
   <url>
+    <loc>/reference/createAgriwksp.html</loc>
+  </url>
+  <url>
     <loc>/reference/create_ano_folders.html</loc>
   </url>
   <url>
@@ -80,6 +86,9 @@
   </url>
   <url>
     <loc>/reference/create_wb.html</loc>
+  </url>
+  <url>
+    <loc>/reference/create_wksp_folders.html</loc>
   </url>
   <url>
     <loc>/reference/dataframeOrNULL-class.html</loc>
@@ -101,6 +110,9 @@
   </url>
   <url>
     <loc>/reference/genDataList.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generateLabFiles.html</loc>
   </url>
   <url>
     <loc>/reference/generate_agrisdata.html</loc>
@@ -166,10 +178,16 @@
     <loc>/reference/renderKanoTab-sdcReportObj-method.html</loc>
   </url>
   <url>
+    <loc>/reference/renderPreprocFiles.html</loc>
+  </url>
+  <url>
     <loc>/reference/renderRiskIndSUmmary-sdcReportObj-method.html</loc>
   </url>
   <url>
     <loc>/reference/replace_missing.html</loc>
+  </url>
+  <url>
+    <loc>/reference/riskAnaDir-agriswksp-method.html</loc>
   </url>
   <url>
     <loc>/reference/RiskIndSUmmary.html</loc>

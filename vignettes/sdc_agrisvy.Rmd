@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = ""
+  comment = "",
+  eval = FALSE
 )
 ```
 
@@ -43,7 +44,7 @@ agrisvy <- agrisvyr::createAgrisvy(
 ```
 
 ```{r,message=FALSE,warning=FALSE}
-print(agrisvy)
+# print(agrisvy)
 
 ```
 
@@ -64,13 +65,13 @@ showFolderTree(agrisvy,"_R")
 
 ```
 
-## ``r varClassDir(agrisvy)`` folder
+## `varClassDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,varClassDir(agrisvy))
 ```
 
-## ``r preProcScriptDir(agrisvy)`` folder
+## `preProcScriptDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,preProcScriptDir(agrisvy))
@@ -86,14 +87,14 @@ cat(gsub("``","",paste0("", readLines(system.file("txt_template","preprocessing.
 ```
 
 
-## ``r preprocDataDir(agrisvy)`` folder
+## `preprocDataDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,preprocDataDir(agrisvy))
 ```
 
 
-## ``r anoScriptDir(agrisvy)`` folder
+## `anoScriptDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,anoScriptDir(agrisvy))
@@ -111,7 +112,7 @@ cat(gsub("``","",paste0("", readLines(system.file("txt_template","anonymization_
 ```
 
 
-## ``r anoDataDir(agrisvy)`` folder
+## `anoDataDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,anoDataDir(agrisvy))
@@ -119,34 +120,34 @@ showFolderTree(agrisvy,anoDataDir(agrisvy))
 
 
 
-## ``r anoreportDir(agrisvy)`` folder
+## `anoreportDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,anoreportDir(agrisvy))
 ```
 
-## ``r fileDesDir(agrisvy)`` folder
+## `fileDesDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,fileDesDir(agrisvy))
 ```
 
 
-## ``r infoLossReport(agrisvy)`` folder
+## `infoLossReport(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,infoLossReport(agrisvy))
 ```
 
 
-## ``r tempfileDir(agrisvy)`` folder
+## `tempfileDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
 showFolderTree(agrisvy,tempfileDir(agrisvy))
 ```
 
 
-## ``r aobDir(agrisvy)`` folder
+## `aobDir(agrisvy)` folder
 
 
 ```{r,message=FALSE,warning=FALSE}

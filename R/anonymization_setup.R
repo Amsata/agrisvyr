@@ -27,13 +27,13 @@ create_folder <- function(directory, overwrite = FALSE) {
 #'
 #' @return logical
 #' @importFrom purrr walk
+#' @importFrom usethis create_project
 #' @export
 #'
 #' @examples
 create_ano_folders <- function(agrisvy, overwrite = FALSE) {
-
+  # rstudioapi::getActiveProject()
   agrisMsg("INITIAL SETUP","creating folders")
-  setwd(agrisvy@workingDir)
   # stopifnot(inherits(agrisvy,"agrisvy"))
 
   folders_path <- c(file.path(agrisvy@workingDir,"_R"),
@@ -441,7 +441,7 @@ create_preproc_r <- function(agrisvy, file,type,obj_name) {
 
    opn="{"
   clse="}"
-
+msg=paste(unlist(strsplit(file, "/")), collapse = "=>")
   z <- unlist(strsplit(file, "/"))
 
 if(type=="proc"){
@@ -455,7 +455,11 @@ if(type=="ano"){
   r_file=file.path(anoScriptDir(agrisvy),gsub(paste0(agrisvy@type, "$"),"_ano.R", file))
   save_path=file.path(tempfileDir(agrisvy),"temp_ano",paste0(paste(gsub(agrisvy@type, "",file[length(file)]),sep = "", collapse = "_"),"_tmp.dta"))
   template=system.file("txt_template","anonymization_script.txt",package = "agrisvyr")
-
+  file           = file.path(preprocDataDir(agrisvy),
+                             paste0(paste(gsub(agrisvy@type, "",
+                                               file[length(file)]),
+                                          sep = "",collapse = "_" ),
+                                    "_proc.dta"))
  }
 
   if(type=="wksp_proc"){
@@ -493,7 +497,7 @@ if(type=="ano"){
                                       "_VarClas.xlsx"
                                       )
                                ),
-    msg            =paste(unlist(strsplit(file, "/")), collapse = "=>"),
+    msg            =msg,
     to_save        = save_path
   )
   file.create(r_file)
@@ -698,28 +702,39 @@ generate_report_template <- function(agrisvy,type) {
 #'
 #' @examples
 setup_anonymization <- function(agrisvy, overwrite) {
+  obj_name=deparse(substitute(agrisvy))
+
+  setwd(agrisvy@workingDir)
+  dir.create("data")
+  R.utils::copyDirectory(DataPath(agrisvy), "data")
+
+  create_project(path = "SDC_project", open = TRUE, rstudio = TRUE)
+  agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC_project")
+  setwd("SDC_project")
+  unlink("R",recursive = TRUE)
+
   # stopifnot(inherits(agrisvy,"agrisvy"))
   create_ano_folders(agrisvy, overwrite = overwrite)
   generate_varclas(agrisvy)
   copyDirStr(from = DataPath(agrisvy), to = preProcScriptDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = preprocDataDir(agrisvy))
-  generate_preproc_r(agrisvy,type="proc")
+  generate_preproc_r(agrisvy,type="proc",obj_name=obj_name)
   copyDirStr(from = DataPath(agrisvy), to = anoScriptDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = anoDataDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = file.path(tempfileDir(agrisvy), "temp_ano"))
-  generate_ano_r(agrisvy)
+  generate_preproc_r(agrisvy,type="ano",obj_name=obj_name)
   generate_report_template(agrisvy,"svy")
 
-  saveRDS(agrisvy,file.path(agrisvy@workingDir,"_R",paste0(deparse(substitute(agrisvy)),".rds")))
+  saveRDS(agrisvy,file.path("_R",paste0(obj_name,".rds")))
 
-  set_up=file.path(agrisvy@workingDir,"_R","_setup.R")
-
+  set_up=file.path("_R","_setup.R")
+  file.create(set_up)
   fileConn <- file(set_up)
 
   writeLines(
-    c(glue::glue("setwd(\"{agrisvy@workingDir}\")"),"",
-      glue::glue("data_path=\"{agrisvy@path}\""),"",
-      glue::glue("{deparse(substitute(agrisvy))} <-readRDS(\"_R/{deparse(substitute(agrisvy))}.rds\")")),
+    c(glue::glue("#setwd(\"{agrisvy@workingDir}\")"),"",
+      glue::glue("#data_path=\"{agrisvy@path}\""),"",
+      glue::glue("{obj_name} <-readRDS(\"_R/{obj_name}.rds\")")),
     fileConn
   )
   close(fileConn)
@@ -776,7 +791,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
           "#|----------------------------------------|",
           "#| PREPROCESSING                          |",
           "#|----------------------------------------|","",
-          glue::glue("rm(list = setdiff(ls(),\"{deparse(substitute(agrisvy))}\"))"),
+          glue::glue("rm(list = setdiff(ls(),\"{obj_name}\"))"),
           "library(agrisvyr)",
           "library(dplyr)",
           "library(tidyr)",

@@ -6,7 +6,7 @@
 #'*|--| Dataset: {addSpace(file_attributes$msg,18)}
 #'*|----------------------------------------------------------------------------|*
 
-rm(list = setdiff(ls(),"{deparse(substitute(agrisvy))}"))
+rm(list = setdiff(ls(),"{obj_name}"))
 
 library(dplyr)
 library(agrisvyr)
@@ -22,7 +22,7 @@ purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
 
 preprocMessage("{file_attributes$msg}")
 
-data=read_dta("{file_attributes$path}")
+data=read_dta(file.path("../data","{file_attributes$path}"))
 
 variable_classification=read_excel(path="{file_attributes$xlsx_var_class}",
                                    sheet ="{file_attributes$file_name}") %>% select(Name:Questions)

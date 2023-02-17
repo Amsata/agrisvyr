@@ -84,8 +84,7 @@
 
       
 
-      </header><link href="sdc_agrisvy_files/tabwid-1.1.2/tabwid.css" rel="stylesheet">
-<div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Speed up microdata anonymization process</h1>
@@ -121,71 +120,10 @@ scripts and reports.</p>
 <span>  language <span class="op">=</span> <span class="st">"en"</span>,</span>
 <span>  workingDir <span class="op">=</span> <span class="st">"C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/Anonymization"</span>,</span>
 <span>  path <span class="op">=</span> <span class="st">"C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/2_Cleaned data"</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">".dta"</span>,</span>
-<span>  varClassDir <span class="op">=</span> <span class="st">"01_Variable classification"</span>,</span>
-<span>  preProcScriptDir <span class="op">=</span> <span class="st">"02_Pre-processing scripts"</span>,</span>
-<span>  preprocDataDir <span class="op">=</span> <span class="st">"03_Pre-processed data"</span>,</span>
-<span>  anoScriptDir <span class="op">=</span> <span class="st">"04_Anonymization scripts"</span>,</span>
-<span>  anoDataDir <span class="op">=</span> <span class="st">"05_Anonymized data"</span>,</span>
-<span>  anoreportDir <span class="op">=</span> <span class="st">"06_Anonymization report"</span>,</span>
-<span>  fileDesDir <span class="op">=</span> <span class="st">"07_Files description"</span>,</span>
-<span>  infoLossReport <span class="op">=</span> <span class="st">"08_Information loss report"</span>,</span>
-<span>  tempfileDir <span class="op">=</span> <span class="st">"09_Temporary_files"</span>,</span>
-<span>  aobDir <span class="op">=</span> <span class="st">"10_Miscellaneous"</span></span>
+<span>  type <span class="op">=</span> <span class="st">".dta"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(agrisvy)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>agrisvy </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> Survey name<span class="sc">:</span>  Anual Agricultural <span class="fu">survey</span> (AAS) <span class="dv">2020</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>agrisvy </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a> Number of datasets<span class="sc">:</span>  <span class="dv">40</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                                  levelName <span class="co">#Cases #Variables</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  2_Cleaned data                                            </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   ¦<span class="sc">--</span>Season <span class="dv">1</span>                                              </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>   ¦   ¦<span class="sc">--</span>PH                                                </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>   ¦   ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>   ¦   ¦   ¦<span class="sc">--</span>PH_S1_CROPS.dta               <span class="dv">22276</span>         <span class="dv">71</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>   ¦   ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>   ¦   ¦   ¦<span class="sc">--</span>SEC10_PH_S1_PERM_CROPS.dta     <span class="dv">2856</span>         <span class="dv">49</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>   ¦   ¦   ¦<span class="sc">--</span>SEC11_V1_INT.dta               <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>   ¦   ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>  ¦   ¦   °<span class="sc">--</span>SEC9_PH_S1_TEMP_CROPS.dta     <span class="dv">19409</span>         <span class="dv">62</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>  ¦   °<span class="sc">--</span>PP                                                </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>  ¦       ¦<span class="sc">--</span>AAS_Weights2020_Final.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>  ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE.dta         <span class="dv">7055</span>         <span class="dv">80</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>  ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_MERGE.dta   <span class="dv">7055</span>         <span class="dv">14</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>  ¦       ¦<span class="sc">--</span>SEC2_V1_MEMBERS.dta           <span class="dv">37427</span>         <span class="dv">19</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>  ¦       ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_Q07.dta    <span class="dv">29202</span>          <span class="dv">6</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>  ¦       ¦<span class="sc">--</span>SEC6_PP_S1_PARCELS.dta        <span class="dv">11406</span>         <span class="dv">27</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>  ¦       ¦<span class="sc">--</span>SEC7_PP_S1_PLOTS.dta          <span class="dv">17539</span>         <span class="dv">38</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>  ¦       °<span class="sc">--</span>SEC8_PP_S1_CROPS.dta          <span class="dv">26992</span>         <span class="dv">45</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>  °<span class="sc">--</span>Season <span class="dv">2</span>                                              </span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>      ¦<span class="sc">--</span>PH                                                </span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>      ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>      ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE.dta         <span class="dv">7019</span>        <span class="dv">193</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>      ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_MERGE.dta   <span class="dv">7019</span>         <span class="dv">14</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>      ¦   ¦<span class="sc">--</span>SEC10_FACILITIES.dta          <span class="dv">24262</span>         <span class="dv">17</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>      ¦   ¦<span class="sc">--</span>SEC11_TRANSPORT.dta           <span class="dv">10160</span>         <span class="dv">17</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>      ¦   ¦<span class="sc">--</span>SEC12_AGRIC_INFORMATION.dta   <span class="dv">27976</span>         <span class="dv">11</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>      ¦   ¦<span class="sc">--</span>SEC13_EXTENSION_SERVICES.dta   <span class="dv">1058</span>         <span class="dv">28</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>      ¦   ¦<span class="sc">--</span>SEC2_V2_MEMBERS.dta           <span class="dv">37054</span>         <span class="dv">21</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>      ¦   ¦<span class="sc">--</span>SEC3_PH_S2_TEMP_CROPS.dta     <span class="dv">28380</span>         <span class="dv">96</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>      ¦   ¦<span class="sc">--</span>SEC4_PH_S2_PERM_CROPS.dta      <span class="dv">1854</span>         <span class="dv">60</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>      ¦   ¦<span class="sc">--</span>SEC5_ANIMAL_STOCK.dta         <span class="dv">12834</span>         <span class="dv">17</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>      ¦   ¦<span class="sc">--</span>SEC6A_STOCK_CH_LARG_ANIM.dta   <span class="dv">3780</span>         <span class="dv">29</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>      ¦   ¦<span class="sc">--</span>SEC6B_STOCK_CH_SMAL_RUMI.dta   <span class="dv">4782</span>         <span class="dv">29</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>      ¦   ¦<span class="sc">--</span>SEC6C_STOCK_CHAN_POULTRY.dta   <span class="dv">4272</span>         <span class="dv">25</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>      ¦   ¦<span class="sc">--</span>SEC7_MILK_PRODUCTION.dta       <span class="dv">2033</span>         <span class="dv">17</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>      ¦   ¦<span class="sc">--</span>SEC8_EGG_PRODUCTION.dta        <span class="dv">4097</span>         <span class="dv">21</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>      ¦   °<span class="sc">--</span>SEC9_OTHER_LVST_PRODUCTS.dta   <span class="dv">2055</span>         <span class="dv">10</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>      °<span class="sc">--</span>PP                                                </span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="dv">40</span>          ¦<span class="sc">--</span>AAS_Weights2020_Final.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="dv">41</span>          ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span>          ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc.dta    <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span>          ¦<span class="sc">--</span>SEC11_V1_COVER_PAGE.dta        <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="dv">44</span>          ¦<span class="sc">--</span>SEC2_V1_MEMBERS.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="dv">45</span>          ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS.dta        <span class="dv">13137</span>         <span class="dv">47</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="dv">46</span>          ¦<span class="sc">--</span>SEC4_PP_S2_PLOTS.dta          <span class="dv">28018</span>         <span class="dv">38</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="dv">47</span>          °<span class="sc">--</span>SEC5_PP_S2_CROPS.dta          <span class="dv">32321</span>         <span class="dv">44</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># print(agrisvy)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="creating-working-folders-filesscripts-and-report">Creating working folders, files,scripts and report<a class="anchor" aria-label="anchor" href="#creating-working-folders-filesscripts-and-report"></a>
@@ -208,423 +146,81 @@ specified working directory</p>
 <h3 id="r-folder">
 <code>_R</code> folder<a class="anchor" aria-label="anchor" href="#r-folder"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="st">"_R"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  levelName</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  _setup.R</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="st">"_R"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="variable-classification-folder">
-<code>01_Variable classification</code> folder<a class="anchor" aria-label="anchor" href="#variable-classification-folder"></a>
+<h3 id="varclassdiragrisvy-folder">
+<code>varClassDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#varclassdiragrisvy-folder"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">varClassDir</span>(agrisvy))</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                 levelName</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Season 1_PH_VarClas.xlsx</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">varClassDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="pre-processing-scripts-folder">
-<code>02_Pre-processing scripts</code> folder<a class="anchor" aria-label="anchor" href="#pre-processing-scripts-folder"></a>
+<h3 id="preprocscriptdiragrisvy-folder">
+<code>preProcScriptDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#preprocscriptdiragrisvy-folder"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">preProcScriptDir</span>(agrisvy))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                 levelName</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Season <span class="dv">1</span>                               </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   ¦<span class="sc">--</span>PH                                 </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>   ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_proc.R   </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>   ¦   ¦<span class="sc">--</span>PH_S1_CROPS_proc.R             </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>   ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc.R      </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>   ¦   ¦<span class="sc">--</span>SEC10_PH_S1_PERM_CROPS_proc.R  </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>   ¦   ¦<span class="sc">--</span>SEC11_V1_INT_proc.R            </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>   ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS_proc.R         </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>   ¦   ¦<span class="sc">--</span>SEC9_PH_S1_TEMP_CROPS_proc.R   </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>  ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_MERGE_proc.R</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>  ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_proc.R      </span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>  ¦   ¦<span class="sc">--</span>SEC10_FACILITIES_proc.R        </span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>  ¦   ¦<span class="sc">--</span>SEC11_TRANSPORT_proc.R         </span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>  ¦   ¦<span class="sc">--</span>SEC12_AGRIC_INFORMATION_proc.R </span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>  ¦   ¦<span class="sc">--</span>SEC13_EXTENSION_SERVICES_proc.R</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>  ¦   ¦<span class="sc">--</span>SEC2_V2_MEMBERS_proc.R         </span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>  ¦   ¦<span class="sc">--</span>SEC3_PH_S2_TEMP_CROPS_proc.R   </span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>  ¦   ¦<span class="sc">--</span>SEC4_PH_S2_PERM_CROPS_proc.R   </span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>  ¦   ¦<span class="sc">--</span>SEC5_ANIMAL_STOCK_proc.R       </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>  ¦   ¦<span class="sc">--</span>SEC6A_STOCK_CH_LARG_ANIM_proc.R</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>  ¦   ¦<span class="sc">--</span>SEC6B_STOCK_CH_SMAL_RUMI_proc.R</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>  ¦   ¦<span class="sc">--</span>SEC6C_STOCK_CHAN_POULTRY_proc.R</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>  ¦   ¦<span class="sc">--</span>SEC7_MILK_PRODUCTION_proc.R    </span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>  ¦   ¦<span class="sc">--</span>SEC8_EGG_PRODUCTION_proc.R     </span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>  ¦   °<span class="sc">--</span>SEC9_OTHER_LVST_PRODUCTS_proc.R</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>  °<span class="sc">--</span>PP                                 </span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>      ¦<span class="sc">--</span>AAS_Weights2020_Final_proc.R   </span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_MERGE_proc.R</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc.R      </span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>      ¦<span class="sc">--</span>SEC2_V1_MEMBERS_proc.R         </span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>      ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_Q07_proc.R  </span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>      ¦<span class="sc">--</span>SEC6_PP_S1_PARCELS_proc.R      </span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>      ¦<span class="sc">--</span>SEC7_PP_S1_PLOTS_proc.R        </span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>      ¦<span class="sc">--</span>SEC8_PP_S1_CROPS_proc.R        </span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc_proc.R </span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>      ¦<span class="sc">--</span>SEC11_V1_COVER_PAGE_proc.R     </span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>      ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_proc.R      </span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>      ¦<span class="sc">--</span>SEC4_PP_S2_PLOTS_proc.R        </span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>      °<span class="sc">--</span>SEC5_PP_S2_CROPS_proc.R        </span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">preProcScriptDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Template of the R script to be pre-populated</p>
-<pre><code><span><span class="co">#'*|----------------------------------------------------------------------------|*   </span></span>
-<span><span class="co">#'*|--| Anonymization of {addSpace(agrisvy@svyName,26)}   </span></span>
-<span><span class="co">#'*|--| Author: {addSpace(agrisvy@author,17)}   </span></span>
-<span><span class="co">#'*|--| Date: {addSpace(Sys.Date(),20)}   </span></span>
-<span><span class="co">#'*|----------------------------------------------------------------------------|*   </span></span>
-<span><span class="co">#'*|--| Dataset: {addSpace(file_attributes$msg,18)}   </span></span>
-<span><span class="co">#'*|----------------------------------------------------------------------------|*   </span></span>
-<span>   </span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"{deparse(substitute(agrisvy))}"</span><span class="op">)</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">agrisvyr</span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://juba.github.io/questionr/" class="external-link">questionr</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://larmarange.github.io/labelled/" class="external-link">labelled</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org" class="external-link">readxl</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://haven.tidyverse.org" class="external-link">haven</a></span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">walk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"{agrisvy@workingDir}/_R"</span>,   </span>
-<span>            <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"{agrisvy@workingDir}/_R"</span>,   </span>
-<span>            pattern <span class="op">=</span> <span class="st">".R$"</span><span class="op">)</span><span class="op">)</span>,   </span>
-<span>            <span class="va">source</span><span class="op">)</span>   </span>
-<span>   </span>
-<span>   </span>
-<span><span class="fu"><a href="../reference/preprocMessage.html">preprocMessage</a></span><span class="op">(</span><span class="st">"{file_attributes$msg}"</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="va">data</span><span class="op">=</span><span class="fu"><a href="https://haven.tidyverse.org/reference/read_dta.html" class="external-link">read_dta</a></span><span class="op">(</span><span class="st">"{file_attributes$path}"</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="va">variable_classification</span><span class="op">=</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"{file_attributes$xlsx_var_class}"</span>,   </span>
-<span>                                   sheet <span class="op">=</span><span class="st">"{file_attributes$file_name}"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Name</span><span class="op">:</span><span class="va">Questions</span><span class="op">)</span>   </span>
-<span>   </span>
-<span>   </span>
-<span><span class="co">#******************************************************************   </span></span>
-<span><span class="co"># Data processing before removing variables classified as DI or D *   </span></span>
-<span><span class="co">#******************************************************************   </span></span>
-<span><span class="co">#check for duplicates   </span></span>
-<span><span class="co"># is_id(data,c())   </span></span>
-<span><span class="co">#COMMENT:   </span></span>
-<span>   </span>
-<span>   </span>
-<span>   </span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="co"># Removing variable classified as DI of D         *   </span></span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="va">variables_to_delete</span><span class="op">=</span><span class="va">variable_classification</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Classification</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DI"</span>,<span class="st">"D"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">Name</span><span class="op">)</span>   </span>
-<span><span class="va">variables_to_delete</span><span class="op">=</span><span class="va">variables_to_delete</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">variables_to_delete</span><span class="op">)</span><span class="op">]</span>   </span>
-<span><span class="va">variables_to_delete</span>   </span>
-<span><span class="va">data</span><span class="op">=</span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">any_of</a></span><span class="op">(</span><span class="va">variables_to_delete</span><span class="op">)</span><span class="op">)</span>   </span>
-<span>   </span>
-<span>   </span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="co">#                 Renaming variables , if any                    *   </span></span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="va">data</span><span class="op">=</span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="op">)</span>   </span>
-<span>   </span>
-<span>   </span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="co"># Labelling variables and values or correcting labels, if any    *   </span></span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="va">data</span><span class="op">=</span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="http://larmarange.github.io/labelled/reference/var_label.html" class="external-link">set_variable_labels</a></span><span class="op">(</span><span class="op">)</span>   </span>
-<span><span class="va">data</span><span class="op">=</span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="http://larmarange.github.io/labelled/reference/val_labels.html" class="external-link">set_value_labels</a></span><span class="op">(</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="co">#         saving the processed data   </span></span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>   </span>
-<span><span class="fu"><a href="https://haven.tidyverse.org/reference/read_dta.html" class="external-link">write_dta</a></span><span class="op">(</span><span class="va">data</span>,<span class="st">"{file_attributes$to_save}"</span><span class="op">)</span>   </span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="pre-processed-data-folder">
-<code>03_Pre-processed data</code> folder<a class="anchor" aria-label="anchor" href="#pre-processed-data-folder"></a>
+<h3 id="preprocdatadiragrisvy-folder">
+<code>preprocDataDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#preprocdatadiragrisvy-folder"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">preprocDataDir</span>(agrisvy))</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                                           levelName <span class="co">#Cases #Variables</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Anonymization                                                      </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   °<span class="sc">--</span>03_Pre<span class="sc">-</span>processed data                                          </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>       ¦<span class="sc">--</span>Season <span class="dv">1</span>                                                   </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>       ¦   ¦<span class="sc">--</span>PH                                                     </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>       ¦   ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_proc.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>       ¦   ¦   ¦<span class="sc">--</span>PH_S1_CROPS_proc.dta               <span class="dv">22276</span>         <span class="dv">71</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>       ¦   ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>       ¦   ¦   ¦<span class="sc">--</span>SEC10_PH_S1_PERM_CROPS_proc.dta     <span class="dv">2856</span>         <span class="dv">49</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>       ¦   ¦   ¦<span class="sc">--</span>SEC11_V1_INT_proc.dta               <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>      ¦   ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS_proc.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>      ¦   ¦   °<span class="sc">--</span>SEC9_PH_S1_TEMP_CROPS_proc.dta     <span class="dv">19409</span>         <span class="dv">62</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>      ¦   °<span class="sc">--</span>PP                                                     </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>      ¦       ¦<span class="sc">--</span>AAS_Weights2020_Final_proc.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>      ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_MERGE_proc.dta   <span class="dv">7055</span>         <span class="dv">14</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>      ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc.dta         <span class="dv">7055</span>         <span class="dv">80</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>      ¦       ¦<span class="sc">--</span>SEC2_V1_MEMBERS_proc.dta           <span class="dv">37427</span>         <span class="dv">19</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>      ¦       ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_Q07_proc.dta    <span class="dv">29202</span>          <span class="dv">6</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>      ¦       ¦<span class="sc">--</span>SEC6_PP_S1_PARCELS_proc.dta        <span class="dv">11406</span>         <span class="dv">27</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>      ¦       ¦<span class="sc">--</span>SEC7_PP_S1_PLOTS_proc.dta          <span class="dv">17539</span>         <span class="dv">38</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>      ¦       °<span class="sc">--</span>SEC8_PP_S1_CROPS_proc.dta          <span class="dv">26992</span>         <span class="dv">45</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>      °<span class="sc">--</span>Season <span class="dv">2</span>                                                   </span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>          ¦<span class="sc">--</span>PH                                                     </span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>          ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_proc.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>          ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_MERGE_proc.dta   <span class="dv">7019</span>         <span class="dv">14</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>          ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_proc.dta         <span class="dv">7019</span>        <span class="dv">193</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>          ¦   ¦<span class="sc">--</span>SEC10_FACILITIES_proc.dta          <span class="dv">24262</span>         <span class="dv">17</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>          ¦   ¦<span class="sc">--</span>SEC11_TRANSPORT_proc.dta           <span class="dv">10160</span>         <span class="dv">17</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>          ¦   ¦<span class="sc">--</span>SEC12_AGRIC_INFORMATION_proc.dta   <span class="dv">27976</span>         <span class="dv">11</span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>          ¦   ¦<span class="sc">--</span>SEC13_EXTENSION_SERVICES_proc.dta   <span class="dv">1058</span>         <span class="dv">28</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>          ¦   ¦<span class="sc">--</span>SEC2_V2_MEMBERS_proc.dta           <span class="dv">37054</span>         <span class="dv">21</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>          ¦   ¦<span class="sc">--</span>SEC3_PH_S2_TEMP_CROPS_proc.dta     <span class="dv">28380</span>         <span class="dv">96</span></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>          ¦   ¦<span class="sc">--</span>SEC4_PH_S2_PERM_CROPS_proc.dta      <span class="dv">1854</span>         <span class="dv">60</span></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>          ¦   ¦<span class="sc">--</span>SEC5_ANIMAL_STOCK_proc.dta         <span class="dv">12834</span>         <span class="dv">17</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>          ¦   ¦<span class="sc">--</span>SEC6A_STOCK_CH_LARG_ANIM_proc.dta   <span class="dv">3780</span>         <span class="dv">29</span></span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>          ¦   ¦<span class="sc">--</span>SEC6B_STOCK_CH_SMAL_RUMI_proc.dta   <span class="dv">4782</span>         <span class="dv">29</span></span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>          ¦   ¦<span class="sc">--</span>SEC6C_STOCK_CHAN_POULTRY_proc.dta   <span class="dv">4272</span>         <span class="dv">25</span></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>          ¦   ¦<span class="sc">--</span>SEC7_MILK_PRODUCTION_proc.dta       <span class="dv">2033</span>         <span class="dv">17</span></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>          ¦   ¦<span class="sc">--</span>SEC8_EGG_PRODUCTION_proc.dta        <span class="dv">4097</span>         <span class="dv">21</span></span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>          ¦   °<span class="sc">--</span>SEC9_OTHER_LVST_PRODUCTS_proc.dta   <span class="dv">2055</span>         <span class="dv">10</span></span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="dv">40</span>          °<span class="sc">--</span>PP                                                     </span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="dv">41</span>              ¦<span class="sc">--</span>AAS_Weights2020_Final_proc.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span>              ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span>              ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc_proc.dta    <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="dv">44</span>              ¦<span class="sc">--</span>SEC11_V1_COVER_PAGE_proc.dta        <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="dv">45</span>              ¦<span class="sc">--</span>SEC2_V1_MEMBERS_proc.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="dv">46</span>              ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_proc.dta        <span class="dv">13137</span>         <span class="dv">47</span></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="dv">47</span>              ¦<span class="sc">--</span>SEC4_PP_S2_PLOTS_proc.dta          <span class="dv">28018</span>         <span class="dv">38</span></span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="dv">48</span>              °<span class="sc">--</span>SEC5_PP_S2_CROPS_proc.dta          <span class="dv">32321</span>         <span class="dv">44</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">preprocDataDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="anonymization-scripts-folder">
-<code>04_Anonymization scripts</code> folder<a class="anchor" aria-label="anchor" href="#anonymization-scripts-folder"></a>
+<h3 id="anoscriptdiragrisvy-folder">
+<code>anoScriptDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#anoscriptdiragrisvy-folder"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">anoScriptDir</span>(agrisvy))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                                levelName</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  _RUN_anonymization.R                  </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   ¦<span class="sc">--</span>PH                                </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>   ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_ano.R   </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>   ¦   ¦<span class="sc">--</span>PH_S1_CROPS_ano.R             </span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>   ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_ano.R      </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>   ¦   ¦<span class="sc">--</span>SEC10_PH_S1_PERM_CROPS_ano.R  </span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>   ¦   ¦<span class="sc">--</span>SEC11_V1_INT_ano.R            </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>   ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS_ano.R         </span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>   ¦   ¦<span class="sc">--</span>SEC9_PH_S1_TEMP_CROPS_ano.R   </span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>  ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_ano.R      </span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>  ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_MERGE_ano.R</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>  ¦   ¦<span class="sc">--</span>SEC10_FACILITIES_ano.R        </span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>  ¦   ¦<span class="sc">--</span>SEC11_TRANSPORT_ano.R         </span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>  ¦   ¦<span class="sc">--</span>SEC12_AGRIC_INFORMATION_ano.R </span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>  ¦   ¦<span class="sc">--</span>SEC13_EXTENSION_SERVICES_ano.R</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>  ¦   ¦<span class="sc">--</span>SEC2_V2_MEMBERS_ano.R         </span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>  ¦   ¦<span class="sc">--</span>SEC3_PH_S2_TEMP_CROPS_ano.R   </span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>  ¦   ¦<span class="sc">--</span>SEC4_PH_S2_PERM_CROPS_ano.R   </span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>  ¦   ¦<span class="sc">--</span>SEC5_ANIMAL_STOCK_ano.R       </span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>  ¦   ¦<span class="sc">--</span>SEC6A_STOCK_CH_LARG_ANIM_ano.R</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>  ¦   ¦<span class="sc">--</span>SEC6B_STOCK_CH_SMAL_RUMI_ano.R</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>  ¦   ¦<span class="sc">--</span>SEC6C_STOCK_CHAN_POULTRY_ano.R</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>  ¦   ¦<span class="sc">--</span>SEC7_MILK_PRODUCTION_ano.R    </span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>  ¦   ¦<span class="sc">--</span>SEC8_EGG_PRODUCTION_ano.R     </span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>  ¦   °<span class="sc">--</span>SEC9_OTHER_LVST_PRODUCTS_ano.R</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>  °<span class="sc">--</span>PP                                </span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>      ¦<span class="sc">--</span>AAS_Weights2020_Final_ano.R   </span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_ano.R      </span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_MERGE_ano.R</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>      ¦<span class="sc">--</span>SEC2_V1_MEMBERS_ano.R         </span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>      ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_Q07_ano.R  </span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>      ¦<span class="sc">--</span>SEC6_PP_S1_PARCELS_ano.R      </span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>      ¦<span class="sc">--</span>SEC7_PP_S1_PLOTS_ano.R        </span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>      ¦<span class="sc">--</span>SEC8_PP_S1_CROPS_ano.R        </span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc_ano.R </span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>      ¦<span class="sc">--</span>SEC11_V1_COVER_PAGE_ano.R     </span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>      ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_ano.R      </span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>      ¦<span class="sc">--</span>SEC4_PP_S2_PLOTS_ano.R        </span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>      °<span class="sc">--</span>SEC5_PP_S2_CROPS_ano.R        </span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">anoScriptDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Template of the anonymization to be used to pre-populate all
 scripts</p>
-<pre><code><span><span class="co">#'*|----------------------------------------------------------------------------|*   </span></span>
-<span><span class="co">#'*|--| Anonymization of {addSpace(agrisvy@svyName,26)}   </span></span>
-<span><span class="co">#'*|--| Author: {addSpace(agrisvy@author,17)}   </span></span>
-<span><span class="co">#'*|--| Date: {addSpace(Sys.Date(),20)}   </span></span>
-<span><span class="co">#'*|----------------------------------------------------------------------------|*   </span></span>
-<span><span class="co">#'*|--| Dataset: {addSpace(file_attributes$msg,18)}   </span></span>
-<span><span class="co">#'*|----------------------------------------------------------------------------|*   </span></span>
-<span>   </span>
-<span>   </span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"{deparse(substitute(agrisvy))}"</span><span class="op">)</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sdcTools/sdcMicro" class="external-link">sdcMicro</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org" class="external-link">readxl</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://haven.tidyverse.org" class="external-link">haven</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://juba.github.io/questionr/" class="external-link">questionr</a></span><span class="op">)</span>   </span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://larmarange.github.io/labelled/" class="external-link">labelled</a></span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">walk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"{agrisvy@workingDir}/_R"</span>,   </span>
-<span>            <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"{agrisvy@workingDir}/_R"</span>,   </span>
-<span>            pattern <span class="op">=</span> <span class="st">".R$"</span><span class="op">)</span><span class="op">)</span>,   </span>
-<span>            <span class="va">source</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="fu"><a href="../reference/sdcMessage.html">sdcMessage</a></span><span class="op">(</span><span class="st">"{file_attributes$msg}"</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="co"># Load microdata to be anonymized                                *   </span></span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span>   </span>
-<span><span class="va">inputdata</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/sdcMicro/man/readMicrodata.html" class="external-link">readMicrodata</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"{file_attributes$path}"</span>,type<span class="op">=</span><span class="st">"stata"</span>, convertCharToFac<span class="op">=</span><span class="cn">FALSE</span>, drop_all_missings<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>   </span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="co"># Load variable classification                                   *   </span></span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="va">variable_classification</span><span class="op">=</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span>path<span class="op">=</span><span class="st">"{file_attributes$xlsx_var_class}"</span>,   </span>
-<span>                                   sheet <span class="op">=</span><span class="st">"{file_attributes$file_name}"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Name</span><span class="op">:</span><span class="va">Questions</span><span class="op">)</span>   </span>
-<span>   </span>
-<span><span class="va">ano_variable</span><span class="op">=</span><span class="va">variable_classification</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Classification</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q"</span>,<span class="st">"L"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">Name</span><span class="op">)</span>   </span>
-<span><span class="va">ano_variable</span><span class="op">=</span><span class="va">ano_variable</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ano_variable</span><span class="op">)</span><span class="op">]</span>   </span>
-<span><span class="va">ano_variable</span>   </span>
-<span>   </span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="co"># saving anonymized data                                         *   </span></span>
-<span><span class="co">#*****************************************************************   </span></span>
-<span><span class="fu"><a href="https://haven.tidyverse.org/reference/read_dta.html" class="external-link">write_dta</a></span><span class="op">(</span><span class="va">inputdata</span>,<span class="st">"{file_attributes$to_save}"</span><span class="op">)</span>   </span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="anonymized-data-folder">
-<code>05_Anonymized data</code> folder<a class="anchor" aria-label="anchor" href="#anonymized-data-folder"></a>
+<h3 id="anodatadiragrisvy-folder">
+<code>anoDataDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#anodatadiragrisvy-folder"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">anoDataDir</span>(agrisvy))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                                          levelName <span class="co">#Cases #Variables</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Anonymization                                                     </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   °<span class="sc">--</span>05_Anonymized data                                            </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>       ¦<span class="sc">--</span>Season <span class="dv">1</span>                                                  </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>       ¦   ¦<span class="sc">--</span>PH                                                    </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>       ¦   ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_ano.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>       ¦   ¦   ¦<span class="sc">--</span>PH_S1_CROPS_ano.dta               <span class="dv">22276</span>         <span class="dv">71</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>       ¦   ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_ano.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>       ¦   ¦   ¦<span class="sc">--</span>SEC10_PH_S1_PERM_CROPS_ano.dta     <span class="dv">2856</span>         <span class="dv">49</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>       ¦   ¦   ¦<span class="sc">--</span>SEC11_V1_INT_ano.dta               <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>      ¦   ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS_ano.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>      ¦   ¦   °<span class="sc">--</span>SEC9_PH_S1_TEMP_CROPS_ano.dta     <span class="dv">19409</span>         <span class="dv">62</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>      ¦   °<span class="sc">--</span>PP                                                    </span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>      ¦       ¦<span class="sc">--</span>AAS_Weights2020_Final_ano.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>      ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_ano.dta         <span class="dv">7055</span>         <span class="dv">80</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>      ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_MERGE_ano.dta   <span class="dv">7055</span>         <span class="dv">14</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>      ¦       ¦<span class="sc">--</span>SEC2_V1_MEMBERS_ano.dta           <span class="dv">37427</span>         <span class="dv">19</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>      ¦       ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_Q07_ano.dta    <span class="dv">29202</span>          <span class="dv">6</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>      ¦       ¦<span class="sc">--</span>SEC6_PP_S1_PARCELS_ano.dta        <span class="dv">11406</span>         <span class="dv">27</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>      ¦       ¦<span class="sc">--</span>SEC7_PP_S1_PLOTS_ano.dta          <span class="dv">17539</span>         <span class="dv">38</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>      ¦       °<span class="sc">--</span>SEC8_PP_S1_CROPS_ano.dta          <span class="dv">26992</span>         <span class="dv">45</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>      °<span class="sc">--</span>Season <span class="dv">2</span>                                                  </span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>          ¦<span class="sc">--</span>PH                                                    </span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>          ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_ano.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>          ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_ano.dta         <span class="dv">7019</span>        <span class="dv">193</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>          ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_MERGE_ano.dta   <span class="dv">7019</span>         <span class="dv">14</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>          ¦   ¦<span class="sc">--</span>SEC10_FACILITIES_ano.dta          <span class="dv">24262</span>         <span class="dv">17</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>          ¦   ¦<span class="sc">--</span>SEC11_TRANSPORT_ano.dta           <span class="dv">10160</span>         <span class="dv">17</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>          ¦   ¦<span class="sc">--</span>SEC12_AGRIC_INFORMATION_ano.dta   <span class="dv">27976</span>         <span class="dv">11</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>          ¦   ¦<span class="sc">--</span>SEC13_EXTENSION_SERVICES_ano.dta   <span class="dv">1058</span>         <span class="dv">28</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>          ¦   ¦<span class="sc">--</span>SEC2_V2_MEMBERS_ano.dta           <span class="dv">37054</span>         <span class="dv">21</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>          ¦   ¦<span class="sc">--</span>SEC3_PH_S2_TEMP_CROPS_ano.dta     <span class="dv">28380</span>         <span class="dv">96</span></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>          ¦   ¦<span class="sc">--</span>SEC4_PH_S2_PERM_CROPS_ano.dta      <span class="dv">1854</span>         <span class="dv">60</span></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>          ¦   ¦<span class="sc">--</span>SEC5_ANIMAL_STOCK_ano.dta         <span class="dv">12834</span>         <span class="dv">17</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>          ¦   ¦<span class="sc">--</span>SEC6A_STOCK_CH_LARG_ANIM_ano.dta   <span class="dv">3780</span>         <span class="dv">29</span></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>          ¦   ¦<span class="sc">--</span>SEC6B_STOCK_CH_SMAL_RUMI_ano.dta   <span class="dv">4782</span>         <span class="dv">29</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>          ¦   ¦<span class="sc">--</span>SEC6C_STOCK_CHAN_POULTRY_ano.dta   <span class="dv">4272</span>         <span class="dv">25</span></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>          ¦   ¦<span class="sc">--</span>SEC7_MILK_PRODUCTION_ano.dta       <span class="dv">2033</span>         <span class="dv">17</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>          ¦   ¦<span class="sc">--</span>SEC8_EGG_PRODUCTION_ano.dta        <span class="dv">4097</span>         <span class="dv">21</span></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>          ¦   °<span class="sc">--</span>SEC9_OTHER_LVST_PRODUCTS_ano.dta   <span class="dv">2055</span>         <span class="dv">10</span></span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="dv">40</span>          °<span class="sc">--</span>PP                                                    </span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="dv">41</span>              ¦<span class="sc">--</span>AAS_Weights2020_Final_ano.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span>              ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_ano.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span>              ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc_ano.dta    <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="dv">44</span>              ¦<span class="sc">--</span>SEC11_V1_COVER_PAGE_ano.dta        <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="dv">45</span>              ¦<span class="sc">--</span>SEC2_V1_MEMBERS_ano.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="dv">46</span>              ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_ano.dta        <span class="dv">13137</span>         <span class="dv">47</span></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="dv">47</span>              ¦<span class="sc">--</span>SEC4_PP_S2_PLOTS_ano.dta          <span class="dv">28018</span>         <span class="dv">38</span></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="dv">48</span>              °<span class="sc">--</span>SEC5_PP_S2_CROPS_ano.dta          <span class="dv">32321</span>         <span class="dv">44</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">anoDataDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="anonymization-report-folder">
-<code>06_Anonymization report</code> folder<a class="anchor" aria-label="anchor" href="#anonymization-report-folder"></a>
+<h3 id="anoreportdiragrisvy-folder">
+<code>anoreportDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#anoreportdiragrisvy-folder"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">anoreportDir</span>(agrisvy))</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       levelName</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> sdc_report.pdf</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">anoreportDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="files-description-folder">
-<code>07_Files description</code> folder<a class="anchor" aria-label="anchor" href="#files-description-folder"></a>
+<h3 id="filedesdiragrisvy-folder">
+<code>fileDesDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#filedesdiragrisvy-folder"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">fileDesDir</span>(agrisvy))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>         levelName</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Season 1_PH.xlsx</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">fileDesDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="information-loss-report-folder">
-<code>08_Information loss report</code> folder<a class="anchor" aria-label="anchor" href="#information-loss-report-folder"></a>
+<h3 id="infolossreportagrisvy-folder">
+<code>infoLossReport(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#infolossreportagrisvy-folder"></a>
+</h3>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">infoLossReport</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="tempfilediragrisvy-folder">
+<code>tempfileDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#tempfilediragrisvy-folder"></a>
+</h3>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">tempfileDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="aobdiragrisvy-folder">
+<code>aobDir(agrisvy)</code> folder<a class="anchor" aria-label="anchor" href="#aobdiragrisvy-folder"></a>
 </h3>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">infoLossReport</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="cn">NULL</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="temporary_files-folder">
-<code>09_Temporary_files</code> folder<a class="anchor" aria-label="anchor" href="#temporary_files-folder"></a>
-</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showFolderTree</span>(agrisvy,<span class="fu">tempfileDir</span>(agrisvy))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                                              levelName <span class="co">#Cases #Variables</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Anonymization                                                         </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   °<span class="sc">--</span>09_Temporary_files                                                </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>       °<span class="sc">--</span>temp_ano                                                      </span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>           ¦<span class="sc">--</span>Season <span class="dv">1</span>                                                  </span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>           ¦   ¦<span class="sc">--</span>PH                                                    </span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>           ¦   ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_tmp.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>           ¦   ¦   ¦<span class="sc">--</span>PH_S1_CROPS_tmp.dta               <span class="dv">22276</span>         <span class="dv">71</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>           ¦   ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_tmp.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>           ¦   ¦   ¦<span class="sc">--</span>SEC10_PH_S1_PERM_CROPS_tmp.dta     <span class="dv">2856</span>         <span class="dv">49</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>          ¦   ¦   ¦<span class="sc">--</span>SEC11_V1_INT_tmp.dta               <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>          ¦   ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS_tmp.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>          ¦   ¦   °<span class="sc">--</span>SEC9_PH_S1_TEMP_CROPS_tmp.dta     <span class="dv">19409</span>         <span class="dv">62</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>          ¦   °<span class="sc">--</span>PP                                                    </span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>          ¦       ¦<span class="sc">--</span>AAS_Weights2020_Final_tmp.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>          ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_MERGE_tmp.dta   <span class="dv">7055</span>         <span class="dv">14</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>          ¦       ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_tmp.dta         <span class="dv">7055</span>         <span class="dv">80</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>          ¦       ¦<span class="sc">--</span>SEC2_V1_MEMBERS_tmp.dta           <span class="dv">37427</span>         <span class="dv">19</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>          ¦       ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_Q07_tmp.dta    <span class="dv">29202</span>          <span class="dv">6</span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>          ¦       ¦<span class="sc">--</span>SEC6_PP_S1_PARCELS_tmp.dta        <span class="dv">11406</span>         <span class="dv">27</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>          ¦       ¦<span class="sc">--</span>SEC7_PP_S1_PLOTS_tmp.dta          <span class="dv">17539</span>         <span class="dv">38</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>          ¦       °<span class="sc">--</span>SEC8_PP_S1_CROPS_tmp.dta          <span class="dv">26992</span>         <span class="dv">45</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>          °<span class="sc">--</span>Season <span class="dv">2</span>                                                  </span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>              ¦<span class="sc">--</span>PH                                                    </span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>              ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final_tmp.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>              ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_MERGE_tmp.dta   <span class="dv">7019</span>         <span class="dv">14</span></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>              ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_tmp.dta         <span class="dv">7019</span>        <span class="dv">193</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>              ¦   ¦<span class="sc">--</span>SEC10_FACILITIES_tmp.dta          <span class="dv">24262</span>         <span class="dv">17</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>              ¦   ¦<span class="sc">--</span>SEC11_TRANSPORT_tmp.dta           <span class="dv">10160</span>         <span class="dv">17</span></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>              ¦   ¦<span class="sc">--</span>SEC12_AGRIC_INFORMATION_tmp.dta   <span class="dv">27976</span>         <span class="dv">11</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>              ¦   ¦<span class="sc">--</span>SEC13_EXTENSION_SERVICES_tmp.dta   <span class="dv">1058</span>         <span class="dv">28</span></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>              ¦   ¦<span class="sc">--</span>SEC2_V2_MEMBERS_tmp.dta           <span class="dv">37054</span>         <span class="dv">21</span></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>              ¦   ¦<span class="sc">--</span>SEC3_PH_S2_TEMP_CROPS_tmp.dta     <span class="dv">28380</span>         <span class="dv">96</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>              ¦   ¦<span class="sc">--</span>SEC4_PH_S2_PERM_CROPS_tmp.dta      <span class="dv">1854</span>         <span class="dv">60</span></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>              ¦   ¦<span class="sc">--</span>SEC5_ANIMAL_STOCK_tmp.dta         <span class="dv">12834</span>         <span class="dv">17</span></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>              ¦   ¦<span class="sc">--</span>SEC6A_STOCK_CH_LARG_ANIM_tmp.dta   <span class="dv">3780</span>         <span class="dv">29</span></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>              ¦   ¦<span class="sc">--</span>SEC6B_STOCK_CH_SMAL_RUMI_tmp.dta   <span class="dv">4782</span>         <span class="dv">29</span></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>              ¦   ¦<span class="sc">--</span>SEC6C_STOCK_CHAN_POULTRY_tmp.dta   <span class="dv">4272</span>         <span class="dv">25</span></span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>              ¦   ¦<span class="sc">--</span>SEC7_MILK_PRODUCTION_tmp.dta       <span class="dv">2033</span>         <span class="dv">17</span></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>              ¦   ¦<span class="sc">--</span>SEC8_EGG_PRODUCTION_tmp.dta        <span class="dv">4097</span>         <span class="dv">21</span></span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="dv">40</span>              ¦   °<span class="sc">--</span>SEC9_OTHER_LVST_PRODUCTS_tmp.dta   <span class="dv">2055</span>         <span class="dv">10</span></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="dv">41</span>              °<span class="sc">--</span>PP                                                    </span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span>                  ¦<span class="sc">--</span>AAS_Weights2020_Final_tmp.dta       <span class="dv">593</span>          <span class="dv">5</span></span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span>                  ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc_tmp.dta    <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="dv">44</span>                  ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_tmp.dta         <span class="dv">7055</span>         <span class="dv">25</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="dv">45</span>                  ¦<span class="sc">--</span>SEC11_V1_COVER_PAGE_tmp.dta        <span class="dv">7055</span>         <span class="dv">22</span></span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="dv">46</span>                  ¦<span class="sc">--</span>SEC2_V1_MEMBERS_tmp.dta           <span class="dv">37406</span>         <span class="dv">19</span></span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="dv">47</span>                  ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_tmp.dta        <span class="dv">13137</span>         <span class="dv">47</span></span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="dv">48</span>                  ¦<span class="sc">--</span>SEC4_PP_S2_PLOTS_tmp.dta          <span class="dv">28018</span>         <span class="dv">38</span></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="dv">49</span>                  °<span class="sc">--</span>SEC5_PP_S2_CROPS_tmp.dta          <span class="dv">32321</span>         <span class="dv">44</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="miscellaneous-folder">
-<code>10_Miscellaneous</code> folder<a class="anchor" aria-label="anchor" href="#miscellaneous-folder"></a>
-</h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">aobDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="cn">NULL</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/showFolderTree.html">showFolderTree</a></span><span class="op">(</span><span class="va">agrisvy</span>,<span class="fu">aobDir</span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -634,261 +230,17 @@ scripts</p>
 the corresponding data.</p>
 <p>First you need to archive all the datasets (saving them in the
 agrisvy object)</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>agrisvyr<span class="sc">::</span><span class="fu">ArchiveCleanData</span>(agrisvy)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a> [36mi [39m  [32mARCHIVING<span class="sc">:</span>  [39m  [90m [3mCleaned data [23m [39m</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">agrisvyr</span><span class="fu">::</span><span class="fu"><a href="../reference/ArchiveCleanData.html">ArchiveCleanData</a></span><span class="op">(</span><span class="va">agrisvy</span><span class="op">)</span></span></code></pre></div>
 <p>Let us inline one dataset</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.tree)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FromListSimple</span>(agrisvy<span class="sc">@</span>cleanData)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                          levelName</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Root                            </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   ¦<span class="sc">--</span>Season 1_PH                 </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>   ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final   </span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>   ¦   ¦<span class="sc">--</span>PH_S1_CROPS             </span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>   ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE      </span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>   ¦   ¦<span class="sc">--</span>SEC10_PH_S1_PERM_CROPS  </span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>   ¦   ¦<span class="sc">--</span>SEC11_V1_INT            </span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>   ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS         </span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>   ¦   °<span class="sc">--</span>SEC9_PH_S1_TEMP_CROPS   </span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span>  ¦<span class="sc">--</span>Season 1_PP                 </span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span>  ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final   </span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span>  ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE      </span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span>  ¦   ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_MERGE</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span>  ¦   ¦<span class="sc">--</span>SEC2_V1_MEMBERS         </span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span>  ¦   ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS_Q07  </span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span>  ¦   ¦<span class="sc">--</span>SEC6_PP_S1_PARCELS      </span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span>  ¦   ¦<span class="sc">--</span>SEC7_PP_S1_PLOTS        </span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span>  ¦   °<span class="sc">--</span>SEC8_PP_S1_CROPS        </span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span>  ¦<span class="sc">--</span>Season 2_PH                 </span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span>  ¦   ¦<span class="sc">--</span>AAS_Weights2020_Final   </span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span>  ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE      </span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span>  ¦   ¦<span class="sc">--</span>SEC1_V2_COVER_PAGE_MERGE</span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span>  ¦   ¦<span class="sc">--</span>SEC10_FACILITIES        </span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span>  ¦   ¦<span class="sc">--</span>SEC11_TRANSPORT         </span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span>  ¦   ¦<span class="sc">--</span>SEC12_AGRIC_INFORMATION </span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="dv">26</span>  ¦   ¦<span class="sc">--</span>SEC13_EXTENSION_SERVICES</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="dv">27</span>  ¦   ¦<span class="sc">--</span>SEC2_V2_MEMBERS         </span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="dv">28</span>  ¦   ¦<span class="sc">--</span>SEC3_PH_S2_TEMP_CROPS   </span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="dv">29</span>  ¦   ¦<span class="sc">--</span>SEC4_PH_S2_PERM_CROPS   </span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span>  ¦   ¦<span class="sc">--</span>SEC5_ANIMAL_STOCK       </span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="dv">31</span>  ¦   ¦<span class="sc">--</span>SEC6A_STOCK_CH_LARG_ANIM</span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="dv">32</span>  ¦   ¦<span class="sc">--</span>SEC6B_STOCK_CH_SMAL_RUMI</span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="dv">33</span>  ¦   ¦<span class="sc">--</span>SEC6C_STOCK_CHAN_POULTRY</span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>  ¦   ¦<span class="sc">--</span>SEC7_MILK_PRODUCTION    </span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="dv">35</span>  ¦   ¦<span class="sc">--</span>SEC8_EGG_PRODUCTION     </span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="dv">36</span>  ¦   °<span class="sc">--</span>SEC9_OTHER_LVST_PRODUCTS</span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="dv">37</span>  °<span class="sc">--</span>Season 2_PP                 </span>
-<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="dv">38</span>      ¦<span class="sc">--</span>AAS_Weights2020_Final   </span>
-<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="dv">39</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE      </span>
-<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="dv">40</span>      ¦<span class="sc">--</span>SEC1_V1_COVER_PAGE_proc </span>
-<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="dv">41</span>      ¦<span class="sc">--</span>SEC11_V1_COVER_PAGE     </span>
-<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span>      ¦<span class="sc">--</span>SEC2_V1_MEMBERS         </span>
-<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span>      ¦<span class="sc">--</span>SEC3_PP_S2_PARCELS      </span>
-<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a><span class="dv">44</span>      ¦<span class="sc">--</span>SEC4_PP_S2_PLOTS        </span>
-<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="dv">45</span>      °<span class="sc">--</span>SEC5_PP_S2_CROPS        </span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/gluc/data.tree" class="external-link">data.tree</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/data.tree/man/as.Node.list.html" class="external-link">FromListSimple</a></span><span class="op">(</span><span class="va">agrisvy</span><span class="op">@</span><span class="va">cleanData</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ardata-fr.github.io/flextable-book/" class="external-link">flextable</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">agrisvy</span><span class="op">@</span><span class="va">cleanData</span><span class="op">$</span><span class="va">`Season 1_PH`</span><span class="op">$</span><span class="va">SEC2_V1_MEMBERS</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://davidgohel.github.io/flextable/reference/flextable.html" class="external-link">flextable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<template id="9f863786-2c25-4018-b34f-173387094206"><style>
-.tabwid table{
-  border-spacing:0px !important;
-  border-collapse:collapse;
-  line-height:1;
-  margin-left:auto;
-  margin-right:auto;
-  border-width: 0;
-  border-color: transparent;
-  caption-side: top;
-}
-.tabwid-caption-bottom table{
-  caption-side: bottom;
-}
-.tabwid_left table{
-  margin-left:0;
-}
-.tabwid_right table{
-  margin-right:0;
-}
-.tabwid td, .tabwid th {
-    padding: 0;
-}
-.tabwid a {
-  text-decoration: none;
-}
-.tabwid thead {
-    background-color: transparent;
-}
-.tabwid tfoot {
-    background-color: transparent;
-}
-.tabwid table tr {
-background-color: transparent;
-}
-.katex-display {
-    margin: 0 0 !important;
-}
-</style>
-<div class="tabwid">
-<style>.cl-7ce34eae{}.cl-7cb0f3d2{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-7cba26be{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-7cba26bf{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-7cba4dec{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cba4ded{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cba4dee{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cba4def{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cba4df0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7cba4df1{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table class="table cl-7ce34eae">
-<thead><tr style="overflow-wrap:break-word;">
-<th class="cl-7cba4dec"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">interview__key</span></p></th>
-<th class="cl-7cba4dec"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">HHID</span></p></th>
-<th class="cl-7cba4dec"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">interview__id</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">MEMBERS__id</span></p></th>
-<th class="cl-7cba4dec"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">membersList</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q04</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q05</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q06</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q07</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q08</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q09</span></p></th>
-<th class="cl-7cba4dec"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">s2q09_other</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q09_2</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q10</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q11</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q12</span></p></th>
-<th class="cl-7cba4dec"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">s2q12_other</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q13</span></p></th>
-<th class="cl-7cba4ded"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">s2q14</span></p></th>
-</tr></thead>
-<tbody>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">00-05-58-15</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">H00055815D</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">6ba36f0ae66d492ab833bb597128592c</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">ANDRUU DENIS</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">32</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 9</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">00-05-58-15</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">H00055815D</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">6ba36f0ae66d492ab833bb597128592c</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">2</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">ORODRIYO IRENE</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">2</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">2</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">28</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">5</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">13</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">00-05-58-15</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">H00055815D</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">6ba36f0ae66d492ab833bb597128592c</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">ACIDRI BRAIN</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">12</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 4</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 5</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">14</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">00-05-58-15</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">H00055815D</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">6ba36f0ae66d492ab833bb597128592c</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">4</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">AGENDA SPECIA</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">2</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">10</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 4</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 4</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 2</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">14</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">00-05-58-15</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">H00055815D</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">6ba36f0ae66d492ab833bb597128592c</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">5</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">ASISI TOPISTA</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">2</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 8</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4dee"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4def"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-7cba4df0"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">00-05-58-15</span></p></td>
-<td class="cl-7cba4df0"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">H00055815D</span></p></td>
-<td class="cl-7cba4df0"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">6ba36f0ae66d492ab833bb597128592c</span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">6</span></p></td>
-<td class="cl-7cba4df0"><p class="cl-7cba26be"><span class="cl-7cb0f3d2">MAYANI DONALD</span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">3</span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"> 3</span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2">1</span></p></td>
-<td class="cl-7cba4df0"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df0"><p class="cl-7cba26be"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-<td class="cl-7cba4df1"><p class="cl-7cba26bf"><span class="cl-7cb0f3d2"></span></p></td>
-</tr>
-</tbody>
-</table>
-</div></template><div class="flextable-shadow-host" id="aa4a5e31-bb69-4b1c-9faf-9c6edebb0598"></div>
-<script>
-var dest = document.getElementById("aa4a5e31-bb69-4b1c-9faf-9c6edebb0598");
-var template = document.getElementById("9f863786-2c25-4018-b34f-173387094206");
-var fantome = dest.attachShadow({mode: 'open'});
-var templateContent = template.content;
-fantome.appendChild(templateContent);
-</script><p>It is possible to do the same for the pre-processed data and the
+<p>It is possible to do the same for the pre-processed data and the
 anonymized data with the functions <code><a href="../reference/ArchiveAnoData.html">ArchiveAnoData()</a></code> and
 <code><a href="../reference/ArchiveProcData.html">ArchiveProcData()</a></code> respectively</p>
 </div>
@@ -906,12 +258,12 @@ anonymized data with the functions <code><a href="../reference/ArchiveAnoData.ht
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by The package maintainer.</p>
+<p>Developed by Amsata Niang.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
