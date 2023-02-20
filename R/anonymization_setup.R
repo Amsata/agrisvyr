@@ -57,12 +57,22 @@ create_ano_folders <- function(agrisvy, overwrite = FALSE) {
 #' Extract label of all variable of a dataset
 #'
 #' @param fileName dataset name
+#' @param type data type
 #'
 #' @return
+#' @importFrom haven read_dta
+#' @importFrom haven read_sav
 #' @export
 #' @examples
-labels <- function(fileName) {
-  curData <- read_dta(fileName, encoding = "latin1")
+labels <- function(fileName,type) {
+
+  if(type %in% ".dta"){
+    curData <- haven::read_dta(fileName, encoding = "latin1")
+    }
+
+  if(type %in% ".SAV"){
+    curData <- haven::read_sav(fileName, encoding = "latin1")
+    }
   curLabels <- data.frame(
     "name"  = names(curData),
     "label" = sapply(curData, function(x) attr(x, "label")) %>% as.character()
@@ -137,7 +147,7 @@ create_wb <- function(agrisvy, data, wb_file) {
   for (i in 1:length(fileNames)) {
     cli_progress_update()
     openxlsx::addWorksheet(wb, fileNames[i])
-    curDat <- labels(df$path[i])
+    curDat <- labels(df$path[i],type=agrisvy@type)
     curDat <-
       cbind(curDat, data.frame(
         a = "",
@@ -365,6 +375,8 @@ create_wb <- function(agrisvy, data, wb_file) {
 generate_varclas <- function(agrisvy) {
   # stopifnot(inherits(agrisvy,"agrisvy"))
 
+  data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
+  data_flder=data_flder[length(data_flder)]
 
   data_files   <- list.files(file.path(DataPath(agrisvy)),
                              pattern = glue::glue("{agrisvy@type}$"),
@@ -374,7 +386,9 @@ generate_varclas <- function(agrisvy) {
   x1           <- rbind.fill(x)
 
   wb           <- lapply(x, function(z) {
-    paste(z[1:length(z) - 1], sep = "", collapse = "_")
+    res=paste(z[1:length(z) - 1], sep = "", collapse = "_")
+    if(res=="") res=data_flder
+    return(res)
   })
 
   unique_wb    <- unique(unlist(wb))
@@ -417,9 +431,11 @@ copyDirStr <- function(from, to) {
     base::unlink(to, recursive = TRUE)
   }
   dir_list <- list.dirs(from, full.names = FALSE)
-  dir_list <- dir_list[2:length(dir_list)]
 
-  purrr::walk(file.path(to, dir_list), base::dir.create)
+  if(dir_list!=""){
+    dir_list <- dir_list[2:length(dir_list)]
+    purrr::walk(file.path(to, dir_list), base::dir.create)
+  }
 }
 
 
@@ -446,25 +462,25 @@ msg=paste(unlist(strsplit(file, "/")), collapse = "=>")
 
 if(type=="proc"){
   r_file=file.path(preProcScriptDir(agrisvy), gsub(paste0(agrisvy@type, "$"), "_proc.R", file))
-  save_path=file.path(preprocDataDir(agrisvy),paste0(paste(gsub(agrisvy@type,"",file[length(file)]),sep = "", collapse = "_"),"_proc.dta"))
+  save_path=file.path(preprocDataDir(agrisvy),paste0(paste(gsub(agrisvy@type,"",file[length(file)]),sep = "", collapse = "_"),paste0("_proc",agrisvy@type)))
   template=system.file("txt_template","preprocessing.txt",package = "agrisvyr")
 
 }
 
 if(type=="ano"){
   r_file=file.path(anoScriptDir(agrisvy),gsub(paste0(agrisvy@type, "$"),"_ano.R", file))
-  save_path=file.path(tempfileDir(agrisvy),"temp_ano",paste0(paste(gsub(agrisvy@type, "",file[length(file)]),sep = "", collapse = "_"),"_tmp.dta"))
+  save_path=file.path(tempfileDir(agrisvy),"temp_ano",paste0(paste(gsub(agrisvy@type, "",file[length(file)]),sep = "", collapse = "_"),paste0("_tmp",agrisvy@type)))
   template=system.file("txt_template","anonymization_script.txt",package = "agrisvyr")
   file           = file.path(preprocDataDir(agrisvy),
                              paste0(paste(gsub(agrisvy@type, "",
                                                file[length(file)]),
                                           sep = "",collapse = "_" ),
-                                    "_proc.dta"))
+                                    paste0("_proc",agrisvy@type)))
  }
 
   if(type=="wksp_proc"){
     r_file=file.path(preProcScriptDir(agrisvy), gsub(paste0(agrisvy@type, "$"), "_proc.qmd", file))
-    save_path=file.path(preprocDataDir(agrisvy),paste0(paste(gsub(agrisvy@type,"",file[length(file)]),sep = "", collapse = "_"),"_proc.dta"))
+    save_path=file.path(preprocDataDir(agrisvy),paste0(paste(gsub(agrisvy@type,"",file[length(file)]),sep = "", collapse = "_"),paste0("_proc",agrisvy@type)))
     template=system.file("txt_template","preproc_file_wksp_fr.txt",package = "agrisvyr")
     opn="{{"
     clse="}}"
@@ -472,7 +488,7 @@ if(type=="ano"){
 
   if(type=="wksp_ano"){
     r_file=file.path(anoScriptDir(agrisvy),gsub(paste0(agrisvy@type, "$"),"_ano.qmd", file))
-    save_path=file.path(anoDataDir(agrisvy),paste0(paste(gsub(agrisvy@type, "",file[length(file)]),sep = "", collapse = "_"),"_ano.dta"))
+    save_path=file.path(anoDataDir(agrisvy),paste0(paste(gsub(agrisvy@type, "",file[length(file)]),sep = "", collapse = "_"),paste0("_ano",agrisvy@type)))
     template=system.file("txt_template","ano_file_wksp_fr.txt",package = "agrisvyr")
     opn="{{"
     clse="}}"
@@ -487,18 +503,27 @@ if(type=="ano"){
   }
 
 
+  varclass=file.path(varClassDir(agrisvy),
+            paste0(paste(z[1:length(z) - 1], sep = "",
+                         collapse = "_"),
+                   "_VarClas.xlsx"
+            )
+  )
+
+  data_flder=unlist(strsplit(DataPath(agrisvy),split = "/"))
+  data_flder=data_flder[length(data_flder)]
+  dirs=list.dirs(DataPath(agrisvy), full.names = FALSE)
+  if(dirs=="") varclass=file.path(varClassDir(agrisvy),paste0(data_flder,"_VarClas.xlsx"))
+
   file_attributes <- list(
     file_name      = paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_"),
     path           = file.path(file),
     r_script       = r_file,
-    xlsx_var_class = file.path(varClassDir(agrisvy),
-                               paste0(paste(z[1:length(z) - 1], sep = "",
-                                            collapse = "_"),
-                                      "_VarClas.xlsx"
-                                      )
-                               ),
+    xlsx_var_class = varclass,
     msg            =msg,
-    to_save        = save_path
+    to_save        = save_path,
+    read_function=readDataFunc(agrisvy),
+    write_function=writeDataFunc(agrisvy)
   )
   file.create(r_file)
   fileConn <- file(r_file)
@@ -564,7 +589,7 @@ create_ano_r <- function(agrisvy, file,md) {
                                paste0(paste(gsub(agrisvy@type, "",
                                                  file[length(file)]),
                                             sep = "",collapse = "_" ),
-                                      "_proc.dta")
+                                      paste0("_proc",agrisvy@type))
                                ),
     r_script       = file.path(anoScriptDir(agrisvy),
                                gsub(paste0(agrisvy@type, "$"),
@@ -580,7 +605,7 @@ create_ano_r <- function(agrisvy, file,md) {
                                paste0(paste(gsub(agrisvy@type, "",
                                                  file[length(file)]),
                                             sep = "", collapse = "_"),
-                                      "_tmp.dta"))
+                                      paste0("_tmp",agrisvy@type)))
   )
 
 template=system.file("txt_template","anonymization_script.txt",package = "agrisvyr")
@@ -705,12 +730,15 @@ setup_anonymization <- function(agrisvy, overwrite) {
   obj_name=deparse(substitute(agrisvy))
 
   setwd(agrisvy@workingDir)
+ if(dir.exists("data")){
+   unlink("data",recursive = TRUE)
+ }
   dir.create("data")
   R.utils::copyDirectory(DataPath(agrisvy), "data")
 
   create_project(path = "SDC_project", open = TRUE, rstudio = TRUE)
   agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC_project")
-  setwd("SDC_project")
+  setwd(agrisvy@workingDir)
   unlink("R",recursive = TRUE)
 
   # stopifnot(inherits(agrisvy,"agrisvy"))
@@ -764,20 +792,20 @@ setup_anonymization <- function(agrisvy, overwrite) {
   #generate final.R ano file
 
 
-  temp_ano_files=list.files(file.path(tempfileDir(agrisvy),"temp_ano"),pattern = ".dta$",recursive = TRUE)
+  temp_ano_files=list.files(file.path(tempfileDir(agrisvy),"temp_ano"),pattern = paste0(agrisvy@type,"$"),recursive = TRUE)
 
   path_ano_temp_files=file.path(tempfileDir(agrisvy),"temp_ano",temp_ano_files)
 
   # read_files=paste0("data=read_dta(\"",path_ano_temp_files,"\")")
-  read_files=glue::glue("data=read_dta(\"{path_ano_temp_files}\")")
+  read_files=glue::glue("data={readDataFunc(agrisvy)}(\"{path_ano_temp_files}\")")
   dataset=gsub("_tmp","",temp_ano_files)
   ano_dataset=paste0(gsub(agrisvy@type,
                           "",
                           dataset),
-                     "_ano.dta")
+                     paste0("_ano",agrisvy@type))
 
   # save_files=paste0("write_dta(data,\"07_Anonymized data/","ano_",dataset,"\")")
-  save_files=glue::glue("write_dta(data,\"{anoDataDir(agrisvy)}/{ano_dataset}\")")
+  save_files=glue::glue("{writeDataFunc(agrisvy)}(data,\"{anoDataDir(agrisvy)}/{ano_dataset}\")")
   ff=paste(read_files,save_files,sep = ",")
 
   final=c("#--------------------------------------------------------------------------",
@@ -888,7 +916,7 @@ runAnon <- function(agrisvy){
   }
 
   #Run all pre-processing
-  path_script=file.path(anoScriptDir(agrisvy),list_script)
+  path_script=file.path(anoScriptDir(agrisvy),list.files(anoScriptDir(agrisvy),pattern = "_ano.R$"))
 
   if(length(path_script)!=0){
     purrr::walk(path_script,source)
@@ -896,8 +924,8 @@ runAnon <- function(agrisvy){
 
 
   #clear data
-  list_data=list.files(anoDataDir(agrisvy),recursive = TRUE)
-  path_list_data=file.path(anoDataDir(agrisvy),list_data)
+  path_list_data=file.path(anoDataDir(agrisvy),list.files(anoDataDir(agrisvy),recursive = TRUE))
+
 
   if (length(path_list_data)!=0) {
     purrr::walk(path_list_data,file.remove)

@@ -25,7 +25,7 @@ sdcMessage("{file_attributes$msg}")
 # Load microdata to be anonymized                                *
 #*****************************************************************
 
-inputdata=readMicrodata(path="{file_attributes$path}",type="stata", convertCharToFac=FALSE, drop_all_missings=FALSE)
+inputdata={file_attributes$read_function}("{file_attributes$path}")
 #*****************************************************************
 # Load variable classification                                   *
 #*****************************************************************
@@ -39,4 +39,4 @@ ano_variable
 #*****************************************************************
 # saving anonymized data                                         *
 #*****************************************************************
-write_dta(inputdata,"{file_attributes$to_save}")
+{file_attributes$write_function}(inputdata,"{file_attributes$to_save}")

@@ -6,17 +6,19 @@
 #' @param name name of the sheet where the description should be saved
 #' @param id_cols column for witch description will not be generated
 #' @param wb name of the workbook
+#' @param type format of the data
 #'
 #' @return
 #' @import openxlsx
 #' @importFrom haven read_dta
+#' @importFrom haven read_sav
 #' @import rlang
 #' @importFrom dplyr pull
 #' @importFrom questionr freq
 #'
 #'
 #' @examples
-genFileDes <- function(file, name, id_cols, wb) {
+genFileDes <- function(file, name, id_cols, wb,type) {
   hd1 <- openxlsx::createStyle(
     fontName = "Times New Roman",
     fontSize = 12,
@@ -62,7 +64,9 @@ genFileDes <- function(file, name, id_cols, wb) {
 
 
   counter <- 2
-  data <- haven::read_dta(file)
+  if(type %in% ".dta")   data <- haven::read_dta(file)
+  if(type %in% ".SAV")   data <- haven::read_sav(file)
+
   label <- sapply(data, function(x) attr(x, "label")) %>% as.character()
   variable_names <- names(data)
 
@@ -154,7 +158,7 @@ genDataFolderDes=function(agrisvy,data,wb_name,id_cols){
   df <- data[as.character(data[,3]) %in% wb_name,]
 
   purrr::walk(cli::cli_progress_along(df$path),~{
-    genFileDes(df$path[.x],df$file_name[.x],id_cols,wb)
+    genFileDes(df$path[.x],df$file_name[.x],id_cols,wb,type=agrisvy@type)
   })
   openxlsx::saveWorkbook(wb,file.path(fileDesDir(agrisvy),paste0(wb_name,".xlsx")),overwrite = TRUE)
 
@@ -175,6 +179,9 @@ genDataFolderDes=function(agrisvy,data,wb_name,id_cols){
 #' @examples
 genAllFileDes=function(agrisvy,id_cols=NULL){
 
+  data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
+  data_flder=data_flder[length(data_flder)]
+
   data_files   <- list.files(anoDataDir(agrisvy),
                              recursive = TRUE,pattern = agrisvy@type)
 
@@ -182,7 +189,9 @@ genAllFileDes=function(agrisvy,id_cols=NULL){
   x1           <- rbind.fill(x)
 
   wbk           <- lapply(x, function(z) {
-    paste(z[1:length(z) - 1], sep = "", collapse = "_")
+    res=paste(z[1:length(z) - 1], sep = "", collapse = "_")
+    if(res=="") res=data_flder
+    return(res)
   })
 
   unique_wb    <- unique(unlist(wbk))

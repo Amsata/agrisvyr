@@ -4,10 +4,12 @@
 \alias{labels}
 \title{Extract label of all variable of a dataset}
 \usage{
-labels(fileName)
+labels(fileName, type)
 }
 \arguments{
 \item{fileName}{dataset name}
+
+\item{type}{data type}
 }
 \description{
 Extract label of all variable of a dataset

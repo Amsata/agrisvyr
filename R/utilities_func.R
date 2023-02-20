@@ -104,3 +104,34 @@ label_val_gen=function(labels,levels) {
   }
 }
 
+
+
+#' specify haven read function depending on the data type
+#'
+#' @param agrisvy an agrisvy object
+#'
+#' @return
+#' @export
+#'
+#' @examples
+readDataFunc <- function(agrisvy){
+  if (agrisvy@type==".dta"){res="read_dta"}
+  if (agrisvy@type==".SAV"){res="read_sav"}
+return(res)
+}
+
+
+
+#' Specify haven write function depending on the data type
+#'
+#' @param agrisvy an agrisvy object
+#'
+#' @return
+#' @export
+#'
+#' @examples
+writeDataFunc <- function(agrisvy){
+  if (agrisvy@type==".dta"){res="write_dta"}
+  if (agrisvy@type==".SAV"){res="write_sav"}
+  return(res)
+}

@@ -4,7 +4,7 @@
 \alias{genFileDes}
 \title{Generate file description for a given dataset}
 \usage{
-genFileDes(file, name, id_cols, wb)
+genFileDes(file, name, id_cols, wb, type)
 }
 \arguments{
 \item{file}{dataset}
@@ -14,6 +14,8 @@ genFileDes(file, name, id_cols, wb)
 \item{id_cols}{column for witch description will not be generated}
 
 \item{wb}{name of the workbook}
+
+\item{type}{format of the data}
 }
 \description{
 Generate file description for a given dataset
