@@ -388,6 +388,8 @@ generate_varclas <- function(agrisvy) {
   wb           <- lapply(x, function(z) {
     res=paste(z[1:length(z) - 1], sep = "", collapse = "_")
     if(res=="") res=data_flder
+    res=gsub(" ","_",res)
+
     return(res)
   })
 
@@ -502,7 +504,6 @@ if(type=="ano"){
     clse="}}"
   }
 
-
   varclass=file.path(varClassDir(agrisvy),
             paste0(paste(z[1:length(z) - 1], sep = "",
                          collapse = "_"),
@@ -551,9 +552,19 @@ if(type=="ano"){
 #' @examples
 generate_preproc_r <- function(agrisvy,type,obj_name) {
   # stopifnot(inherits(agrisvy,"agrisvy"))
-  agrisMsg("INITIAL SETUP","generating pre-processing R sripts")
 
   stopifnot(dir.exists(preProcScriptDir(agrisvy)))
+
+  if(type=="proc") agrisMsg("INITIAL SETUP","generating pre-processing R sripts")
+
+  if(type=="ano") agrisMsg("INITIAL SETUP","generating anonymization R sripts")
+
+  if(type=="wksp_proc") agrisMsg("INITIAL SETUP","generating pre-processing quarto files")
+
+  if(type=="wksp_ano") agrisMsg("INITIAL SETUP","generating anonymization quarto files")
+
+  if(type=="wksp_risk") agrisMsg("INITIAL SETUP","generating risk analysis quarto files")
+
 
   data_files <- list.files(DataPath(agrisvy),
                            pattern = paste0(agrisvy@type, "$"),

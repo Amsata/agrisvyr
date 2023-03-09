@@ -10,9 +10,9 @@ editor: visual
 ---
 
 
-# Analyse du risk de divulgation de la base
+# Analyse du risque de divulgation
 
-L'analyse risk de de divulgation des microdonnées constitue une étape important pour la stratégie d'anonymization.
+L'analyse du risque de divulgation des microdonnées constitue une étape important pour la stratégie d'anonymisation.
 
 
 ```{r}
@@ -34,7 +34,7 @@ purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
 ```
 
 
-## 1. Lecture du jeux de données pré-traitées
+## 1. Lecture du jeu de données prétraité
 
 
 ```{r}
@@ -71,11 +71,11 @@ pull(Name)
 
 ## 3. Conversion des variables au bon format
 
-+ Les quasi-identifiants categorique doivent être de type `factor`
++ Les quasi-identifiants catégoriques doivent être de type `factor`
   - `donnee=mutate(donnee,across(c("var1,"var2",...,etc.),labelled::to_factor))`
 + La variable `hhid` dans doit être de type `factor` (pas `character` ou `numeric`)
   - `donnee=mutate(donnee,hhid_var=labelled::to_factor(hhid_var))`
-+ les quasi-identifiants quantitatifs doivent être de type `numeric` (évidamment!)
++ les quasi-identifiants numériques doivent être de type `numeric` (évidamment!)
   - `donnee=mutate(donnee,across(c("var1,"var2",...,etc.),as.numeric))`
 
 ```{r}
@@ -88,7 +88,7 @@ donnee=mutate(donnee,hhid_var=labelled::to_factor(hhid_var))
 donnee=mutate(donnee,across(c("var1","var2"),as.numeric))
 ```
 
-## 4. Définition du problème d'anonymization avec `sdcMicro`
+## 4. Définition du problème d'anonymisation avec `sdcMicro`
 
 1.  `dat=`jeu de données à anonymiser (obligatoire),
 
@@ -140,10 +140,12 @@ obj_{{file_attributes$file_name}}=createSdcObj(
 
 ```
 
-**Specification de variable liées aux quasi-identifiants**
+**Spécification de variable liées aux quasi-identifiants**
 
 ```{r}
+#| eval: false
 
+obj_{{file_attributes$file_name}}=addGhostVars(obj, keyVar, ghostVars)
 ```
 
 ## 2. Analyse du risk sous l'angle k-anonymat
@@ -157,7 +159,7 @@ print(obj_{{file_attributes$file_name}})
 
 ## 3. Analyse du risk sous l'angle SUDA
 
-**Intuition**: les individus ayant combinaison de quasi-identifiant unique sont plus à risk d'être ré-identifier. Parmi ceux-ci, ceux ayant une combinaison de sous-ensemble de quasi-identifiant unique sont encore plus à risque
+**Intuition**: les individus ayant une combinaison de quasi-identifiants unique sont plus à risk d'être ré-identifiés. Parmi ceux-là, ceux ayant une combinaison de sous-ensemble de quasi-identifiants unique sont encore plus à risque.
 
 ```{r}
 #| eval: false
@@ -178,9 +180,9 @@ head(obj_{{file_attributes$file_name}}@risk$suda2$attribute_level_contributions)
 
 ```
 
-## 4. Analyse du risk sous l'angle probalité individuel
+## 4. Analyse du risk sous l'angle probabilité individuel
 
-**Intuition:** dans la population, le risque de ré-identification d'une combinaison de quasi-identifiants, $k$ est tout simplement l'inverse de la fréquence de de cette combinaison , $\frac{1}{F_{k}}$ . Cependant, puisque nous travaillion avec un échantillion, on ne connait pas la vraie valeur de $F_{k}$ , par conséquent, on l'estime à travers un modele.
+**Intuition:** dans la population, le risque de ré-identification d'un individu ayant une combinaison de quasi-identifiants, $k$ est tout simplement l'inverse de la fréquence de de cette combinaison , $\frac{1}{F_{k}}$ . Cependant, puisque nous travaillion avec un échantillion, on ne connait pas la vraie valeur de $F_{k}$ , par conséquent, on l'estime à travers un modele statistique.
 
 $$
 r_{k}=P(\frac{1}{F_{k}}/f_{k},\text{worse case scenario})
@@ -202,16 +204,16 @@ summary(obj_{{file_attributes$file_name}}@risk$individual[,"risk"])
 ## 5. Analyse du risk sous l'angle global
 
 
-+global_risk_ER: expected number of re-identification.
-+global_risk: global risk (sum of indivdual risks).
-+global_risk_pct: global risk in percent.
-+Res: matrix with the risk, frequency in the sample and grossed-up frequency in the population
++ global_risk_ER: expected number of re-identification.
++ global_risk: global risk (sum of indivdual risks).
++ global_risk_pct: global risk in percent.
++ Res: matrix with the risk, frequency in the sample and grossed-up frequency in the population
 (and the hierachical risk) for each observation.
-+global_threshold: for a given max_global_risk the threshold for the risk of observations.
-+max_global_risk: the input max_global_risk of the function.
-+hier_risk_ER: expected number of re-identification with household structure.
-+hier_risk: global risk with household structure (sum of indivdual risks).
-+hier_risk_pct: global risk with household structure in percent.
++ global_threshold: for a given max_global_risk the threshold for the risk of observations.
++ max_global_risk: the input max_global_risk of the function.
++ hier_risk_ER: expected number of re-identification with household structure.
++ hier_risk: global risk with household structure (sum of indivdual risks).
++ hier_risk_pct: global risk with household structure in percent.
 
 ```{r}
 #| eval: false
@@ -228,7 +230,7 @@ obj_{{file_attributes$file_name}}@risk$global$threshold
 
 ## 6. Sauvegarder l'object `sdcMicro`
 
-On sauvegarde l'object `sdcMicro` pour l'utiliser untérieurement lors de l'anonymization
+On sauvegarde l'objet `sdcMicro` pour l'utiliser ultérieurement lors de l'anonymisation
 
 ```{r}
 #| eval: true

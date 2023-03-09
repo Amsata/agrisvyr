@@ -406,6 +406,8 @@ setMethod("DataPath",
 #'
 #' @return
 #' @importFrom dplyr %>% filter
+#' @importFrom haven read_dta
+#' @importFrom haven read_sav
 #' @export
 #'
 #' @examples
@@ -415,8 +417,6 @@ genDataList <- function(path,type){
 
   d=unlist(strsplit(path[1],"/"))
   d=gsub(" ","_",d[length(d)])
-
-  pattern=path[2]
 
   data_files = list.files(path, pattern = type, recursive = TRUE)
 
@@ -444,7 +444,8 @@ genDataList <- function(path,type){
 
   data_list=lapply(unique_wb, function(x){
     df=data_summary %>% dplyr::filter(workbook==x)
-    res=lapply(df$path,read_dta)
+    if(type==".dta") res=lapply(df$path,read_dta)
+    if(type==".SAV") res=lapply(df$path,read_sav)
     names(res)=df$file_name
     return(res)
   })

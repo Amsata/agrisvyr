@@ -94,22 +94,28 @@ if(type=="proc"){
 
   qmd_file=file.path(preProcScriptDir(agrisvy),
                      list.files(preProcScriptDir(agrisvy),pattern = ".qmd$"))
+  agrisMsg("RUNNING REPORTS","preprocessing")
+
 }
 
   if(type=="risk"){
 
     qmd_file=file.path(agrisvy@riskAnalysisDir,
                        list.files(agrisvy@riskAnalysisDir,pattern = ".qmd$"))
+    agrisMsg("RUNNING REPORTS","risk analysis")
+
   }
 
   if(type=="ano"){
 
     qmd_file=file.path(anoScriptDir(agrisvy),
                        list.files(anoScriptDir(agrisvy),pattern = ".qmd$"))
+    agrisMsg("RUNNING REPORTS","anonymization")
+
   }
 
   purrr::walk(qmd_file,function(x){
-    quarto::quarto_render(x,output_format = format)
+    quarto::quarto_render(x,output_format = format,quiet = TRUE)
   })
 
 }

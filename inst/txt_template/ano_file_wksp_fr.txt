@@ -11,22 +11,18 @@ editor: visual
 
 # Anonymisation de la base {{file_attributes$msg}}
 
-A l'issue de l'analyse du risk de divulgation, au cas où le niveau du risk est jugé élevé, il fuadra appliquer
-des methods de control de divulgation pour réduire le risk.
+A l'issue de l'analyse du risque de divulgation, au cas où le niveau du risque est jugé élevé, il faudra appliquer des méthodes de control de divulgation pour réduire le risk.
 
-Les methods classic peuvent être classé en deux catégories:
-+ Les méthodes non-probabilistes (réduient le niveau de détails dans le jeu de données)
-  -recodage global, codage au top ou en bas,supressions locales, etc.
-+ Les méthods probabilistes (introduisent une incertitude en altérant les valeurs initiles)
-  - micro-aggrégation,ajout de bruits,permutation de lignes, etc.
+Les méthodes classiques peuvent être classé en deux catégories:
 
-Dans certaines situations, il est possible d'appliquer des methods ad-hoc pour répondre à un besoins specifique
-de l'arbitrage risque-utilisé du jeu de données concerné.
++ Les méthodes non-probabilistes (réduisent le niveau de détails dans le jeu de données)
+  -recodage global, codage au top ou en bas, suppressions locales, etc.
++ Les méthodes probabilistes (introduisent une incertitude en altérant les valeurs initiales)
+  - micro-agrégation, ajout de bruits, permutation de lignes, etc.
 
+Dans certaines situations, il est possible d'appliquer des méthodes ad-hoc pour répondre à un besoin spécifique de l'arbitrage risque-utilité du jeu de données concerné.
 
 ## 1. Importation de l'object `sdcMicro`
-
-
 
 ```{r}
 #| eval: true
@@ -50,9 +46,11 @@ obj_{{file_attributes$file_name}}=readRDS(file.path("../","{{agrisvy@SdcObjDir}}
 obj_{{file_attributes$file_name}}_in=obj_{{file_attributes$file_name}}
 ```
 
-## anonymization des quasi-identifiants catégoriques
+## Application des méthodes non-probabilistes
 
-### recodage global
+### Recodage global
+
+**Intuition**: Combine plusieurs catégories d'une variable pour former une nouvelle catégorie (plus générales) résultant ainsi à une nouvelle variables avec moins de catégories (détails)
 
 `groupAndRename(obj, var, before, after, addNA = FALSE)`
 
@@ -69,7 +67,20 @@ globalRecode(obj=obj_{{file_attributes$file_name}}, column=, breaks=)
 table(get.sdcMicroObj(obj=obj_{{file_attributes$file_name}}, type="manipKeyVars")$var)
 ```
 
-### supression local
+### codage au top
+
+`topBotCoding(obj, value, replacement, kind = "top", column = NULL)
+`
+```{r}
+#| eval: false
+topBotCoding(obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
+, value, replacement, kind = "top", column = )
+
+```
+
+### Supression locale
+
+**Intuition**: remplacées des catégories par des valeurs manquantes l'objectif étant d'éliminer les combinaisons à risque en augmentant le nombre d'enregistrements correspondant à chaque combinaison de valeurs clés.
 
 `localSuppression(obj, k = 2, importance = NULL, combs = NULL, ...)`
 
@@ -86,9 +97,12 @@ sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
 
 ```
 
-## Anonymisation des quasi-identifiants numeriques
+## Application des méthodes probabilistes
 
 ### Micro-aggregation
+
+**Intuition**: autorisent la publication
+des ensembles de microdonnées si les enregistrements correspondent à des groupes de k individus ou plus, où aucun individu ne domine (c'est-à-dire ne contribue trop) au groupe et où k est une valeur seuil.
 
 ```{r}
 #| eval: false
@@ -111,6 +125,8 @@ microaggregation(
 
 ### Ajout de bruit
 
+**Intuition**: Ajouter ou la soustraires de (petites) valeurs aux valeurs initiales d'une variable.L'avantage de l'ajout de bruit est que le bruit est généralement continu avec une moyenne nulle et qu'il n'est pas possible d'obtenir une correspondance exacte avec des fichiers externes.
+
 `addNoise(obj, variables = NULL, noise = 150, method = "additive", ...)
 `
 
@@ -122,18 +138,9 @@ addNoise(obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
 
 ```
 
-### codage au top
+### Pste-randomisation (PRAM)
 
-`topBotCoding(obj, value, replacement, kind = "top", column = NULL)
-`
-```{r}
-#| eval: false
-topBotCoding(obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
-, value, replacement, kind = "top", column = )
-
-```
-
-### PRAM
+**Intuition**: forme de d'erreur de classification intentionnelle, à l'aide d'un mécanisme de probabilité connu et prédéterminé. L'application du PRAM signifie que, pour chaque enregistrement d'un fichier de microdonnées, le score d'une ou de plusieurs variables catégorielles est modifié avec une certaine probabilité. Cette opération est effectuée indépendamment pour chacun des enregistrements
 
 ```{r}
 #| eval: false
@@ -142,35 +149,17 @@ pram(obj=sdcMicro::plot.localSuppression(obj_{{file_attributes$file_name}})
 
 ```
 
-### record swapping
+### Permutation par rang (Rank swapping)
+
+**Intuition**: les valeurs d'une variable Xi sont classées par ordre croissant
+par ordre croissant, puis chaque valeur classée de Xi est remplacée par une autre valeur classée
+choisie au hasard dans une fourchette restreinte (par exemple, le rang de deux valeurs permutées ne peut pas différer de plus de p% du nombre total d'enregistrements, où p est un paramètre d'entrée).
+Cet algorithme est utilisé indépendamment sur chaque variable de l'ensemble de données original
 
 ```{r}
 #| eval: false
 
-recordSwap(
-  data,
-  hid,
-  hierarchy,
-  similar,
-  swaprate = 0.05,
-  risk = NULL,
-  risk_threshold = 0,
-  k_anonymity = 3,
-  risk_variables = NULL,
-  carry_along = NULL,
-  return_swapped_id = FALSE,
-  log_file_name = "TRS_logfile.txt",
-  seed = NULL,
-  ...
-)
-
 data(testdata2)
-sdc <- createSdcObj(testdata2,
-  keyVars=c('urbrur','roof','walls','water','electcon','relat','sex'),
-  numVars=c('expend','income','savings'), w='sampling_weight')
-sdc <- shuffle(sdc, method=c('ds'),regmethod= c('lm'), covmethod=c('spearman'),
-		form=savings+expend ~ urbrur+walls)
-
 
 sdc <- createSdcObj(
   dat = testdata2,
@@ -180,7 +169,22 @@ sdc <- createSdcObj(
 sdc <- rankSwap(sdc)
 
 ```
+### Methodes de réarrangement des données (data shuffling)
 
+**Intuition**: type particulier de permutation des données continues ou ordinales qui garantit que les distributions marginales dans les ensembles de données réarrangées seront exactement les mêmes que les distributions marginales dans les données originales.
+
+```{r}
+#| eval: false
+
+data(testdata2)
+sdc <- createSdcObj(testdata2,
+  keyVars=c('urbrur','roof','walls','water','electcon','relat','sex'),
+  numVars=c('expend','income','savings'), w='sampling_weight')
+
+sdc <- shuffle(sdc, method=c('ds'),regmethod= c('lm'), covmethod=c('spearman'),
+		form=savings+expend ~ urbrur+walls)
+
+```
 
 ## Extraction de la base anonymisée
 
@@ -190,7 +194,6 @@ sdc <- rankSwap(sdc)
 donnee_ano=extractManipData(obj_{{file_attributes$file_name}})
 
 ```
-
 
 ## Mettre à jour le rapport d'anonymization
 
@@ -212,9 +215,7 @@ saveReprtObj(
 
 ```
 
-
-
-## Post-traitement
+## Post-traitement des données
 
 ```{r}
 #| eval: false
