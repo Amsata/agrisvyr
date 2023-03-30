@@ -95,7 +95,7 @@ if (!is.null(individual)) obj@individual <- individual
 if (!is.null(suda)) obj@suda             <- suda
 
 
-saveRDS(obj,glue("{agrisvy@workingDir}/{anoreportDir(agrisvy)}/child_{childName}.rds"))
+saveRDS(obj,glue("{anoreportDir(agrisvy)}/child_{childName}.rds"))
 
 file <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
 file.create(file)
