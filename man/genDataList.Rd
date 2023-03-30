@@ -2,15 +2,18 @@
 % Please edit documentation in R/agrisvy_object.R
 \name{genDataList}
 \alias{genDataList}
-\title{Put all data files in a list}
+\title{Put the different microdata in a list}
 \usage{
 genDataList(path, type)
 }
 \arguments{
-\item{path}{path to data folder}
+\item{path}{Path to the folder containing the data}
 
-\item{type}{extension of the data}
+\item{type}{type of the data. The possible values are \code{".dta"} for STATA and \code{".sav"} for SPSS}
+}
+\value{
+a list
 }
 \description{
-Put all data files in a list
+Put the different microdata in a list
 }

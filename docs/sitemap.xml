@@ -46,13 +46,25 @@
     <loc>/reference/anoDataDir-agrisvy-method.html</loc>
   </url>
   <url>
+    <loc>/reference/anoDataDir.html</loc>
+  </url>
+  <url>
     <loc>/reference/anoreportDir-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/anoreportDir.html</loc>
   </url>
   <url>
     <loc>/reference/anoScriptDir-agrisvy-method.html</loc>
   </url>
   <url>
+    <loc>/reference/anoScriptDir.html</loc>
+  </url>
+  <url>
     <loc>/reference/aobDir-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aobDir.html</loc>
   </url>
   <url>
     <loc>/reference/ArchiveAnoData.html</loc>
@@ -97,7 +109,13 @@
     <loc>/reference/DataPath-agrisvy-method.html</loc>
   </url>
   <url>
+    <loc>/reference/DataPath.html</loc>
+  </url>
+  <url>
     <loc>/reference/fileDesDir-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fileDesDir.html</loc>
   </url>
   <url>
     <loc>/reference/finMessage.html</loc>
@@ -148,6 +166,9 @@
     <loc>/reference/infoLossReport-agrisvy-method.html</loc>
   </url>
   <url>
+    <loc>/reference/infoLossReport.html</loc>
+  </url>
+  <url>
     <loc>/reference/KanoTab.html</loc>
   </url>
   <url>
@@ -163,10 +184,19 @@
     <loc>/reference/preprocDataDir-agrisvy-method.html</loc>
   </url>
   <url>
+    <loc>/reference/preprocDataDir.html</loc>
+  </url>
+  <url>
     <loc>/reference/preprocMessage.html</loc>
   </url>
   <url>
     <loc>/reference/preProcScriptDir-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/preProcScriptDir.html</loc>
+  </url>
+  <url>
+    <loc>/reference/readDataFunc.html</loc>
   </url>
   <url>
     <loc>/reference/RenderGlobalRisk-sdcReportObj-method.html</loc>
@@ -220,6 +250,15 @@
     <loc>/reference/tempfileDir-agrisvy-method.html</loc>
   </url>
   <url>
+    <loc>/reference/tempfileDir.html</loc>
+  </url>
+  <url>
     <loc>/reference/varClassDir-agrisvy-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/varClassDir.html</loc>
+  </url>
+  <url>
+    <loc>/reference/writeDataFunc.html</loc>
   </url>
 </urlset>

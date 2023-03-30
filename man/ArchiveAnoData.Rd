@@ -2,13 +2,13 @@
 % Please edit documentation in R/agrisvy_object.R
 \name{ArchiveAnoData}
 \alias{ArchiveAnoData}
-\title{Archive the anonymized data inside an agrisvy object}
+\title{Archive the anonymized data inside the AGRIS survey object}
 \usage{
 ArchiveAnoData(agrisvy)
 }
 \arguments{
-\item{agrisvy}{an agrisvy object}
+\item{agrisvy}{an \code{agrisvy} object}
 }
 \description{
-Archive the anonymized data inside an agrisvy object
+Archive the anonymized data inside the AGRIS survey object
 }

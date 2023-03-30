@@ -2,13 +2,13 @@
 % Please edit documentation in R/agrisvy_object.R
 \name{ArchiveCleanData}
 \alias{ArchiveCleanData}
-\title{Archive the clean data inside an agrisvy object}
+\title{Archive the clean data inside an \code{agrisvy} object}
 \usage{
 ArchiveCleanData(agrisvy)
 }
 \arguments{
-\item{agrisvy}{}
+\item{agrisvy}{an \code{agrisvy} object}
 }
 \description{
-Archive the clean data inside an agrisvy object
+Archive the clean data inside an \code{agrisvy} object
 }

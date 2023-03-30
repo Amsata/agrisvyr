@@ -190,19 +190,22 @@ setMethod("show",signature="agrisvy",function(object){
     obj
   }
 
-
-setGeneric("varClassDir", function(obj) standardGeneric("varClassDir"))
-
-#' give the complete path of the varClassDir directory
+#' Give the path to the variable classification folder
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
-#' character
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("varClassDir",
+
+  varClassDir <- function(obj){
+    varClassDirX(obj)
+  }
+
+setGeneric("varClassDirX", function(obj) standardGeneric("varClassDirX"))
+
+setMethod(f="varClassDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@varClassDir)
@@ -210,18 +213,21 @@ setMethod("varClassDir",
 )
 
 
-setGeneric("preProcScriptDir", function(obj) standardGeneric("preProcScriptDir"))
-
-#' give the complete path of the preProcScriptDir directory
+#' Give the path to the folder containing the scripts of pre-processing
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
-#' character
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("preProcScriptDir",
+  preProcScriptDir <- function(obj){
+    preProcScriptDirX(obj)
+  }
+
+setGeneric("preProcScriptDirX", function(obj) standardGeneric("preProcScriptDirX"))
+
+setMethod("preProcScriptDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@preProcScriptDir)
@@ -229,37 +235,43 @@ setMethod("preProcScriptDir",
 )
 
 
-setGeneric("preprocDataDir", function(obj) standardGeneric("preprocDataDir"))
-
-#' give the complete path of the preprocDataDir directory
+#' Give the path to folder containing the pre-processed data
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("preprocDataDir",
+preprocDataDir <- function(obj){
+  preprocDataDirX(obj)
+}
+
+
+setGeneric("preprocDataDirX", function(obj) standardGeneric("preprocDataDirX"))
+
+setMethod("preprocDataDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@preprocDataDir)
     }
 )
 
-
-
-setGeneric("anoScriptDir", function(obj) standardGeneric("anoScriptDir"))
-
-#' Give the complete path of the anoScriptDir directory
+#' Give the path to the folder coning the anonymization scripts
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
-#' character
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("anoScriptDir",
+anoScriptDir <- function(obj){
+  anoScriptDirX(obj)
+}
+
+setGeneric("anoScriptDirX", function(obj) standardGeneric("anoScriptDirX"))
+
+setMethod("anoScriptDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@anoScriptDir)
@@ -267,18 +279,22 @@ setMethod("anoScriptDir",
 )
 
 
-
-setGeneric("anoreportDir", function(obj) standardGeneric("anoreportDir"))
-
-#' Give the complete path of the anoreportDir directory
+#' Give the path to the folder containg the anonymization report
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("anoreportDir",
+
+anoreportDir <- function(obj){
+  anoreportDirX(obj)
+}
+
+setGeneric("anoreportDirX", function(obj) standardGeneric("anoreportDirX"))
+
+setMethod("anoreportDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@anoreportDir)
@@ -286,55 +302,61 @@ setMethod("anoreportDir",
 )
 
 
-
-setGeneric("anoDataDir", function(obj) standardGeneric("anoDataDir"))
-
-#' Goive the complete path of the anoDataDir directory
+#' Give the path to the folder containing the anonymized data
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("anoDataDir",
+anoDataDir <- function(obj){
+  anoDataDirX(obj)
+}
+setGeneric("anoDataDirX", function(obj) standardGeneric("anoDataDirX"))
+
+setMethod("anoDataDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@anoDataDir)
     }
 )
 
-
-setGeneric("fileDesDir", function(obj) standardGeneric("fileDesDir"))
-
-#' Give the complete path of the fileDesDir directory
+#' Give the path to the folder containing the files description
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("fileDesDir",
+fileDesDir <- function(obj) {
+  fileDesDirX(obj)
+}
+
+setGeneric("fileDesDirX", function(obj) standardGeneric("fileDesDirX"))
+
+setMethod("fileDesDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@fileDesDir)
     }
 )
 
-
-
-setGeneric("infoLossReport", function(obj) standardGeneric("infoLossReport"))
-
-#' Give the complete path of the infoLossReport directory
+#' Give the path to the folder containing the information loss report
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("infoLossReport",
+infoLossReport <- function(obj){
+  infoLossReportX(obj)
+}
+setGeneric("infoLossReportX", function(obj) standardGeneric("infoLossReportX"))
+
+setMethod("infoLossReportX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@infoLossReport)
@@ -342,36 +364,42 @@ setMethod("infoLossReport",
 )
 
 
-
-setGeneric("tempfileDir", function(obj) standardGeneric("tempfileDir"))
-
-#' Give the complete path of the tempfileDir directory
+#' Give the path of the folder containing temporary files generated during the anonymization process
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("tempfileDir",
+tempfileDir <- function(obj){
+  tempfileDirX(obj)
+}
+
+setGeneric("tempfileDirX", function(obj) standardGeneric("tempfileDirX"))
+
+setMethod("tempfileDirX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@tempfileDir)
     }
 )
 
-
-
-setGeneric("aobDir", function(obj) standardGeneric("aobDir"))
-
-#' Give the complete path of the aobDir directory
+#' Give the path of the folder any other business (aob)
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
+#' @return a character
 #' @export
 #'
 #' @examples
+
+aobDir <- function(obj){
+  aobDirX(obj)
+}
+
+setGeneric("aobDir", function(obj) standardGeneric("aobDir"))
+
 setMethod("aobDir",
   signature = "agrisvy", definition =
     function(obj) {
@@ -379,19 +407,20 @@ setMethod("aobDir",
     }
 )
 
-
-setGeneric("DataPath", function(obj) standardGeneric("DataPath"))
-
-#' Give the complete path to the data to be anonymized
+#' Give the path of the folder containing the microdata to be anonymized
 #'
-#' @param agrisvy
+#' @param obj an \code{agrisvy} object
 #'
-#' @return
-#' character
+#' @return a character
 #' @export
 #'
 #' @examples
-setMethod("DataPath",
+DataPath <- function(obj){
+  DataPathX(obj)
+}
+setGeneric("DataPathX", function(obj) standardGeneric("DataPathX"))
+
+setMethod("DataPathX",
   signature = "agrisvy", definition =
     function(obj) {
       file.path(obj@path)
@@ -399,18 +428,20 @@ setMethod("DataPath",
 )
 
 
-#' Put all data files in a list
+#' Put the different microdata in a list
 #'
-#' @param path path to data folder
-#' @param type extension of the data
+#' @param path Path to the folder containing the data
+#' @param type type of the data. The possible values are \code{".dta"} for STATA and \code{".sav"} for SPSS
 #'
-#' @return
+#' @return a list
 #' @importFrom dplyr %>% filter
 #' @importFrom haven read_dta
 #' @importFrom haven read_sav
 #' @export
 #'
 #' @examples
+
+
 genDataList <- function(path,type){
 
   # path=anoDataDir(agrisvy)
@@ -456,9 +487,9 @@ return(data_list)
 
 
 
-#' Archive the anonymized data inside an agrisvy object
+#' Archive the anonymized data inside the AGRIS survey object
 #'
-#' @param agrisvy an agrisvy object
+#' @param agrisvy an \code{agrisvy} object
 #'
 #' @return
 #' @export
@@ -481,9 +512,9 @@ ArchiveAnoData=function(agrisvy){
 
 
 
-#' Archive the clean data inside an agrisvy object
+#' Archive the clean data inside an \code{agrisvy} object
 #'
-#' @param agrisvy
+#' @param agrisvy an \code{agrisvy} object
 #'
 #' @return
 #' @export
@@ -503,9 +534,9 @@ ArchiveCleanData=function(agrisvy){
 }
 
 
-#' Archive the preprocessed data inside an agrisvy object
+#' Archive the preprocessed data inside an \code{agrisvy} object
 #'
-#' @param agrisvy
+#' @param agrisvy an \code{agrisvy} object
 #'
 #' @return
 #' @export

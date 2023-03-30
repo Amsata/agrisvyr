@@ -2,13 +2,13 @@
 % Please edit documentation in R/agrisvy_object.R
 \name{ArchiveProcData}
 \alias{ArchiveProcData}
-\title{Archive the preprocessed data inside an agrisvy object}
+\title{Archive the preprocessed data inside an \code{agrisvy} object}
 \usage{
 ArchiveProcData(agrisvy)
 }
 \arguments{
-\item{agrisvy}{}
+\item{agrisvy}{an \code{agrisvy} object}
 }
 \description{
-Archive the preprocessed data inside an agrisvy object
+Archive the preprocessed data inside an \code{agrisvy} object
 }
