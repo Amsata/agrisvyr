@@ -46,7 +46,7 @@ methods::setClass(
 
 #' Title
 #'
-#' @param agrisvy
+#' @param agrisvy an \code{agrisvy} object
 #'
 #' @return
 #' @export

@@ -55,17 +55,51 @@ setClass("sdcReportObj",
 setIs("sdcReportObj", "sdcReportObjOrNULL")
 
 
-#' Title
+#' Append the anonymization report by integrating automatically the results
+#' from the current anonymization exercise
 #'
-#' @param intialObj
-#' @param finalObj
-#' @param unit
-#' @param hierarchy
-#' @param global
-#' @param individual
-#' @param suda
-#' @param hierarchical
-#' @param childName
+#'This function help to automatically integrate the results from the current
+#'anonymization to the anonymization report generated during the anonymization
+#'setup. This results include the disclosure risk analysis (global risk,
+#'individual risk, SUDA (if enabled),hierarchical risk (if enabled)) and the
+#'comparison of these risk measures before and after anonymization.
+#'
+#' @param intialObj an \code{sdcMicro} object in which no anonymization is
+#' applied yet. One can save the \code{sdcMicro} object just after its creation
+#' in a object named for example \code{sdc_obj_initial} and use it later in
+#' \code{intialObj=sdc_obj_initial}
+#' @param finalObj the \code{sdcMicro} object where all anonymization measures
+#' has been applied. One can save the last version of the \code{sdcMicro} object
+#' created for the anonymization as \code{sdc_obj_final} and use it later for in
+#' \code{finalObj=sdc_obj_final}.
+#' @param unit statistical unit of the microdata. This is used to make the analysis
+#' in the anonymization report dynamic. If the microdata is a household data, we should
+#' considered household as \code{unit}. If the microdata is a household member data, we can specify
+#' \code{"member"} as \code{unit} or \code{"individual"} as \code{unit}
+#'
+#' @param hierarchy If \code{hierarchical=TRUE}, \code{hierarchy} contain the
+#' higher hierarchical unit that should be used in the analysis of the
+#' hierarchical  risk. In the anonymization of household member microdata,one should
+#' specify \code{hierarchy="household"} if the household ID is specify in the argument
+#' \code{hhid} of the \code{sdcMicro} object and that \code{hierarchical=TRUE} in the
+#' anonymization report object.
+#' @param global a \code{logical} specifying if \code{TRUE}, that the global risk
+#' analysis and comparison before and after anonymization should be included in the
+#' report.
+#' @param individual a \code{logical} specifying, if \code{individual=TRUE}, that the
+#' individual probabilistic risk and its comparison before and after anonymyzation
+#' should be included in the anonymization report.
+#' @param suda \code{logical} specifying if \code{suda=TRUE}, that the suda score
+#' and its comparison before and after anonymization should be included in the report.
+#' One has to make sure that the condition to compute SUDA2 score is satisfied, particularly
+#' that the number of categorical quasi-identifiers is higher than 2.
+#' @param hierarchical a \code{logical} specifying if (hierarchical=TRUE), that
+#' hierarchical risk  and its comparison before and after anonymization should be
+#' included in the report. One has to make sure that the hierarchical risk is computed
+#' when creating the \code{sdcMicro} object, that is, the argument \code{hhid} is
+#' specified.
+#' @param childName the object name used to save component of the resulting child report
+#' in the folder containing the anonymization report.
 #'
 #' @return
 #' @importFrom methods new
@@ -200,10 +234,7 @@ GlobRiskTab=function(sdc,df=FALSE,time,obj) {
   return(res)
 }
 
-
-setGeneric("RenderGlobalRisk", function(obj,time="initial") standardGeneric("RenderGlobalRisk"))
-
-#' render global risk summary in Rmarkdown
+#' Render global risk summary in Rmarkdown ducument
 #'
 #' @param sdcReportObj
 #'
@@ -215,12 +246,16 @@ setGeneric("RenderGlobalRisk", function(obj,time="initial") standardGeneric("Ren
 #' @export
 #'
 #' @examples
-setMethod("RenderGlobalRisk",signature = "sdcReportObj",
+RenderGlobalRisk <- function(obj,time="initial"){
+  RenderGlobalRiskX(obj,time="initial")
+}
+setGeneric("RenderGlobalRiskX", function(obj,time="initial") standardGeneric("RenderGlobalRiskX"))
+
+setMethod("RenderGlobalRiskX",signature = "sdcReportObj",
           definition = function(obj,time="initial"){
 
       if (time=="initial") sdcObj=obj@intialObj
       if (time=="final") sdcObj=obj@finalObj
-
 
       GlobRiskTab(sdcObj,df=FALSE,time,obj)
 
@@ -264,9 +299,6 @@ KanoTab=function(sdcObj,df=FALSE,levels=c(2,3,5),time,obj) {
   return(res)
 }
 
-
-setGeneric("renderKanoTab",function(obj,levels=c(2,3,5),time="initial") standardGeneric("renderKanoTab"))
-
 #' render k-anonymity table in rmarkdown
 #'
 #' @param sdcReportObj
@@ -280,7 +312,13 @@ setGeneric("renderKanoTab",function(obj,levels=c(2,3,5),time="initial") standard
 #' @export
 #'
 #' @examples
-setMethod("renderKanoTab",signature = "sdcReportObj",
+renderKanoTab <- function(obj,levels=c(2,3,5),time="initial"){
+  renderKanoTabX(obj,levels=c(2,3,5),time="initial")
+}
+
+setGeneric("renderKanoTabX",function(obj,levels=c(2,3,5),time="initial") standardGeneric("renderKanoTabX"))
+
+setMethod("renderKanoTabX",signature = "sdcReportObj",
           definition = function(obj,levels=c(2,3,5),time="initial") {
 
             if (time=="initial") sdcObj=obj@intialObj
@@ -336,10 +374,7 @@ RiskIndSUmmary=function(sdc,df=FALSE,time,obj){
   return(res)
 }
 
-
-setGeneric("renderRiskIndSUmmary",function(obj,time="initial") standardGeneric("renderRiskIndSUmmary"))
-
-#' render summary of individual risk
+#' Render summary of individual risk
 #'
 #' @param sdcReportObj
 #'
@@ -350,6 +385,13 @@ setGeneric("renderRiskIndSUmmary",function(obj,time="initial") standardGeneric("
 #' @export
 #'
 #' @examples
+renderRiskIndSUmmary <- function(obj,time="initial"){
+  renderRiskIndSUmmaryX(obj,time="initial")
+}
+
+setGeneric("renderRiskIndSUmmaryX",function(obj,time="initial") standardGeneric("renderRiskIndSUmmaryX"))
+
+
 setMethod("renderRiskIndSUmmary",signature = "sdcReportObj",
           definition = function(obj,time = "initial") {
 
@@ -409,7 +451,6 @@ HierRiskSummary=function(sdc,dfl=FALSE,time,obj){
   return(res)
 }
 
-setGeneric("renderHierRiskSummary",function(obj,time="initial") standardGeneric("renderHierRiskSummary"))
 
 #' render hierarchical risk summary
 #'
@@ -424,7 +465,14 @@ setGeneric("renderHierRiskSummary",function(obj,time="initial") standardGeneric(
 #' @export
 #'
 #' @examples
-setMethod("renderHierRiskSummary",signature = "sdcReportObj",
+renderHierRiskSummary <- function(obj,time="initial") {
+  renderHierRiskSummaryX(obj,time="initial")
+}
+
+setGeneric("renderHierRiskSummaryX",function(obj,time="initial") standardGeneric("renderHierRiskSummaryX"))
+
+
+setMethod("renderHierRiskSummaryX",signature = "sdcReportObj",
           definition = function(obj,time="initial"){
 
             if (time == "initial") sdcObj = obj@intialObj

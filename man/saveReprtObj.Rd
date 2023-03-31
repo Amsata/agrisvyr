@@ -2,7 +2,8 @@
 % Please edit documentation in R/report_object.R
 \name{saveReprtObj}
 \alias{saveReprtObj}
-\title{Title}
+\title{Append the anonymization report by integrating automatically the results
+from the current anonymization exercise}
 \usage{
 saveReprtObj(
   agrisvy,
@@ -18,8 +19,54 @@ saveReprtObj(
 )
 }
 \arguments{
-\item{childName}{}
+\item{intialObj}{an \code{sdcMicro} object in which no anonymization is
+applied yet. One can save the \code{sdcMicro} object just after its creation
+in a object named for example \code{sdc_obj_initial} and use it later in
+\code{intialObj=sdc_obj_initial}}
+
+\item{finalObj}{the \code{sdcMicro} object where all anonymization measures
+has been applied. One can save the last version of the \code{sdcMicro} object
+created for the anonymization as \code{sdc_obj_final} and use it later for in
+\code{finalObj=sdc_obj_final}.}
+
+\item{unit}{statistical unit of the microdata. This is used to make the analysis
+in the anonymization report dynamic. If the microdata is a household data, we should
+considered household as \code{unit}. If the microdata is a household member data, we can specify
+\code{"member"} as \code{unit} or \code{"individual"} as \code{unit}}
+
+\item{hierarchy}{If \code{hierarchical=TRUE}, \code{hierarchy} contain the
+higher hierarchical unit that should be used in the analysis of the
+hierarchical  risk. In the anonymization of household member microdata,one should
+specify \code{hierarchy="household"} if the household ID is specify in the argument
+\code{hhid} of the \code{sdcMicro} object and that \code{hierarchical=TRUE} in the
+anonymization report object.}
+
+\item{global}{a \code{logical} specifying if \code{TRUE}, that the global risk
+analysis and comparison before and after anonymization should be included in the
+report.}
+
+\item{individual}{a \code{logical} specifying, if \code{individual=TRUE}, that the
+individual probabilistic risk and its comparison before and after anonymyzation
+should be included in the anonymization report.}
+
+\item{suda}{\code{logical} specifying if \code{suda=TRUE}, that the suda score
+and its comparison before and after anonymization should be included in the report.
+One has to make sure that the condition to compute SUDA2 score is satisfied, particularly
+that the number of categorical quasi-identifiers is higher than 2.}
+
+\item{hierarchical}{a \code{logical} specifying if (hierarchical=TRUE), that
+hierarchical risk  and its comparison before and after anonymization should be
+included in the report. One has to make sure that the hierarchical risk is computed
+when creating the \code{sdcMicro} object, that is, the argument \code{hhid} is
+specified.}
+
+\item{childName}{the object name used to save component of the resulting child report
+in the folder containing the anonymization report.}
 }
 \description{
-Title
+This function help to automatically integrate the results from the current
+anonymization to the anonymization report generated during the anonymization
+setup. This results include the disclosure risk analysis (global risk,
+individual risk, SUDA (if enabled),hierarchical risk (if enabled)) and the
+comparison of these risk measures before and after anonymization.
 }

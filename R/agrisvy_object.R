@@ -113,18 +113,25 @@ setMethod("show",signature="agrisvy",function(object){
 })
 
 
-#' Create an agrisvy object
+#' Create an \code{agrisvy} object
 #'
-#' @param svyName name of the survey
-#' @param author author (institution)
-#' @param language language (display in predefined scripts)
-#' @param workingDir working directory (where the folders will be created)
-#' @param path path do the microdata of the survey
-#' @param type extension of the micro data example ".dta" for stata, ".sav" for SPSS
+#' An \code{agrisvy} object are used to store useful information that help generate files, folders
+#' scripts but most importantly customize pre-populated scripts and anonymization report
+#' template. It is used as input by some bulk run function for pre-processing, anonymization
+#' archiving, etc.
 #'
-#' @return
-#' a agrisvy object
-#'  @importFrom methods new
+#' @param svyName Name of the survey (will be used in the code comments and to customize the anonymization report)
+#' @param author Author or institution (ex. \code{"FAO"})
+#' @param language Language (used to customize the language of folder names
+#'  and the anonymization report). The possible values are \code{"en"} for English,
+#'  \code{"fr"} for French and \code{"es"} for Spanish. The default value is \code{"en"}.
+#' @param workingDir path to the working directory (where the anonymization working folder will be generated).
+#' It is recommended for this folder to be empty.
+#' @param type Format of the microdata. The possible values are \code{".dta"} for STATA, \code{".sav"} for SPSS
+#' @param dataDir path to the folder where the data to be anonymized are located
+#'
+#' @return an \code{agrisvy} object
+#' @importFrom methods new
 #' @export
 #'
 #' @examples
@@ -132,7 +139,7 @@ setMethod("show",signature="agrisvy",function(object){
                             author           = "[Author]",
                             language         = "en",
                             workingDir       = NULL,
-                            path             = NULL,
+                            dataDir             = NULL,
                             type             = NULL) {
     stopifnot(!is.null(path))
     stopifnot(!is.null(type))

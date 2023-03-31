@@ -2,34 +2,39 @@
 % Please edit documentation in R/agrisvy_object.R
 \name{createAgrisvy}
 \alias{createAgrisvy}
-\title{Create an agrisvy object}
+\title{Create an \code{agrisvy} object}
 \usage{
 createAgrisvy(
   svyName = "[Survey name]",
   author = "[Author]",
   language = "en",
   workingDir = NULL,
-  path = NULL,
+  dataDir = NULL,
   type = NULL
 )
 }
 \arguments{
-\item{svyName}{name of the survey}
+\item{svyName}{Name of the survey (will be used in the code comments and to customize the anonymization report)}
 
-\item{author}{author (institution)}
+\item{author}{Author or institution (ex. \code{"FAO"})}
 
-\item{language}{language (display in predefined scripts)}
+\item{language}{Language (used to customize the language of folder names
+and the anonymization report). The possible values are \code{"en"} for English,
+\code{"fr"} for French and \code{"es"} for Spanish. The default value is \code{"en"}.}
 
-\item{workingDir}{working directory (where the folders will be created)}
+\item{workingDir}{path to the working directory (where the anonymization working folder will be generated).
+It is recommended for this folder to be empty.}
 
-\item{path}{path do the microdata of the survey}
+\item{dataDir}{path to the folder where the data to be anonymized are located}
 
-\item{type}{extension of the micro data example ".dta" for stata, ".sav" for SPSS}
+\item{type}{Format of the microdata. The possible values are \code{".dta"} for STATA, \code{".sav"} for SPSS}
 }
 \value{
-a agrisvy object
- @importFrom methods new
+an \code{agrisvy} object
 }
 \description{
-Create an agrisvy object
+An \code{agrisvy} object are used to store useful information that help generate files, folders
+scripts but most importantly customize pre-populated scripts and anonymization report
+template. It is used as input by some bulk run function for pre-processing, anonymization
+archiving, etc.
 }

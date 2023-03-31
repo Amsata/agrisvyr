@@ -9,7 +9,7 @@
 \S4method{show}{agrisvy}(object)
 }
 \arguments{
-\item{agrisvy}{}
+\item{agrisvy}{an \code{agrisvy} object}
 }
 \description{
 Print agrisvy object

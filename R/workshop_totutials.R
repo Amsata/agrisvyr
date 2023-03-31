@@ -75,7 +75,7 @@ generateLabFiles=function(agrisvy,overwrite){
 
 #' Render html, pdf or MS word file or the pre-processing files
 #'
-#' @param agrisvy an agriswkp object
+#' @param agrisvy an \code{agriswkp} object
 #' @param format format of the output (`html`, `pdf`or `docx`)
 #' @param type
 #'
