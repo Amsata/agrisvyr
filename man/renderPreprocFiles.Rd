@@ -7,7 +7,7 @@
 renderPreprocFiles(agrisvy, type, format)
 }
 \arguments{
-\item{agrisvy}{an agriswkp object}
+\item{agrisvy}{an \code{agriswkp} object}
 
 \item{type}{}
 

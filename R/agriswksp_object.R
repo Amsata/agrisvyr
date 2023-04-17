@@ -145,17 +145,8 @@ createAgriwksp <- function(wkspName        = "[Workshop name]",
 }
 
 
-
 setGeneric("riskAnaDir", function(obj) standardGeneric("riskAnaDir"))
 
-#' give the complete path of the preprocDataDir directory
-#'
-#' @param agrisvy
-#'
-#' @return
-#' @export
-#'
-#' @examples
 setMethod("riskAnaDir",
           signature = "agriswksp", definition =
             function(obj) {

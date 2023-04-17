@@ -202,16 +202,28 @@
     <loc>/reference/RenderGlobalRisk-sdcReportObj-method.html</loc>
   </url>
   <url>
+    <loc>/reference/RenderGlobalRisk.html</loc>
+  </url>
+  <url>
     <loc>/reference/renderHierRiskSummary-sdcReportObj-method.html</loc>
   </url>
   <url>
+    <loc>/reference/renderHierRiskSummary.html</loc>
+  </url>
+  <url>
     <loc>/reference/renderKanoTab-sdcReportObj-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/renderKanoTab.html</loc>
   </url>
   <url>
     <loc>/reference/renderPreprocFiles.html</loc>
   </url>
   <url>
     <loc>/reference/renderRiskIndSUmmary-sdcReportObj-method.html</loc>
+  </url>
+  <url>
+    <loc>/reference/renderRiskIndSUmmary.html</loc>
   </url>
   <url>
     <loc>/reference/replace_missing.html</loc>

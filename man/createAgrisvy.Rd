@@ -38,3 +38,17 @@ scripts but most importantly customize pre-populated scripts and anonymization r
 template. It is used as input by some bulk run function for pre-processing, anonymization
 archiving, etc.
 }
+\examples{
+\dontrun{
+agrissvy_obj=createAgrisvy(
+                svyName = "AGRIS SURVEY 2023",
+                author = "AgriSurvey Team",
+                language = "en",
+                workingDir = "C/Documents/anonymization",
+                dataDir = "C/Documents/AgrisData",
+                type = ".dta"
+                )
+
+agrissvy_obj
+}
+}

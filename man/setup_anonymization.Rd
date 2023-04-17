@@ -7,10 +7,28 @@
 setup_anonymization(agrisvy, overwrite)
 }
 \arguments{
-\item{agrisvy}{}
+\item{agrisvy}{an \code{agrisvy} object}
 
-\item{overwrite}{overwrite existing folders}
+\item{overwrite}{a \code{logical}. If \code{TRUE},overwrite the working folders
+if they already exists.}
 }
 \description{
-set up the anonymization working directory by creating folders and files
+This fucntion set up the anonymization working space by creating the folders,
+generating the pre-populated R scripts, generating the anonymization report,
+and running the first round of pre-processing and anonymization to make sure
+that the process is smooth.
+}
+\examples{
+\dontrun{
+agrissvy_obj=createAgrisvy(
+                svyName = "AGRIS SURVEY 2023",
+                author = "AgriSurvey Team",
+                language = "en",
+                workingDir = "C/Documents/anonymization",
+                dataDir = "C/Documents/AgrisData",
+                type = ".dta"
+)
+
+
+}
 }

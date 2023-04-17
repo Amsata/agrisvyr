@@ -1,12 +1,4 @@
-#' Create a folder
-#'
-#' @param directory directory to create
-#' @param overwrite if existing directory should be removed
-#'
-#' @return logical
-#'
-#'
-#' @examples
+
 create_folder <- function(directory, overwrite = FALSE) {
   if (isTRUE(dir.exists(directory)) & isFALSE(overwrite)) {
     message(glue::glue("Directory {directory} already exists!"))
@@ -20,17 +12,13 @@ create_folder <- function(directory, overwrite = FALSE) {
   }
 }
 
-#' Create anonymization working folders
-#'
-#' @param overwrite should existing folders be overwitten
-#' @param agrisvy
-#'
+
+
 #' @return logical
 #' @importFrom purrr walk
 #' @importFrom usethis create_project
-#' @export
-#'
-#' @examples
+
+
 create_ano_folders <- function(agrisvy, overwrite = FALSE) {
   # rstudioapi::getActiveProject()
   agrisMsg("INITIAL SETUP","creating folders")
@@ -81,16 +69,10 @@ labels <- function(fileName,type) {
 }
 
 
-#' Create an Excel file for variable classification for a given data folder
-#'
-#' @param data a dataframe containing information on the file tree
-#' @param wb_file name the workbook of a data folder
-#'
-#' @return
 #' @import openxlsx
 #' @importFrom dplyr filter %>%
 #' @importFrom cli cli_progress_bar cli_progress_update
-#' @examples
+
 create_wb <- function(agrisvy, data, wb_file) {
 
   agrisMsg("VARIABLE CLASSIFICATION",paste0("Creating workbook ",wb_file))
@@ -362,16 +344,10 @@ create_wb <- function(agrisvy, data, wb_file) {
 }
 
 
-#' Create Excel file for variable classification for a given data folder
-#'
-#' @param agrisvy
-#'
-#' @return
+
 #' @importFrom   purrr walk
 #' @importFrom  plyr rbind.fill
-#' @export
-#'
-#' @examples
+
 generate_varclas <- function(agrisvy) {
   # stopifnot(inherits(agrisvy,"agrisvy"))
 
@@ -413,17 +389,9 @@ generate_varclas <- function(agrisvy) {
 }
 
 
-#' Copy the structure of a folder
-#'
-#' @param from directory to copy
-#' @param to directory where the folder are copied
-#'
-#' @return
 #' @importFrom R.utils copyDirectory
 #' @importFrom purrr walk
-#' @export
-#'
-#' @examples
+
 copyDirStr <- function(from, to) {
   if (dir.exists(from) == FALSE | dir.exists(to) == FALSE) {
     stop("one of the specified directory does not exits")
@@ -442,19 +410,8 @@ copyDirStr <- function(from, to) {
 
 
 
-
-#' Create a simple  preprocessing R script for a given dataset
-#'
-#' @param agrisvy
-#' @param type
-#' @param file name of the data file
-#' @param obj_name
-#'
-#' @return
 #' @importFrom glue glue
-#' @export
-#'
-#' @examples
+
 create_preproc_r <- function(agrisvy, file,type,obj_name) {
 
    opn="{"
@@ -539,17 +496,8 @@ if(type=="ano"){
 }
 
 
-#' Generate preprocessing scripts
-#'
-#' @param type
-#' @param agrisvy
-#' @param obj_name
-#'
-#' @return
 #' @importFrom purrr walk
-#' @export
-#'
-#' @examples
+
 generate_preproc_r <- function(agrisvy,type,obj_name) {
   # stopifnot(inherits(agrisvy,"agrisvy"))
 
@@ -577,19 +525,9 @@ generate_preproc_r <- function(agrisvy,type,obj_name) {
 }
 
 
-
-#' Create anonymization script for a data file
-#'
-#' @param agrisvy
-#' @param file data file for which to create anonymization script
-#' @param md
-#'
-#' @return
 #' @importFrom cli cli_h2
 #' @importFrom  crayon blue
-#' @export
-#'
-#' @examples
+
 create_ano_r <- function(agrisvy, file,md) {
 
   z <- unlist(strsplit(file, "/"))
@@ -646,17 +584,6 @@ if(md==TRUE) {
 }
 
 
-
-
-#' Generate all anonymization template scripts
-#'
-#' @param agrisvy
-#' @param md
-#'
-#' @return
-#' @export
-#'
-#' @examples
 generate_ano_r <- function(agrisvy,md=FALSE) {
 
     agrisMsg("INITIAL SETUP","generating R sripts for anonymization")
@@ -675,15 +602,8 @@ generate_ano_r <- function(agrisvy,md=FALSE) {
     })
 }
 
-#' Generate the template of the sdc report
-#'
-#' @param agrisvy
-#' @param type
-#'
-#' @return
-#' @export
-#'
-#' @examples
+
+
 generate_report_template <- function(agrisvy,type) {
   stopifnot(dir.exists(anoreportDir(agrisvy)))
   stopifnot(type %in% c("svy","wksp"))
@@ -729,14 +649,32 @@ generate_report_template <- function(agrisvy,type) {
 
 #' set up the anonymization working directory by creating folders and files
 #'
-#' @param overwrite overwrite existing folders
-#' @param agrisvy
+#'This fucntion set up the anonymization working space by creating the folders,
+#'generating the pre-populated R scripts, generating the anonymization report,
+#'and running the first round of pre-processing and anonymization to make sure
+#'that the process is smooth.
+#'
+#' @param overwrite a \code{logical}. If \code{TRUE},overwrite the working folders
+#' if they already exists.
+#' @param agrisvy an \code{agrisvy} object
 #'
 #' @return
 #' @importFrom  haven read_dta write_dta
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' agrissvy_obj=createAgrisvy(
+#'                 svyName = "AGRIS SURVEY 2023",
+#'                 author = "AgriSurvey Team",
+#'                 language = "en",
+#'                 workingDir = "C/Documents/anonymization",
+#'                 dataDir = "C/Documents/AgrisData",
+#'                 type = ".dta"
+#' )
+#'
+#'
+#' }
 setup_anonymization <- function(agrisvy, overwrite) {
   obj_name=deparse(substitute(agrisvy))
 

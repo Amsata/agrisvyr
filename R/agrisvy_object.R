@@ -13,7 +13,7 @@ setClassUnion("sdcmicroOrNULL", c("NULL"))
 #' @slot svyName characterOrNULL.
 #' @slot author characterOrNULL.
 #' @slot language characterOrNULL.
-#' @slot path characterOrNULL.
+#' @slot dataDir characterOrNULL.
 #' @slot varClassDir characterOrNULL.
 #' @slot preProcScriptDir characterOrNULL.
 #' @slot preprocDataDir characterOrNULL.
@@ -30,11 +30,20 @@ setClassUnion("sdcmicroOrNULL", c("NULL"))
 #' @slot anoData dataframeOrNULL.
 #' @slot workingDir characterOrNULL
 #' @slot type microdata extension
+#' Class \code{"sdcMicroObj"}
 #'
-#' @return
+#' Class to save all information about the survey
+#'
+#' @name agrisvy-class
+#' @aliases agrisvy-class
+#' createAgrisvy
+#' @docType class
+#' @section Objects from the Class: Objects can be created by calls of the form
+#' \code{new("agrisvy", ...)}.
+#' @author AMsata Niang
+#' @keywords classes
 #' @export
 #'
-#' @examples
 methods::setClass(
   Class              = "agrisvy",
   representation     = representation(
@@ -42,7 +51,7 @@ methods::setClass(
     author           = "characterOrNULL",
     language         = "characterOrNULL",
     workingDir       = "characterOrNULL",
-    path             = "characterOrNULL",
+    dataDir          = "characterOrNULL",
     type             = "characterOrNULL",
     varClassDir      = "characterOrNULL",
     preProcScriptDir = "characterOrNULL",
@@ -64,18 +73,18 @@ methods::setClass(
     author           = "[Author]",
     language         = "en",
     workingDir       = NULL,
-    path             = NULL,
+    dataDir          = NULL,
     type             = NULL,
-    varClassDir      = "01_Variable classification",
-    preProcScriptDir = "02_Pre-processing scripts",
-    preprocDataDir   = "03_Pre-processed data",
-    anoScriptDir     = "04_Anonymization scripts",
-    anoDataDir       = "05_Anonymized data",
-    anoreportDir     = "06_Anonymization report",
-    fileDesDir       = "07_Files description",
-    infoLossReport   = "08_Information loss report",
-    tempfileDir      = "09_Temporary_files",
-    aobDir           = "10_Miscellaneous",
+    varClassDir      = NULL,
+    preProcScriptDir = NULL,
+    preprocDataDir   = NULL,
+    anoScriptDir     = NULL,
+    anoDataDir       = NULL,
+    anoreportDir     = NULL,
+    fileDesDir       = NULL,
+    infoLossReport   = NULL,
+    tempfileDir      = NULL,
+    aobDir           = NULL,
     rawData          = NULL,
     cleanData        = NULL,
     proData          = NULL,
@@ -85,6 +94,19 @@ methods::setClass(
     if (length(object@svyName) > 1) {
       stop("message")
     }
+
+    if (nchar(object@svyName) > 51) {
+      stop("Please choose a survey name with less than 50 character")
+    }
+
+    if (length(list.files(object@dataDir,pattern = object@type)==0)) {
+      stop("The data folder does not contain data file of the specified format!")
+    }
+
+    if(object@language %in% c("en","fr","es")){
+      stop("the option language should be \nen (for english),\nfr (for french) or \nes (for spanish)")
+    }
+
   }
 )
 
@@ -135,17 +157,33 @@ setMethod("show",signature="agrisvy",function(object){
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' agrissvy_obj=createAgrisvy(
+#'                 svyName = "AGRIS SURVEY 2023",
+#'                 author = "AgriSurvey Team",
+#'                 language = "en",
+#'                 workingDir = "C/Documents/anonymization",
+#'                 dataDir = "C/Documents/AgrisData",
+#'                 type = ".dta"
+#'                 )
+#'
+#' agrissvy_obj
+#' }
   createAgrisvy <- function(svyName          = "[Survey name]",
                             author           = "[Author]",
                             language         = "en",
                             workingDir       = NULL,
                             dataDir             = NULL,
                             type             = NULL) {
-    stopifnot(!is.null(path))
+
+    stopifnot(!is.null(dataDir))
     stopifnot(!is.null(type))
     stopifnot(!is.null(workingDir))
-    stopifnot(dir.exists(path) == TRUE)
-
+    stopifnot(dir.exists(dataDir) == TRUE)
+    stopifnot(dir.exists(workingDir) == TRUE)
+  if(workingDir==dataDir){
+    stop("The working directory should be different from the data folder!")
+  }
 
     obj <- new("agrisvy")
 
@@ -153,7 +191,7 @@ setMethod("show",signature="agrisvy",function(object){
     obj@author           <- author
     obj@language         <- language
     obj@workingDir       <- workingDir
-    obj@path             <- path
+    obj@dataDir          <- dataDir
     obj@type             <- type
 
     if(obj@language=="en") {
@@ -194,17 +232,23 @@ setMethod("show",signature="agrisvy",function(object){
       obj@tempfileDir      <- "09.Archivos temporales"
       obj@aobDir           <- "10.varios archivos"
     }
+
+    #check if the initial working directo
+    ano_dirs=c( obj@varClassDir, obj@preProcScriptDir, obj@preprocDataDir,
+                obj@anoScriptDir,obj@anoreportDir, obj@anoDataDir,
+                obj@fileDesDir,obj@fileDesDir,obj@infoLossReport,obj@tempfileDir,
+                obj@aobDir)
+
+    files_in_wd=list.files( obj@workingDir,recursive = TRUE)
+
+    if(length(files_in_wd)>0 &
+       sum(ano_dirs %in%files_in_wd)==0){
+      stop("Please Select an empty working directory when defining the agrisvy object!")
+    }
+
     obj
   }
 
-#' Give the path to the variable classification folder
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
 
   varClassDir <- function(obj){
     varClassDirX(obj)
@@ -220,14 +264,6 @@ setMethod(f="varClassDirX",
 )
 
 
-#' Give the path to the folder containing the scripts of pre-processing
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
   preProcScriptDir <- function(obj){
     preProcScriptDirX(obj)
   }
@@ -242,14 +278,6 @@ setMethod("preProcScriptDirX",
 )
 
 
-#' Give the path to folder containing the pre-processed data
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
 preprocDataDir <- function(obj){
   preprocDataDirX(obj)
 }
@@ -264,14 +292,7 @@ setMethod("preprocDataDirX",
     }
 )
 
-#' Give the path to the folder coning the anonymization scripts
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
+
 anoScriptDir <- function(obj){
   anoScriptDirX(obj)
 }
@@ -285,15 +306,6 @@ setMethod("anoScriptDirX",
     }
 )
 
-
-#' Give the path to the folder containg the anonymization report
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
 
 anoreportDir <- function(obj){
   anoreportDirX(obj)
@@ -309,14 +321,7 @@ setMethod("anoreportDirX",
 )
 
 
-#' Give the path to the folder containing the anonymized data
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
+
 anoDataDir <- function(obj){
   anoDataDirX(obj)
 }
@@ -329,14 +334,7 @@ setMethod("anoDataDirX",
     }
 )
 
-#' Give the path to the folder containing the files description
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
+
 fileDesDir <- function(obj) {
   fileDesDirX(obj)
 }
@@ -350,14 +348,7 @@ setMethod("fileDesDirX",
     }
 )
 
-#' Give the path to the folder containing the information loss report
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
+
 infoLossReport <- function(obj){
   infoLossReportX(obj)
 }
@@ -371,14 +362,6 @@ setMethod("infoLossReportX",
 )
 
 
-#' Give the path of the folder containing temporary files generated during the anonymization process
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
 tempfileDir <- function(obj){
   tempfileDirX(obj)
 }
@@ -392,14 +375,6 @@ setMethod("tempfileDirX",
     }
 )
 
-#' Give the path of the folder any other business (aob)
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
 
 aobDir <- function(obj){
   aobDirX(obj)
@@ -414,14 +389,7 @@ setMethod("aobDir",
     }
 )
 
-#' Give the path of the folder containing the microdata to be anonymized
-#'
-#' @param obj an \code{agrisvy} object
-#'
-#' @return a character
-#' @export
-#'
-#' @examples
+
 DataPath <- function(obj){
   DataPathX(obj)
 }
@@ -430,24 +398,15 @@ setGeneric("DataPathX", function(obj) standardGeneric("DataPathX"))
 setMethod("DataPathX",
   signature = "agrisvy", definition =
     function(obj) {
-      file.path(obj@path)
+      file.path(obj@dataDir)
     }
 )
 
 
-#' Put the different microdata in a list
-#'
-#' @param path Path to the folder containing the data
-#' @param type type of the data. The possible values are \code{".dta"} for STATA and \code{".sav"} for SPSS
-#'
-#' @return a list
+
 #' @importFrom dplyr %>% filter
 #' @importFrom haven read_dta
 #' @importFrom haven read_sav
-#' @export
-#'
-#' @examples
-
 
 genDataList <- function(path,type){
 

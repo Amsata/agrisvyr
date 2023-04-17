@@ -1,20 +1,10 @@
 
-
-
-
-#' Print the tree of a directory
-#'
-#' @param agrisvy
-#'
-#' @return
 #' @importFrom  plyr rbind.fill
 #' @importFrom  data.tree as.Node
 #' @importFrom dplyr %>%
 #' @importFrom haven read_dta
 #' @importFrom cli cli_progress_along
-#' @export
-#'
-#' @examples
+
 showTree <- function(agrisvy,folders_path=NULL){
 
   if(is.null(folders_path)){
@@ -57,17 +47,10 @@ showTree <- function(agrisvy,folders_path=NULL){
 }
 
 
-#' Print folder file in tree format
-#'
-#' @param path_folder path to the folder
-#'
-#' @return
 #' @importFrom  plyr rbind.fill
 #' @importFrom  data.tree as.Node
 #' @importFrom dplyr filter
-#' @export
-#'
-#' @examples
+
 showFolderTree <- function(agrisvy,folders_path){
 
   folder_name=unlist(strsplit(agrisvy@workingDir, "/"))

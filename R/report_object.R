@@ -187,20 +187,12 @@ close(fileConn)
 }
 
 
-#' Title
-#'
-#' @param sdc an object of type SdcMicroObj
-#' @param df if the function return a dataframe or styled datafram for rmarkdown display
-#' @param title title of the table in case df=FALSE
-#'
-#' @return
+
 #' @import sdcMicro
 #' @import knitr
 #' @importFrom   kableExtra kbl kable_classic_2 kable_styling column_spec
 #' @importFrom dplyr  %>%
-#' @export
-#'
-#' @examples
+
 
 GlobRiskTab=function(sdc,df=FALSE,time,obj) {
 # TODO: ameliorate
@@ -261,21 +253,11 @@ setMethod("RenderGlobalRiskX",signature = "sdcReportObj",
 
           })
 
-#' data frame containing k-anonymity information
-#'
-#' @param sdcObj an sdcMicro object
-#' @param df logical. retunrn a dataframe or a styled dataframe
-#' @param levels k-anonymity levels
-#' @param title title of the table in case df=FALSE
-#'
-#' @return
+
 #' @import sdcMicro
 #' @import knitr
 #' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
-#' @export
-#'
-#' @examples
 
 KanoTab=function(sdcObj,df=FALSE,levels=c(2,3,5),time,obj) {
 
@@ -328,20 +310,11 @@ setMethod("renderKanoTabX",signature = "sdcReportObj",
           })
 
 
-#' a  dataframe containing the summary of individual risk
-#'
-#' @param sdc an sdcMicro Object
-#' @param df retunrn a simple dataframe or a styled dataframe
-#' @param title title of the styled dataframe
-#'
-#' @return
-#' a dataframe
 #' @import knitr
 #' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
 #' @importFrom stats median quantile
-#' @export
-#' @examples
+
 RiskIndSUmmary=function(sdc,df=FALSE,time,obj){
   title=paste0("Summary of the", time, "individual risk")
 
@@ -392,7 +365,7 @@ renderRiskIndSUmmary <- function(obj,time="initial"){
 setGeneric("renderRiskIndSUmmaryX",function(obj,time="initial") standardGeneric("renderRiskIndSUmmaryX"))
 
 
-setMethod("renderRiskIndSUmmary",signature = "sdcReportObj",
+setMethod("renderRiskIndSUmmaryX",signature = "sdcReportObj",
           definition = function(obj,time = "initial") {
 
             if (time == "initial") sdcObj = obj@intialObj
@@ -402,21 +375,10 @@ setMethod("renderRiskIndSUmmary",signature = "sdcReportObj",
           })
 
 
-
-#' summary of hierarchical risk
-#'
-#' @param sdc an sdcMicro Object
-#' @param dfl return a simple dataframe or a styled dataframe
-#' @param title title of the styled dataframe
-#'
-#' @return
-#' a data frame
 #' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>% distinct
 #' @import sdcMicro
-#' @export
-#'
-#' @examples
+
 HierRiskSummary=function(sdc,dfl=FALSE,time,obj){
 
   title=paste0("Summary of the",time, "hierarchical risk")

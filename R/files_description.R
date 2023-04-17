@@ -1,23 +1,13 @@
 
 
-#' Generate file description for a given dataset
-#'
-#' @param file dataset
-#' @param name name of the sheet where the description should be saved
-#' @param id_cols column for witch description will not be generated
-#' @param wb name of the workbook
-#' @param type format of the data
-#'
-#' @return
+
 #' @import openxlsx
 #' @importFrom haven read_dta
 #' @importFrom haven read_sav
 #' @import rlang
 #' @importFrom dplyr pull
 #' @importFrom questionr freq
-#'
-#'
-#' @examples
+
 genFileDes <- function(file, name, id_cols, wb,type) {
   hd1 <- openxlsx::createStyle(
     fontName = "Times New Roman",
@@ -136,20 +126,12 @@ genFileDes <- function(file, name, id_cols, wb,type) {
 
 
 
-#' Generate a worbook containing description of all data in the folder
-#'
-#' @param data  data path
-#' @param wb_name workbook name
-#' @param agrisvy an agris survey object
-#' @param id_cols column to exclude
-#'
-#' @return
+
 #' @import openxlsx
 #' @importFrom dplyr filter
 #' @importFrom cli cli_progress_along
 #' @importFrom purrr pwalk
-#'
-#' @examples
+
 genDataFolderDes=function(agrisvy,data,wb_name,id_cols){
 
   agrisMsg("FILES DESCRIPTION",paste0("Creating workbook ",wb_name))

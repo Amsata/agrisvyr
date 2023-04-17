@@ -3,6 +3,7 @@
 \docType{class}
 \name{agrisvy-class}
 \alias{agrisvy-class}
+\alias{createAgrisvy}
 \title{Create an S4 object that store information about the survey}
 \description{
 Create an S4 object that store information about the survey
@@ -16,7 +17,7 @@ Create an S4 object that store information about the survey
 
 \item{\code{language}}{characterOrNULL.}
 
-\item{\code{path}}{characterOrNULL.}
+\item{\code{dataDir}}{characterOrNULL.}
 
 \item{\code{varClassDir}}{characterOrNULL.}
 
@@ -48,6 +49,18 @@ Create an S4 object that store information about the survey
 
 \item{\code{workingDir}}{characterOrNULL}
 
-\item{\code{type}}{microdata extension}
+\item{\code{type}}{microdata extension
+Class \code{"sdcMicroObj"}
+
+Class to save all information about the survey}
 }}
 
+\section{Objects from the Class}{
+ Objects can be created by calls of the form
+\code{new("agrisvy", ...)}.
+}
+
+\author{
+AMsata Niang
+}
+\keyword{classes}

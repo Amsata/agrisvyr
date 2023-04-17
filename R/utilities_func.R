@@ -46,16 +46,6 @@ finMessage=function(msg){
 }
 
 
-
-#' Cpmplete with space
-#'
-#' @param char character string
-#' @param n number of character before sring
-#'
-#' @return
-#' @export
-#'
-#' @examples
 addSpace=function(char,n){
   n1=nchar(char)
   n2=n1+n+2

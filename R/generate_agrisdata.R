@@ -1,15 +1,5 @@
-#' Generate first name and last name based on sex
-#'
-#' @param sex sex for which to generate name takes "Male" or Female
-#' @param first_last takes "first", "last" or "both"
-#'
-#' @return
+
 #' @importFrom randomNames randomNames
-#'
-#' @examples
-#' \dontrun{
-#' gen_names("Male","both")
-#' }
 
 gen_names=function(sex,first_last){
   randomNames::randomNames(1,
@@ -23,21 +13,10 @@ gen_names=function(sex,first_last){
 }
 
 
-
-#' Label a geo name
-#'
-#' @param data geo ref data
-#' @param label label
-#' @param level level
-#' @param agris_var agris var
-#'
-#' @return
 #' @importFrom  dplyr select distinct rename
 #' @importFrom rlang := sym
 #' @importFrom sf st_drop_geometry
-#' @export
-#'
-#' @examples
+
 label_geo_name=function(data,label,level,agris_var){
   id_sym=sym(level)
   name_sym=sym(label)

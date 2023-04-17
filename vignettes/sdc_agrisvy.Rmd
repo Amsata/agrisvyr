@@ -34,17 +34,17 @@ library(agrisvyr)
 
 ```{r,eval=FALSE}
 agrisvy <- agrisvyr::createAgrisvy(
-  svyName = "Anual Agricultural survey (AAS) 2020",
-  author = "UBOS",
-  language = "en",
-  workingDir = "C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/Anonymization",
-  path = "C:/Users/USER/OneDrive - Food and Agriculture Organization/agrisvyr_test/Uganda_2020/2_Cleaned data",
-  type = ".dta"
+  svyName    = "AGRIS survey 2023",
+  author     = "AgriSvey Team",
+  language   = "en",
+  workingDir = "C:/Users/USER/Documents/agrisvyr/anonymization",
+  dataDir    = "C:/Users/USER/Documents/agrisvyr/example data",
+  type       = ".dta"
 )
 ```
 
 ```{r,message=FALSE,warning=FALSE}
-# print(agrisvy)
+print(agrisvy)
 
 ```
 

@@ -1,13 +1,6 @@
-#' Create folders containing working files of the workshop
-#'
-#' @param overwrite if existing folders should be overwritten
-#' @param agriswksp an agriswksp object
-#'
-#' @return
+
 #' @importFrom purrr walk
-#' @export
-#'
-#' @examples
+
 create_wksp_folders <- function(agriswksp, overwrite = FALSE) {
 
   agrisMsg("INITIAL SETUP","creating folders")
