@@ -76,8 +76,9 @@ setMethod("show",signature="agrisvy",function(object){
 #' @param organizer
 #' @param language
 #' @param workingDir
-#' @param path
 #' @param type
+#' @param subtitle
+#' @param dataDir
 #'
 #' @return
 #' @export
@@ -88,12 +89,12 @@ createAgriwksp <- function(wkspName        = "[Workshop name]",
                           language         = "en",
                           subtitle         ="",
                           workingDir       = NULL,
-                          path             = NULL,
+                          dataDir          = NULL,
                           type             = NULL) {
-  stopifnot(!is.null(path))
+  stopifnot(!is.null(dataDir))
   stopifnot(!is.null(type))
   stopifnot(!is.null(workingDir))
-  stopifnot(dir.exists(path) == TRUE)
+  stopifnot(dir.exists(dataDir) == TRUE)
 
 
   obj <- new("agriswksp")
@@ -103,7 +104,7 @@ createAgriwksp <- function(wkspName        = "[Workshop name]",
   obj@subtitle <- subtitle
   obj@language  <- language
   obj@workingDir<- workingDir
-  obj@path      <- path
+  obj@dataDir   <- dataDir
   obj@type      <- type
 
   if(obj@language=="en") {

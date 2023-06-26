@@ -1,3 +1,13 @@
+setClassUnion("dataframeOrNULL", c("data.frame", "NULL"))
+setClassUnion("numericOrNULL", c("numeric", "NULL"))
+setClassUnion("characterOrNULL", c("character", "NULL"))
+setClassUnion("logicalOrNULL", c("logical", "NULL"))
+setClassUnion("matrixOrNULL", c("matrix", "NULL"))
+setClassUnion("listOrNULL", c("list", "NULL"))
+setClassUnion("factorOrNULL", c("factor", "NULL"))
+setClassUnion("logicalOrNULL", c("logical", "NULL"))
+setClassUnion("sdcmicroOrNULL", c("sdcMicroObj","NULL"))
+setClassUnion("sdcReportObjOrNULL", c("NULL"))
 
 
 #' Create an object containing information for sdc report
@@ -17,18 +27,6 @@
 #' @export
 #'
 #' @examples
-
-
-setClassUnion("dataframeOrNULL", c("data.frame", "NULL"))
-setClassUnion("numericOrNULL", c("numeric", "NULL"))
-setClassUnion("characterOrNULL", c("character", "NULL"))
-setClassUnion("logicalOrNULL", c("logical", "NULL"))
-setClassUnion("matrixOrNULL", c("matrix", "NULL"))
-setClassUnion("listOrNULL", c("list", "NULL"))
-setClassUnion("factorOrNULL", c("factor", "NULL"))
-setClassUnion("logicalOrNULL", c("logical", "NULL"))
-setClassUnion("sdcmicroOrNULL", c("sdcMicroObj","NULL"))
-setClassUnion("sdcReportObjOrNULL", c("NULL"))
 
 setClass("sdcReportObj",
          representation = representation(

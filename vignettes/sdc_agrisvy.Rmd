@@ -15,14 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-#Introduction
+# Introduction
 
 
 One of the main use of the `agrisvy` package is to facilitate files and data management during anonymization of dataset, spacially from household survey including agricultural survey
 
 the package allow to create all the folders you need, it generate initial,pre-populated, R scripts you need for deta pre-processing and anonymization. It also generate an initial sample report in R markdown format and contains function that appends the report during the anonymizaion process.
 
-This article shows howe to setup the anonymization files, folders, scripts and reports.
+This article shows how to setup the anonymization files, folders, scripts and reports.
 
 
 ```{r setup,message=FALSE,warning=FALSE}
@@ -38,7 +38,7 @@ agrisvy <- agrisvyr::createAgrisvy(
   author     = "AgriSvey Team",
   language   = "en",
   workingDir = "C:/Users/USER/Documents/agrisvyr/anonymization",
-  dataDir    = "C:/Users/USER/Documents/agrisvyr/example data",
+  dataDir    = "C:/Users/USER/Documents/agrisvyr/example_data",
   type       = ".dta"
 )
 ```
@@ -55,26 +55,26 @@ there two main inputs here: the path to the folder wher the microdata are locate
 In order to facilitate the initial settings, we should create an agrisvy object to store all this information once for all and then apply the function `setup_anonymization()` to the object to create the folder and files.
 
 ```{r,message=FALSE,warning=FALSE}
-# agrisvyr::setup_anonymization(agrisvy,overwrite = TRUE)
+agrisvyr::setup_anonymization(agrisvy,overwrite = TRUE)
 ```
 Now let us see the different folders and files created in our specified working directory
 
 ## `_R` folder
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,"_R")
+agrisvyr:::showFolderTree(agrisvy,"_R")
 
 ```
 
 ## `varClassDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,varClassDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::varClassDir(agrisvy))
 ```
 
-## `preProcScriptDir(agrisvy)` folder
+## `agrisvyr:::preProcScriptDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,preProcScriptDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::preProcScriptDir(agrisvy))
 ```
 
 
@@ -90,14 +90,14 @@ cat(gsub("``","",paste0("", readLines(system.file("txt_template","preprocessing.
 ## `preprocDataDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,preprocDataDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::preprocDataDir(agrisvy))
 ```
 
 
 ## `anoScriptDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,anoScriptDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::anoScriptDir(agrisvy))
 ```
 
 
@@ -115,7 +115,7 @@ cat(gsub("``","",paste0("", readLines(system.file("txt_template","anonymization_
 ## `anoDataDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,anoDataDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::anoDataDir(agrisvy))
 ```
 
 
@@ -123,27 +123,27 @@ showFolderTree(agrisvy,anoDataDir(agrisvy))
 ## `anoreportDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,anoreportDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::anoreportDir(agrisvy))
 ```
 
 ## `fileDesDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,fileDesDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::fileDesDir(agrisvy))
 ```
 
 
 ## `infoLossReport(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,infoLossReport(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::infoLossReport(agrisvy))
 ```
 
 
 ## `tempfileDir(agrisvy)` folder
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,tempfileDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::tempfileDir(agrisvy))
 ```
 
 
@@ -151,7 +151,7 @@ showFolderTree(agrisvy,tempfileDir(agrisvy))
 
 
 ```{r,message=FALSE,warning=FALSE}
-showFolderTree(agrisvy,aobDir(agrisvy))
+agrisvyr:::showFolderTree(agrisvy,agrisvyr:::aobDir(agrisvy))
 ```
 
 
@@ -163,21 +163,21 @@ You have the possibility to inline data without opening the script of the corres
 First you need to archive all the datasets (saving them in the agrisvy object)
 
 ```{r}
-agrisvyr::ArchiveCleanData(agrisvy)
+# agrisvyr::ArchiveCleanData(agrisvy)
 ```
 
 Let us inline one dataset
 
 ```{r}
 library(data.tree)
-FromListSimple(agrisvy@cleanData)
+# FromListSimple(agrisvy@cleanData)
 ```
 
 
 ```{r}
 library(flextable)
 library(magrittr)
-head(agrisvy@cleanData$`Season 1_PH`$SEC2_V1_MEMBERS) %>% flextable()
+# head(agrisvy@cleanData$`Season 1_PH`$SEC2_V1_MEMBERS) %>% flextable()
 ```
 
 It is possible to do the same for the pre-processed data and the anonymized data with the functions `ArchiveAnoData()` and `ArchiveProcData()` respectively

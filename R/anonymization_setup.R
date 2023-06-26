@@ -402,7 +402,7 @@ copyDirStr <- function(from, to) {
   }
   dir_list <- list.dirs(from, full.names = FALSE)
 
-  if(dir_list!=""){
+  if("" %in% dir_list & length(dir_list)>1){
     dir_list <- dir_list[2:length(dir_list)]
     purrr::walk(file.path(to, dir_list), base::dir.create)
   }
@@ -471,7 +471,10 @@ if(type=="ano"){
   data_flder=unlist(strsplit(DataPath(agrisvy),split = "/"))
   data_flder=data_flder[length(data_flder)]
   dirs=list.dirs(DataPath(agrisvy), full.names = FALSE)
-  if(dirs=="") varclass=file.path(varClassDir(agrisvy),paste0(data_flder,"_VarClas.xlsx"))
+
+  if(!("" %in% dirs & length(dirs)>1)) {
+    varclass=file.path(varClassDir(agrisvy),paste0(data_flder,"_VarClas.xlsx"))
+  }
 
   file_attributes <- list(
     file_name      = paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_"),
@@ -710,7 +713,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
 
   writeLines(
     c(glue::glue("#setwd(\"{agrisvy@workingDir}\")"),"",
-      glue::glue("#data_path=\"{agrisvy@path}\""),"",
+      glue::glue("#data_path=\"{agrisvy@dataDir}\""),"",
       glue::glue("{obj_name} <-readRDS(\"_R/{obj_name}.rds\")")),
     fileConn
   )
@@ -826,6 +829,9 @@ setup_anonymization <- function(agrisvy, overwrite) {
 #' @examples
 #'
 runPreproc <- function(agrisvy){
+
+  #check if the agrisvy object exist
+
   #clear data
   list_data=list.files(preprocDataDir(agrisvy),recursive = TRUE)
   path_list_data=file.path(preprocDataDir(agrisvy),list_data)

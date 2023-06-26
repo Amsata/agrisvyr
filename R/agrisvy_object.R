@@ -36,7 +36,6 @@ setClassUnion("sdcmicroOrNULL", c("NULL"))
 #'
 #' @name agrisvy-class
 #' @aliases agrisvy-class
-#' createAgrisvy
 #' @docType class
 #' @section Objects from the Class: Objects can be created by calls of the form
 #' \code{new("agrisvy", ...)}.
@@ -95,17 +94,12 @@ methods::setClass(
       stop("message")
     }
 
-    if (nchar(object@svyName) > 51) {
-      stop("Please choose a survey name with less than 50 character")
-    }
+
 
     if (length(list.files(object@dataDir,pattern = object@type)==0)) {
       stop("The data folder does not contain data file of the specified format!")
     }
 
-    if(object@language %in% c("en","fr","es")){
-      stop("the option language should be \nen (for english),\nfr (for french) or \nes (for spanish)")
-    }
 
   }
 )
@@ -185,6 +179,18 @@ setMethod("show",signature="agrisvy",function(object){
     stop("The working directory should be different from the data folder!")
   }
 
+    if(!(language %in% c("en","fr","es"))){
+      stop("the option language should be \nen (for english),\nfr (for french) or \nes (for spanish)")
+    }
+
+    if(!(type %in% c(".dta",".SAV"))){
+      stop("the option type should be \n.dta (for stata), or \n.SAV (for SPSS)")
+    }
+
+    if (nchar(svyName) > 51) {
+      stop("Please choose a survey name with less than 50 character")
+    }
+
     obj <- new("agrisvy")
 
     obj@svyName          <- svyName
@@ -234,12 +240,9 @@ setMethod("show",signature="agrisvy",function(object){
     }
 
     #check if the initial working directo
-    ano_dirs=c( obj@varClassDir, obj@preProcScriptDir, obj@preprocDataDir,
-                obj@anoScriptDir,obj@anoreportDir, obj@anoDataDir,
-                obj@fileDesDir,obj@fileDesDir,obj@infoLossReport,obj@tempfileDir,
-                obj@aobDir)
+    ano_dirs=c( "data","SDC_project")
 
-    files_in_wd=list.files( obj@workingDir,recursive = TRUE)
+    files_in_wd=list.dirs(obj@workingDir,full.names = FALSE,recursive = FALSE)
 
     if(length(files_in_wd)>0 &
        sum(ano_dirs %in%files_in_wd)==0){

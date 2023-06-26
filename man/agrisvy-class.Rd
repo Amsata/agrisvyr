@@ -3,7 +3,6 @@
 \docType{class}
 \name{agrisvy-class}
 \alias{agrisvy-class}
-\alias{createAgrisvy}
 \title{Create an S4 object that store information about the survey}
 \description{
 Create an S4 object that store information about the survey

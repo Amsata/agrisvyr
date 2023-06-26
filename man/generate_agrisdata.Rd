@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_agrisdata.R
 \name{generate_agrisdata}
 \alias{generate_agrisdata}
-\title{Generate a sample geo-reference data of agris survey based on the generic questionnaire}
+\title{generate agris survey data}
 \usage{
 generate_agrisdata(
   shpfile,
@@ -10,14 +10,13 @@ generate_agrisdata(
   geo_id = c("ID_1", "ID_2", "ID_3"),
   geo_name = c("NAME_1", "NAME_2", "NAME_3"),
   np = 30,
-  na_prob = 5e-04
+  na_prob = 5e-04,
+  language = "en"
 )
 }
 \arguments{
-\item{na_prob}{proportion of random missing data introduced in the data}
-
-\item{n}{size of sample point per geographic unit}
+\item{language}{}
 }
 \description{
-Generate a sample geo-reference data of agris survey based on the generic questionnaire
+generate agris survey data
 }

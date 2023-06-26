@@ -51,7 +51,7 @@ generateLabFiles=function(agrisvy,overwrite){
   writeLines(
     c(glue::glue("setwd(\"{agrisvy@workingDir}\")"),"",
       glue::glue("cwd=\"{agrisvy@workingDir}\""),"",
-      glue::glue("data_path=\"{agrisvy@path}\""),"",
+      glue::glue("data_path=\"{agrisvy@dataDir}\""),"",
       glue::glue("{deparse(substitute(agrisvy))} <-readRDS(\"_R/{deparse(substitute(agrisvy))}.rds\")")),
     fileConn
   )

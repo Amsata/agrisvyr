@@ -10,12 +10,12 @@ createAgriwksp(
   language = "en",
   subtitle = "",
   workingDir = NULL,
-  path = NULL,
+  dataDir = NULL,
   type = NULL
 )
 }
 \arguments{
-\item{type}{}
+\item{dataDir}{}
 }
 \description{
 Create an AGRIS workshop object
