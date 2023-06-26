@@ -57,15 +57,15 @@ stopifnot(language %in% c("en","fr"))
   res=NULL
   if(language=="en") {
     res=agrisdata_en(shpfile, level=3,
-                 geo_id=c("ID_1","ID_2","ID_3"),
-                 geo_name=c("NAME_1","NAME_2","NAME_3"),
+                 geo_id=geo_id,
+                 geo_name=geo_name,
                  np=30,na_prob=0.0005)
   }
 
   if(language=="fr") {
     res=agrisdata_fr(shpfile, level=3,
-                 geo_id=c("ID_1","ID_2","ID_3"),
-                 geo_name=c("NAME_1","NAME_2","NAME_3"),
+                 geo_id=geo_id,
+                 geo_name=geo_name,
                  np=30,na_prob=0.0005)
   }
 
