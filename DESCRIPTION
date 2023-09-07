@@ -31,12 +31,12 @@ Imports:
     randomNames,
     readxl,
     rlang,
-    sdcMicro,
     sf,
     stats,
     tidyr,
     usethis,
     wakefield
+Remotes: github::sdcTools/sdcMicro
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
