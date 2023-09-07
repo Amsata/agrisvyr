@@ -462,11 +462,13 @@ if(type=="ano"){
   }
 
   varclass=file.path(varClassDir(agrisvy),
-            paste0(paste(z[1:length(z) - 1], sep = "",
-                         collapse = "_"),
+            paste0(gsub(" ","_",paste(z[1:length(z) - 1], sep = "",
+                                      collapse = "_")),
                    "_VarClas.xlsx"
             )
   )
+
+
 
   data_flder=unlist(strsplit(DataPath(agrisvy),split = "/"))
   data_flder=data_flder[length(data_flder)]
@@ -682,6 +684,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
   obj_name=deparse(substitute(agrisvy))
 
   setwd(agrisvy@workingDir)
+  old_wd=agrisvy@workingDir
  if(dir.exists("data")){
    unlink("data",recursive = TRUE)
  }
@@ -813,7 +816,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
   # ArchiveAnoData(agrisvy)
   # ArchiveCleanData(agrisvy)
   # ArchiveProcData(agrisvy)
-
+setwd(old_wd)
 }
 
 
