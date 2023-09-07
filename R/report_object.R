@@ -127,9 +127,11 @@ if (!is.null(individual)) obj@individual <- individual
 if (!is.null(suda)) obj@suda             <- suda
 
 
-saveRDS(obj,glue("{anoreportDir(agrisvy)}/child_{childName}.rds"))
+#Put the full path to avoir error with the workshop object when running quarto
+saveRDS(obj,file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
 
-file <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
+
+file <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
 file.create(file)
 fileConn<-file(file)
 
@@ -147,7 +149,7 @@ writeLines(c(glue::glue(paste(readLines(template_rpt_child),
 close(fileConn)
 #---------------------------------
 
-rpt_file=file.path(anoreportDir(agrisvy),"sdc_report.rmd")
+rpt_file=file.path(agrisvy@workingDir,anoreportDir(agrisvy),"sdc_report.rmd")
 
 sdc_rpt=readLines(rpt_file)
 appended=grep(glue::glue("child_{childName}.rmd"),sdc_rpt)
