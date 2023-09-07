@@ -243,11 +243,11 @@ setMethod("show",signature="agrisvy",function(object){
     ano_dirs=c( "data","SDC_project")
 
     files_in_wd=list.dirs(obj@workingDir,full.names = FALSE,recursive = FALSE)
-
-    if(length(files_in_wd)>0 &
-       sum(ano_dirs %in%files_in_wd)==0){
-      stop("Please Select an empty working directory when defining the agrisvy object!")
-    }
+#
+#     if(length(files_in_wd)>0 &
+#        sum(ano_dirs %in%files_in_wd)==0){
+#       stop("Please Select an empty working directory when defining the agrisvy object!")
+#     }
 
     obj
   }
