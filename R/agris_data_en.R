@@ -231,7 +231,7 @@ agrisdata_en <- function(shpfile, level=3,
                                                          base::sample(100:120,1))) %>% dplyr::ungroup() %>%
     dplyr::select(-check,-Region) %>%
     # perturbate by including some missing information
-    wakefield::r_na(prob = na_prob)
+    wakefield::r_na(prob = 0.0005)
 
   return(data)
 }

@@ -232,7 +232,7 @@ agrisdata_fr <- function(shpfile, level=3,
     dplyr::select(-check,-Region) %>%
     labelled::set_variable_labels(Q15="Zone de recensement de l'exploitation")
     # perturbate by including some missing information
-    wakefield::r_na(prob = na_prob)
+    wakefield::r_na(prob = 0.0005)
 
   return(data)
 }
