@@ -153,7 +153,6 @@ agrisdata_fr <- function(shpfile, level=3,
       Q13b="Adresse de l'exploitant: District",
       Q13c="Adresse de l'exploitant: Nom du village ou ville",
       Q14="Quelle est la raison sociale de l'exploitation?",
-      Q15="Zone de recensement de l'exploitation",
       Q16="Numéro de série de l'exploitation",
       Q17="L'adresse de l'exploitation est-elle la même que celle de l'exploitant",
       Q17a="Adresse (rue)",
@@ -231,8 +230,9 @@ agrisdata_fr <- function(shpfile, level=3,
     dplyr::group_by(Region) %>% dplyr::mutate(Q15=paste0(stringr::str_sub(Region,7),
                                                          base::sample(100:120,1))) %>% dplyr::ungroup() %>%
     dplyr::select(-check,-Region) %>%
+    labelled::set_variable_labels(Q15="Zone de recensement de l'exploitation")
     # perturbate by including some missing information
-    wakefield::r_na(prob = 0.0005)
+    wakefield::r_na(prob = na_prob)
 
   return(data)
 }
