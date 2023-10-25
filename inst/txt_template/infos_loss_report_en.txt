@@ -1,0 +1,68 @@
+---
+title: "Information loss analysis"
+subtitle: "Information loss assessment of the anonymization of {{agrisvy@svyName}}"
+author: '{{agrisvy@author}}'
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(sdcMicro)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(kableExtra)
+library(glue)
+library(rlang)
+options(scipen = 999)
+#source("format_table.R")
+options(knitr.duplicate.label = "allow")
+
+```
+
+# Introduction
+
+
+\textcolor{red}{[Describe the survey by providing the main objectives, the number of round and/or seasons, the sampling design and the period of data collection for the different rounds and season. These information can be taken from the report of the survey if already published.]}
+
+* Datasets of the survey
+```{r dataset-f,echo=FALSE}
+#data=as.data.frame(read_excel(path="datasets.xlsx"))
+
+#data%>% kbl()
+
+```
+
+
+\textcolor{red}{[Remind the commitment of the institute on disseminating microdata and recall the need of the need of SDC to protect respondent's confidentiality]}
+
+
+# Information loss analysis
+
+Anonymization, also known as Statistical Disclosure Control (SDC), is a crucial data processing procedure designed to minimize the risk of unauthorized disclosure of sensitive information. This process involves applying various statistical techniques to protect individual identities and other sensitive attributes within the dataset. Nevertheless, it's important to note that the application of these SDC methods often results in a reduction of the overall usefulness of the microdata, a phenomenon referred to as 'information loss.'
+
+To comprehensively evaluate and quantify this information loss, various assessment methods are employed. The choice of assessment method depends on the nature of the quasi-identifiers present in the dataset, which can be either categorical or numeric in nature.
+
+**Information loss assessment for categorical quasi-identifiers**
+
+* Number of missing value introduced during anonymization
+* Khi-2 coefficient between categorical variables
+
+
+
+**Information loss assessment for numeric quasi-identifiers**
+
+* percentage change of average/total
+* Whethr or not the value lay withing the confidence interval
+* Correlation between continous variables
+
+
+The following sections contain the application of these information loss assessment on the anonymized datasets.
+
+# Other infoirmation loss assessment
+

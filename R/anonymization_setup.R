@@ -614,30 +614,50 @@ generate_report_template <- function(agrisvy,type) {
   stopifnot(type %in% c("svy","wksp"))
 
   if(type=="svy") {
-    template=system.file("txt_template",
+    template_sdc=system.file("txt_template",
                          "sdc_report.txt",
                          package = "agrisvyr")
+
+    template_info_loss=system.file("txt_template",
+                             "infos_loss_report_en.txt",
+                             package = "agrisvyr")
   }
 
   if(type=="wksp") {
-    template=system.file("txt_template",
+    template_sdc=system.file("txt_template",
                          "sdc_report_wksp_fr.txt",
                          package = "agrisvyr")
   }
+#SDC
+  file_sdc <- file.path(anoreportDir(agrisvy), "sdc_report.rmd")
+  file.create(file_sdc)
+#Information loss
+  file_info_loss <- file.path(infoLossReport(agrisvy), "information_loss_report.rmd")
+  file.create(file_info_loss)
 
-  file <- file.path(anoreportDir(agrisvy), "sdc_report.rmd")
-  file.create(file)
-
-  fileConn <- file(file)
+  #SDC
+  fileConn_sdc <- file(file_sdc)
   writeLines(
-    c(glue::glue(paste(readLines(template,
+    c(glue::glue(paste(readLines(template_sdc,
                                  warn = FALSE
                                  ),
       collapse = "\n"
     ), .open = "{{", .close = "}}")),
-    fileConn
+    fileConn_sdc
   )
-  close(fileConn)
+  close(fileConn_sdc)
+
+  #Information loss
+  fileConn_info_loss <- file(file_info_loss)
+  writeLines(
+    c(glue::glue(paste(readLines(template_info_loss,
+                                 warn = FALSE
+    ),
+    collapse = "\n"
+    ), .open = "{{", .close = "}}")),
+    fileConn_info_loss
+  )
+  close(fileConn_info_loss)
 
   # deparse(substitute(my_object))
   # create logo https://www.youtube.com/watch?v=O34vzdHOaEk

@@ -128,30 +128,53 @@ if (!is.null(suda)) obj@suda             <- suda
 
 
 #Put the full path to avoir error with the workshop object when running quarto
+
+#SDC report
 saveRDS(obj,file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
+# Info loss report
+saveRDS(obj,file.path(agrisvy@workingDir,infoLossReport(agrisvy),glue::glue("child_{childName}.rds")))
 
+#SDC report
+file_sdc <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
+file.create(file_sdc)
+fileConn_sdc<-file(file_sdc)
 
-file <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
-file.create(file)
-fileConn<-file(file)
+#Info loss report
+file_infol <- file.path(agrisvy@workingDir,infoLossReport(agrisvy),glue::glue("child_{childName}.rmd"))
+file.create(file_infol)
+fileConn_infol<-file(file_infol)
 
 if(agrisvy@language=="en"){
   template_rpt_child=system.file("txt_template","sdc_report_child.txt",package = "agrisvyr")
+  template_rpt_child_infol=system.file("txt_template","info_loss_report_child.txt",package = "agrisvyr")
 }
 
 if(agrisvy@language=="fr"){
   template_rpt_child=system.file("txt_template","sdc_report_child_fr.txt",package = "agrisvyr")
 }
+
+#SDC-----------------
 writeLines(c(glue::glue(paste(readLines(template_rpt_child),
                               collapse = "\n"),.open = "{{",.close = "}}"))
            ,
-           fileConn)
-close(fileConn)
+           fileConn_sdc)
+close(fileConn_sdc)
+
+#Info loss----------------------------
+writeLines(c(glue::glue(paste(readLines(template_rpt_child_infol),
+                              collapse = "\n"),.open = "{{",.close = "}}"))
+           ,
+           fileConn_infol)
+close(fileConn_infol)
+
 #---------------------------------
 
-rpt_file=file.path(agrisvy@workingDir,anoreportDir(agrisvy),"sdc_report.rmd")
+rpt_file_sdc=file.path(agrisvy@workingDir,anoreportDir(agrisvy),"sdc_report.rmd")
+rpt_file_infol=file.path(agrisvy@workingDir,infoLossReport(agrisvy),"information_loss_report.rmd")
 
-sdc_rpt=readLines(rpt_file)
+
+# Update anonymization report-----------------------------------
+sdc_rpt=readLines(rpt_file_sdc)
 appended=grep(glue::glue("child_{childName}.rmd"),sdc_rpt)
 
 
@@ -178,10 +201,41 @@ new_sdc_rpt=c(before,
               after)
 
 
-fileConn<-file(rpt_file)
-writeLines(new_sdc_rpt,fileConn)
-close(fileConn)
+fileConn_sdc<-file(rpt_file_sdc)
+writeLines(new_sdc_rpt,fileConn_sdc)
+close(fileConn_sdc)
 
+# Update information loss report ------------------------------
+info_loss_rpt=readLines(rpt_file_infol)
+appended_infol=grep(glue::glue("child_{childName}.rmd"),info_loss_rpt)
+
+
+if(length(appended_infol)!=0){
+  info_loss_rpt=info_loss_rpt[-c((appended_infol-1):(appended_infol+2))]
+}
+
+if (agrisvy@language=="en"){
+
+  ind=grep("# Other infoirmation loss assessment",info_loss_rpt)
+}
+
+if (agrisvy@language=="fr"){
+  ind=grep("# Autres mesures d'anonymisation",info_loss_rpt)
+}
+
+before_infol=info_loss_rpt[1:(ind-1)]
+
+after_infol=info_loss_rpt[ind:length(info_loss_rpt)]
+
+new_infol_rpt=c(before_infol,
+              "",
+              glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
+              after_infol)
+
+
+fileConn_infol<-file(rpt_file_infol)
+writeLines(new_infol_rpt,fileConn_infol)
+close(fileConn_infol)
 
 
 }
@@ -258,6 +312,7 @@ setMethod("RenderGlobalRiskX",signature = "sdcReportObj",
 #' @import knitr
 #' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
+#' @export
 
 KanoTab=function(sdcObj,df=FALSE,levels=c(2,3,5),time,obj) {
 
@@ -314,6 +369,7 @@ setMethod("renderKanoTabX",signature = "sdcReportObj",
 #' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>%
 #' @importFrom stats median quantile
+#' @export
 
 RiskIndSUmmary=function(sdc,df=FALSE,time,obj){
   title=paste0("Summary of the", time, "individual risk")
@@ -378,6 +434,7 @@ setMethod("renderRiskIndSUmmaryX",signature = "sdcReportObj",
 #' @importFrom   kableExtra kbl kable_classic_2 kable_styling
 #' @importFrom dplyr %>% distinct
 #' @import sdcMicro
+#' @export
 
 HierRiskSummary=function(sdc,dfl=FALSE,time,obj){
 

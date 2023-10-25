@@ -11,6 +11,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+library(agrisvyr)
 library(sdcMicro)
 library(ggplot2)
 library(readxl)
@@ -33,7 +34,7 @@ options(knitr.duplicate.label = "allow")
 ```{r dataset-f,echo=FALSE}
 #data=as.data.frame(read_excel(path="datasets.xlsx"))
 
-#data%>% kbl() 
+#data%>% kbl()
 
 ```
 
@@ -81,7 +82,7 @@ combination of categorical quasi-identifiers
 
 * **Special Uniques Detection Algorithm (SUDA)**
 
-to go beyond uniqueness of the combination of quasi-identifiers and look at the 
+to go beyond uniqueness of the combination of quasi-identifiers and look at the
 uniqueness in the subset of combination of quasi-identifer (Special Unique)
 
 *  **Probabilistic risk**
@@ -90,9 +91,9 @@ Assess the disclosure risk as a probability. Units have the same
 combination of keys will have the same risk
 * extected number of re-identification: a global risk measure
 
-## for continous quasi-identifers  
+## for continous quasi-identifers
 
-In the literature, the risk of continous variable are calculated a posteriori. For 
+In the literature, the risk of continous variable are calculated a posteriori. For
 
 Given the nature of the data structure, we will lay emphasis on the outlierliness of observation
 regarding the continous variables.
