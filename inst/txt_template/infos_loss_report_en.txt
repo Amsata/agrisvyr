@@ -13,6 +13,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(sdcMicro)
+library(agrisvyr)
+library(survey)
 library(ggplot2)
 library(readxl)
 library(dplyr)

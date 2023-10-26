@@ -7,6 +7,8 @@ obj_i=obj@intialObj
 obj_f=obj@finalObj
 
 unit=obj@unit
+key_vars_ind=obj_i@keyVars
+
 ```
 
 # Information loss assessment of the {unit} dataset
@@ -15,34 +17,8 @@ unit=obj@unit
 
 
 ```{r,echo=FALSE}
-key_vars_ind=obj_i@keyVars
-names_key_vars=names(obj_i@origData)[key_vars_ind]
+miss_values_sum(obj_i,obj_f)
 
-missing_before=sapply(names_key_vars,function(x){sum(is.na(obj_i@origData[,x]))})
-missing_after=sapply(names_key_vars,function(x){sum(is.na(extractManipData(obj_f)[,x]))})
-missing_pct_before=round((missing_before)/nrow(obj_i@origData)*100,2)
-missing_pct_after=round((missing_after)/nrow(obj_i@origData)*100,2)
-missing_increase=round(missing_pct_after-missing_pct_before,2)
-
-
-df=data.frame(cbind(variable=names_key_vars,
-                 missing_before=missing_pct_before,
-                 missing_after=missing_pct_after,
-                 missing_increase=missing_increase
-                 )
-           )
-
-names(df)=c("Categorical Quasi-identifiers","Percentage of missing value (before)","Percentage of missing value(after)","Increase of missing value in pct. points")
-rownames(df)=NULL
-
-df %>%
-    kableExtra::kbl(align='rc',caption="Information loss: missing value count (variable level)",booktabs = T) %>%
-    kableExtra::kable_classic_2(full_width = F) %>%
-    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(2, width = "10em") %>%
-    kableExtra::column_spec(3, width = "10em") %>%
-    kableExtra::column_spec(4, width = "10em") %>%
-    kableExtra::kable_styling(latex_options = "HOLD_position")
 ```
 
 
@@ -50,40 +26,6 @@ df %>%
 **Breakdown at value level**
 
 ```{r,results='asis',echo=FALSE}
-
-display_miss=function(obj_i,obj_f,var){
-
-  # Check if there is a grouping of not
-  # If there is a grouping filter out that variable
-
-ano_df=extractManipData(obj_f)
-
-levels_before=level=unique(obj_i@origData[[var]])
-levels_after=level=unique(ano_df[[var]])
-
-res=sum(!(sapply(as.character(levels_after)[!is.na(as.character(levels_after))], function(x){ x %in% as.character(levels_before)})))
-
-df=data.frame(cbind(v1=as.character(obj_i@origData[[var]]),v2=as.character(ano_df[[var]])))
-
-df$missing=(!is.na(df$v1) & is.na(df$v2))
-
-df=df %>% group_by(v1) %>% summarise(n_missing=sum(missing,na.rm = TRUE),
-                                  missing_pct=round(sum(missing,na.rm = TRUE)/n()*100,2))
-
-names(df)[1]=var
-
-if(res==0) {
-
-  df%>%
-    kableExtra::kbl(align='rc',caption=paste0("Information loss: missing value count of value of the variable ", var),booktabs = T) %>%
-    kableExtra::kable_classic_2(full_width = F) %>%
-    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(2, width = "10em") %>%
-    kableExtra::column_spec(3, width = "10em") %>%
-    kableExtra::kable_styling(latex_options = "HOLD_position")
-}
-
-}
 
 for (i in key_vars_ind) {
   var=names(obj_i@origData)[i]
@@ -95,5 +37,31 @@ print(display_miss(obj_i,obj_f,var)
 
 ```
 
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+cat_relation(obj_i,obj_f,alpha = 0.05) %>%
+  kableExtra::kbl(align='cc',caption=paste0("dependency change assessment ", var),booktabs = T) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
+    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
+
+```
+
+
 ## Information loss assessment of continous quasi-identifiers
 
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+design=surveyDesign(obj_i,obj_f,ids=~enumerationArea,
+                            weights =~Weight,
+                           strata=~sub_region)
+
+confint_check_num(design,indicator="mean")
+
+confint_check_num(design,indicator="total")
+
+confint_check_num(design,indicator="median")
+
+
+
+```
