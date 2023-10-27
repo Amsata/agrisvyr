@@ -81,6 +81,8 @@ createQuestion <- function( QuestVar      = NULL,
 createQuestionnaire <- function(){
 
   Questionnaire <- list()
+  
+  #This is a test
 
   #Q01
   Questionnaire$Q01 <-
