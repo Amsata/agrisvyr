@@ -149,7 +149,8 @@ miss_values_sum <- function(obj_i,obj_f){
 #' @examples
 surveyDesign <- function(obj_i,obj_f,...){
   list(design_i=survey::svydesign(...,data = extractManipData(obj_i)),
-       design_f=survey::svydesign(...,data=extractManipData(obj_f)))
+       design_f=survey::svydesign(...,data=extractManipData(obj_f)),
+       obj_i=obj_i,obj_f=obj_f)
 }
 
 
@@ -211,9 +212,9 @@ confint_check_num <- function(design,indicator="mean",var_index=NULL){
   }
 
   if(is.null(var_index)){
-    names_num_vars=names(obj_i@manipNumVars)
+    names_num_vars=names(design$obj_i@manipNumVars)
   } else {
-    names_num_vars=names(obj_i@manipNumVars)[var_index]
+    names_num_vars=names(design$obj_i@manipNumVars)[var_index]
 
   }
 
@@ -229,5 +230,63 @@ confint_check_num <- function(design,indicator="mean",var_index=NULL){
     kableExtra::kable_paper(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
     kableExtra::column_spec(6, color = ifelse(df$is.ano.in.ci=="YES", "green", "red"),bold = T) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
+}
+
+
+
+#' Compare one way ANOVA test before and after anonymization
+#'
+#' @param design survey design specified with the function \code{"agrisvyr::surveyDesign"}
+#' @param test type of test. \code{"test=c("wilcoxon", "vanderWaerden", "median","KruskalWallis")"}
+#' @param alpha threshold for the rejection of null hypothesis
+#'
+#' @return
+#' @export
+#'
+#' @examples
+anova_test_comp <- function(design,test="wilcoxon",alpha=0.05){
+
+  .anova_test_comp <- function(num_var,cat_var,design,test="wilcoxon",alpha=0.05){
+
+    stopifnot(test %in% c("wilcoxon", "vanderWaerden", "median","KruskalWallis"))
+
+    aov_expr_i=rlang::parse_expr(glue::glue("svyranktest({num_var}~{cat_var}, design = design$design_i, na = TRUE, test=\"{test}\")"))
+    aov_expr_f=rlang::parse_expr(glue::glue("svyranktest({num_var}~{cat_var}, design = design$design_f, na = TRUE, test=\"{test}\")"))
+
+    aov_i <- eval(aov_expr_i)
+    aov_f <- eval(aov_expr_f)
+
+    res <- data.frame(
+      num_var=num_var,
+      key_var=cat_var,
+      ori.p.value=round(aov_i$p.value,6),
+      ano.p.value=round(aov_f$p.value,6),
+      pct.pt.change=round(aov_f$p.value-aov_i$p.value,6),
+      does.test.change=ifelse((aov_i$p.value<= alpha & aov_f$p.value<= alpha) |
+                                (aov_i$p.value>= alpha & aov_f$p.value>= alpha),"NO","YES")
+    )
+    row.names(res) <- NULL
+
+    return(res)
+  }
+
+  num_vars=names(obj_i@manipNumVars)
+  key_vars <- names(obj_i@manipKeyVars)
+
+
+  df <- as.data.frame(
+    t(
+      mapply(function(x,y) .anova_test_comp(x,y,design,test,alpha), num_vars,key_vars)
+    )
+  )
+
+  row.names(df) <- NULL
+
+  df %>% kableExtra::kbl(align='cc',
+                         caption=paste0("One way weighted ANOVA between continous quasi-identifier and categorical quasi-identifiers")) %>%
+    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
+    kableExtra::column_spec(6, color = ifelse(df$does.test.change=="NO", "green", "red"),bold = T) %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 }

@@ -130,7 +130,9 @@ generateAgrisData <- function(quest,shpfile, level=3,
 
 
   data=final_points
+  n=nrow(final_points)
 
+  #TODO: why loop do not run?
 
   # CREATING CATEGORICAL VARIABLES
   for (q in seq_along(quest)) {
