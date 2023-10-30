@@ -82,8 +82,6 @@ createQuestionnaire <- function(){
 
   Questionnaire <- list()
   
-  #This is a test
-
   #Q01
   Questionnaire$Q01 <-
     createQuestion(QuestVar   = list(en="Q01",fr="Q01",es="P01"),
@@ -118,8 +116,8 @@ createQuestionnaire <- function(){
                                                              "Legal person"),
                                      fr=c("Personne physique","Groupe de personnes physiques",
                                                              "Personne morale"),
-                                     es=c(" Persona	civil/persona	natural",
-                                          " Grupo	de	personas	civiles/personas	naturales",
+                                     es=c("Persona	civil/persona	natural",
+                                          "Grupo	de	personas	civiles/personas	naturales",
                                                              "Persona	jurídica")),
                    QuestValProbs = c(0.9,0.2,0.01)
                    )
@@ -148,7 +146,7 @@ createQuestionnaire <- function(){
                    QuestType = "cat.",
                    QuestLab = list(en="Village or town name",
                                    fr="Nom du village ou ville",
-                                   es=" Nombre	del	pueblo	o	ciudad"),
+                                   es="Nombre	del	pueblo	o	ciudad"),
                    QuestValue = NULL,
                    QuestValProbs = NULL
                    )
@@ -157,8 +155,8 @@ createQuestionnaire <- function(){
   Questionnaire$Q15 <-
     createQuestion(QuestVar = list(en="Q15",fr="Q15",es="P15"),
                    QuestType = "cont.",
-                   QuestLab = list(en=". Enumeration area of the holding",
-                                   fr="5. Zone de recensement de l'exploitation",
+                   QuestLab = list(en="Enumeration area of the holding",
+                                   fr="Zone de recensement de l'exploitation",
                                    es="Área	de	enumeración	de	la	unidad	de	prod"),
                    QuestValue = NULL,
                    QuestValProbs = NULL
@@ -204,6 +202,25 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
                    )
+  
+  #Q18
+  Questionnaire$Q18 <-
+    createQuestion(QuestVar = list(en="Q18",fr="Q18",es="P18"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What is the main location type of the address reported above?",
+                                   fr="A quoi correspond l'adresse ci-dessus ?",
+                                   es="¿Cuál	es	el	principal	tipo	de	ubicación	de	la	dirección	reportada	en	líneas	anteriores?"),
+                   QuestValue = list(en=c("Household dwelling (for HH sector) and farm, including dwelling and agricultural buildings",
+                                          "Main agricultural building",
+                                          "Main agricultural parcel"),
+                                     fr=c("Corps de ferme incluant logement et bâtiments agricoles (pour les exploitations individuelles)",
+                                          "Bâtiment agricole principal",
+                                          "Parcelle agricole la plus grande"),
+                                     es=c("Vivienda	del	hogar	(para	el	sector	del	hogar)	y	finca,	que	incluye	vivienda	y	edificios	agropecuarios",
+                                          "Edificio	agropecuario	principa",
+                                          "Parcela	agrícola	principal")),
+                   QuestValProbs = c(0.9,0.2,0.01)
+    )
 
   #Q19a
   Questionnaire$Q19a <-
