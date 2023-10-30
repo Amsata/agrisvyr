@@ -61,13 +61,13 @@ genFileDes <- function(file, name, id_cols, wb,type) {
   variable_names <- names(data)
 
   suma <- function(data, var) {
-    if (class(data %>% dplyr::pull(rlang::sym(var)))[1] %in% c("factor", "character", "haven_labelled") & !names(data[, var]) %in% id_cols) {
+    if (class(data %>% dplyr::pull(rlang::sym(var)))[1] %in% c("factor", "character", "haven_labelled") & length(unique(data[,var])) < id_cols) {
       result <- paste(row.names(as.data.frame(questionr::freq(data[, var]))),
         as.data.frame(questionr::freq(data[, var]))[, "n"],
         sep = ": N=", collapse = "\n"
       )
     } else {
-      if (!names(data[, var]) %in% id_cols) {
+      if (length(unique(data[,var]))< id_cols) {
         result <- paste(names(summary(data[, var])), summary(data[, var]), collapse = "\n")
       } else {
         result <- "-"
