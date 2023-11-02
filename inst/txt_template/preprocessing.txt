@@ -17,7 +17,7 @@ library(readxl)
 library(tidyr)
 library(haven)
 
-purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
 
 preprocMessage("{file_attributes$msg}")
