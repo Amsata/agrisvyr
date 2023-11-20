@@ -93,6 +93,28 @@ createQuestionnaire <- function(){
                    QuestValProbs = c(0.9,0.05)
                    )
   
+  #Q01d
+  Questionnaire$Q01d <-
+    createQuestion(QuestVar   = list(en="Q01d",fr="Q01d",es="P01d"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Sex of the holder",
+                                     fr="Sexe de l'exploitant",
+                                     es="Sexo del	Titular"),
+                   QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
+                   QuestValProbs = c(0.50,0.45)
+    )
+  
+  #Q01e
+  Questionnaire$Q01e <-
+    createQuestion(QuestVar = list(en="Q01e",fr="Q01e",es="P01e"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="Age in completed years of the holder",
+                                   fr="Age en années révolues de l'exploitation",
+                                   es="Edad del	Titular	en	años	completos"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
   #Q01f
   Questionnaire$Q01f <-
     createQuestion(QuestVar =list(en="Q01f",fr="Q01f",es="P01f"),
@@ -100,10 +122,23 @@ createQuestionnaire <- function(){
                    QuestLab      =list(en="Nationality",fr="Nationalité",es="Nacionalidad"),
                    QuestValue    = list(en=c("Local country","Neighbouring country","Other"),
                                         fr=c("Pays de résidence","Pays voisin","Autre"),
-                                        es=c("País	local","2 País	vecino","Otro")),
+                                        es=c("País	local","País	vecino","Otro")),
                    QuestValProbs = c(0.8,0.2,0.1)
                    )
 
+  #Q01h
+  Questionnaire$Q01h <-
+    createQuestion(QuestVar =list(en="Q01h",fr="Q01h",es="Q01h"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Highest level of education completed",
+                                       fr="Plus haut niveau d'étude atteint",
+                                       es="h Nivel	de	educación	más	alto	completado"),
+                   QuestValue    = list(en=c("None","Less than primary","Primary","Lower secondary","Upper secondary","Tertiary/post-secondary"),
+                                        fr=c("Aucun","Moins que primaire","Primaire","Secondaire court","Secondaire long","Postsecondaire"),
+                                        es=c("Ninguna","Inferior	a	primaria","Primaria","Secundaria	inferior","Secundaria	superior"," Terciaria/postsecundaria")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.1,0.1)
+    )
+  
   #Q02
   Questionnaire$Q02 <-
     createQuestion(QuestVar   = list(en="Q02",fr="Q02",es="P02"),
@@ -696,7 +731,7 @@ createQuestionnaire <- function(){
                                    es="Desde	una	perspectiva	económica,	¿cuál	es	el	principal	enfoque	agrícola	de	la	unidad	de	producción	para	el	periodo	de	referencia?"),
                    QuestValue = list(en=c("Mainly crop production","Mainly livestock production","A mix of crop and livestock production"),
                                      fr=c("Principalement production végétale","Principalement production animale","Productions animale et végétale"),
-                                     es=c(" Principalmente	producción	de	cultivos","Principalmente	producción	de	ganado","Una	combinación	de	producción	de	cultivos	y	producción")),
+                                     es=c("Principalmente	producción	de	cultivos","Principalmente	producción	de	ganado","Una	combinación	de	producción	de	cultivos	y	producción")),
                    QuestValProbs =prob = c(0.9,0.2,0.3)
     )
 
@@ -707,19 +742,77 @@ createQuestionnaire <- function(){
                    QuestType = "cat.",
                    QuestLab = list(en="From an economic perspective, what is the main cropping activity?",
                                    fr="D'un point de vue économique, quelle a été l'activité végétale principale?",
-                                   es="tenencia de la tierra-Tierra	no	agrícola"),
+                                   es="Desde	una	perspectiva	económica,	¿cuál	es	la	principal	actividad	en	el	cultivo?"),
                    QuestValue = list(en=c("Production of annual field crops (cereals, oilseeds, protein crops, root crops, tobacco, cotton, etc.)",
                                           "Production of vegetables, mushrooms, flowers, ornamental plants, etc.",
                                           "Production of grapes for wine",
-                                          "Production of fruits","Production of other perennial crops (cacao, coffee, etc.)",
+                                          "Production of fruits",
+                                          "Production of other perennial crops (cacao, coffee, etc.)",
                                           "Mixed cropping (no real prevalence of a specific crop activity)"),
                                      fr=c("Production de grandes cultures annuelles (céréales, oléagineux, protéagineux, tubercules, tabac, coton, etc.)",
                                           "Production de légumes, champignons, fleurs, plantes ornementales, etc",
-                                          "Production de raisin de cuve","Production de fruits","Production d'autres cultures pérennes (cacao, café, etc.)",
+                                          "Production de raisin de cuve",
+                                          "Production de fruits",
+                                          "Production d'autres cultures pérennes (cacao, café, etc.)",
                                           "Cultures mélangées sans réelle dominante ou activité spécifique"),
-                                     es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                                     es=c("Producción	de	cultivos	anuales	(cereales,	oleaginosas,	cultivos	de	proteína,	cultivos	de	tubérculos,	tabaco,	algodón,	etc.)",
+                                          "Producción	de	hortalizas,	zetas,	flores,	plantas	ornamentales,	etc.",
+                                          "Producción	de	uva	para	vino",
+                                          "Producción	de	fruta",
+                                          "Producción	de	otros	cultivos	perennes	(cacao,	café,	etc.)",
+                                          "Cultivos	mixtos	(sin	predominio	real	de	una	actividad	de	cultivo	específica)")),
+                   QuestValProbs =prob = c(0.2,0.2,0.2,0.2,0.1,0.05)
     )
+  
+  #Q28
+  Questionnaire$Q28 <-
+    createQuestion(QuestVar = list(en="Q28",fr="Q28",es="P28"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="From an economic perspective, what is the main livestock activity?",
+                                   fr="D'un point de vue économique, quelle a été l'activité animale principale?",
+                                   es="Desde	una	perspectiva	económica,	¿cuál	es	la	principal	actividad	en	ganadería?"),
+                   QuestValue = list(en=c("Raising ruminant livestock for meat (cattle, sheep, goats, etc.)",
+                                          "Raising non-ruminant livestock for meat (pigs, poultry, etc.)",
+                                          "Production of eggs",
+                                          "Production of milk",
+                                          "Mixed livestock (no real prevalence of a specific livestock activity)"),
+                                     fr=c("Elevage de ruminants pour la viande (bovins, ovins, caprins, etc.)",
+                                          "Elevage de cheptels autres que ruminants pour la viande (porcs, volailles, etc.)",
+                                          "Production d'oeufs",
+                                          "Production de lait",
+                                          "Plusieurs activités d'élevage sans dominante (pas de prévalence d'un élevage particulier)"),
+                                     es=c("Cría	de	ganado	rumiante	para	carne	(ganado	vacuno,	ovejas,	cabras,	etc.)",
+                                          "Cría	de	ganado	no	rumiante	para	carne	(cerdos,	aves	de	corral,	etc.)",
+                                          "Producción	de	huevos",
+                                          "Producción	de	leche",
+                                          "Cultivos	mixtos	(sin	predominio	real	de	una	actividad	de	ganadería	específica)")),
+                   QuestValProbs =prob = c(0.2,0.2,0.2,0.2,0.05)
+    )
+  
+  #Q29
+  Questionnaire$Q29 <-
+    createQuestion(QuestVar = list(en="Q29",fr="Q29",es="P29"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What is the main intended destination of your agricultural production?",
+                                   fr="Quelle est la principale destination de vos productions agricoles?",
+                                   es="¿Cuál	es	el	destino	principal	que	pretende	con	su	producción	agrícola?"),
+                   QuestValue = list(en=c("Producing primarily for sale (selling 90% or more)",
+                                          "Producing mainly for sale, with some own consumption (selling more than 50% and up to 90%)",
+                                          "Producing mainly for own consumption, with some sales (selling more than 10% and up to 50%)",
+                                          "Producing primarily for own consumption (selling 10% or less)"),
+                                     fr=c("Production majoritairement pour la vente (vente de 90% ou plus)",
+                                          "Production principalement pour la vente, avec un peu d'autoconsommation (vente de 50% à 90%)",
+                                          "Production principalement pour l'autoconsommation avec un peu de vente (vente de 10% à 50%)",
+                                          "Production principalement pour l'autoconsommation (vente de 10% ou moins)"),
+                                     es=c("Producir	principalmente	para	venta	(vender	90%	o	más)",
+                                          "Producir	principalmente	para	venta,	y	algo	para	consumo	propio	(venta	de	más	del	50%	y	hasta	el	90%)",
+                                          "Producir	principalmente	para	consumo	propio	y	algo	de	ventas	(venta	de	más	del	10%	y	hasta	el	50%)",
+                                          "Producir	principalmente	para	consumo	propio	(vender	10%	o	menos)")),
+                   QuestValProbs =prob = c(0.2,0.2,0.2,0.2)
+    )
+  
+  
+  
 
 return(Questionnaire)
 
