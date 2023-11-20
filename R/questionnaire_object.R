@@ -81,7 +81,7 @@ createQuestion <- function( QuestVar      = NULL,
 createQuestionnaire <- function(){
 
   Questionnaire <- list()
-  
+
   #Q01
   Questionnaire$Q01 <-
     createQuestion(QuestVar   = list(en="Q01",fr="Q01",es="P01"),
@@ -202,7 +202,7 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
                    )
-  
+
   #Q18
   Questionnaire$Q18 <-
     createQuestion(QuestVar = list(en="Q18",fr="Q18",es="P18"),
@@ -239,7 +239,341 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
                    )
 
+  #Q20
+  Questionnaire$Q20 <-
+    createQuestion(QuestVar = list(en="Q20",fr="Q20",es="P20"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What is the official identification number of the holding in the national business register?",
+                                   fr="Quel est l'identifiant de l'exploitation dans le répertoire national d'entreprises?",
+                                   es="¿Cuál	es	el	número	de	identificación	oficial	de	la	unidad	de	producción	en	el	registro	de	empresas	nacionales?"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
 
+
+
+  #Q21a
+  Questionnaire$Q21a <-
+    createQuestion(QuestVar = list(en="Q21a",fr="Q21a",es="P21a"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What are the other administrative identification numbers of the holding?-Livestock",
+                                   fr="Quels sont les autres identifiants administratifs de l'exploitation?-Cheptel",
+                                   es="¿Cuales	son	los	demás	números	de	identificación	administrativos	de	la	unidad	de	producción?-Ganaderí"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+
+  #Q21b
+  Questionnaire$Q21b <-
+    createQuestion(QuestVar = list(en="Q21b",fr="Q21b",es="P21b"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What are the other administrative identification numbers of the holding?-Wine production",
+                                   fr="Quels sont les autres identifiants administratifs de l'exploitation?-Production de vin",
+                                   es="¿Cuales	son	los	demás	números	de	identificación	administrativos	de	la	unidad	de	producción?-Producción	de	vino"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+
+  #Q21c
+  Questionnaire$Q21c <-
+    createQuestion(QuestVar = list(en="Q21c",fr="Q21c",es="P21c"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What are the other administrative identification numbers of the holding?-Organic production",
+                                   fr="Quels sont les autres identifiants administratifs de l'exploitation?-Production biologique",
+                                   es="¿Cuales	son	los	demás	números	de	identificación	administrativos	de	la	unidad	de	producción?-Producción	orgánica"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+
+
+
+  #Q21d
+  Questionnaire$Q21d <-
+    createQuestion(QuestVar = list(en="Q21d",fr="Q21d",es="P21d"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What are the other administrative identification numbers of the holding?-Other",
+                                   fr="Quels sont les autres identifiants administratifs de l'exploitation?-Other",
+                                   es="¿Cuales	son	los	demás	números	de	identificación	administrativos	de	la	unidad	de	producción?-Otro"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+
+
+
+  #Q22
+  Questionnaire$Q22 <-
+    createQuestion(QuestVar = list(en="Q22",fr="Q22",es="P22"),
+                   QuestType = "cat.",
+                   QuestLab = list(en=". What is the identification number of the holding from the last agricultural census? (Can be prefilled)",
+                                   fr="Quel est l'identifiant de l'exploitation dans le dernier recensement de l'agriculture? (Peut être pré renseigné)",
+                                   es="¿Cuál	es	el	número	de	identificación	de	la	unidad	de	producción	en	el	último	censo	agropecuario?	(Puede	llenarse	de	antemano)"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+
+
+  #Q23
+  Questionnaire$Q23 <-
+    createQuestion(QuestVar = list(en="Q23",fr="Q23",es="P23"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Does the holding record its agricultural activity or finances on registers or logbooks?",
+                                   fr="L'exploitation enregistre-t-elle son activité agricole ou comptable sur des registres ou carnets journaliers?",
+                                   es="¿Registra	la	unidad	de	producción	su	actividad	agropecuaria	o	finanzas	en	registros	o	libros	de	diario?"),
+                   QuestValue = list(en=c("No, never","Yes, only occasionally or partially","Yes, systematically"),
+                                     fr=c("1 Non, jamais","Oui, occasionnellement ou partiellement","Oui, systématiquement"),
+                                     es=c(" No,	nunca"," Si,	solo	ocasional	y	parcialmente","Sí,	sistemáticamente")),
+                   QuestValProbs = c(0.65,0.25,0.2)
+    )
+
+
+  #Q24_1
+  Questionnaire$Q24_1 <-
+    createQuestion(QuestVar = list(en="Q24_1",fr="Q24_1",es="P24_1"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Area cultivated/harvested",
+                                   fr=". Quelles informations sont systématiquement enregistrées?- Superficie cultivée/récoltée",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?- Área	cultivada/cosechada"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_2
+  Questionnaire$Q24_2 <-
+    createQuestion(QuestVar = list(en="Q24_2",fr="Q24_2",es="P24_2"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Crop production",
+                                   fr=". Quelles informations sont systématiquement enregistrées?-Productions végétales",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?- Producción	de	cultivos"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_3
+  Questionnaire$Q24_3 <-
+    createQuestion(QuestVar = list(en="Q24_3",fr="Q24_3",es="P24_3"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Livestock production",
+                                   fr=". Quelles informations sont systématiquement enregistrées?-Productions animales",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?-Producción	de	ganado"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_4
+  Questionnaire$Q24_4 <-
+    createQuestion(QuestVar = list(en="Q24_4",fr="Q24_4",es="P24_4"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Unit prices, amounts sold and total sales by product",
+                                   fr=". Quelles informations sont systématiquement enregistrées?-Prix de vente, montants des ventes et total vendu par produit",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?-Precios	unitarios,	montos	vendidos	y	ventas	totales	por	producto"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_5
+  Questionnaire$Q24_5 <-
+    createQuestion(QuestVar = list(en="Q24_5",fr="Q24_5",es="P24_5"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Input quantities used (seeds, fertilizers, plant protection products, etc.)",
+                                   fr=". Quelles informations sont systématiquement enregistrées?-Quantités d'intrants utilisés (semences, fertilisants, produits de protection des plantes, etc.)",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?-5 Cantidades	de	insumos	utilizados	(semillas,	fertilizantes,	productos	fitosanitarios,	etc.)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_6
+  Questionnaire$Q24_6 <-
+    createQuestion(QuestVar = list(en="Q24_6",fr="Q24_6",es="P24_6"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Detailed quantities and prices of inputs bought",
+                                   fr=". Quelles informations sont systématiquement enregistrées?-Quantités détaillées et prix des intrants achetés",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?-Cantidades	detalladas	y	precios	de	insumos	adquiridos"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_7
+  Questionnaire$Q24_7 <-
+    createQuestion(QuestVar = list(en="Q24_7",fr="Q24_7",es="P24_7"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-7 Workers’ time",
+                                   fr=". Quelles informations sont systématiquement enregistrées?-Temps de travail des salariés",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?- Tiempo	de	los	trabajadores"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_8
+  Questionnaire$Q24_8 <-
+    createQuestion(QuestVar = list(en="Q24_8",fr="Q24_8",es="P24_8"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Workers’ payment",
+                                   fr=". Quelles informations sont systématiquement enregistrées?- Paiement des salariés",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?- Pago	de	los	trabajadores"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q24_9
+  Questionnaire$Q24_9 <-
+    createQuestion(QuestVar = list(en="Q24_9",fr="Q24_9",es="P24_9"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="What information is systematically registered?-Other",
+                                   fr=". Quelles informations sont systématiquement enregistrées?-Autre",
+                                   es=". ¿Qué	información	se	registra	sistemáticamente?-Otro"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+  #Q25_1
+  Questionnaire$Q25_ <-
+    createQuestion(QuestVar = list(en="Q25_1",fr="Q25_1",es="P25_1"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-Owned with written documentation (includes a title deed, a will, a purchase agreement, etc.)",
+                                   fr="régime foncier-En propriété avec un acte écrit (incluant un titre de propriété, une intention, un accord d'achat, etc.)",
+                                   es="tenencia de la tierra-1 En	propiedad	con	documentación	por	escrito	(incluye	un	título	de	propiedad,	un	testamento,	un	contrato	de	compra,	etc.)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+  #Q25_2
+  Questionnaire$Q25_2 <-
+    createQuestion(QuestVar = list(en="Q25_2",fr="Q25_2",es="P25_2"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-Owned without written documentation",
+                                   fr="régime foncier-En propriété sans acte écrit",
+                                   es="tenencia de la tierra-En	propiedad	sin	documentación	por	escrito"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+  #Q25_3
+  Questionnaire$Q25_3 <-
+    createQuestion(QuestVar = list(en="Q25_3",fr="Q25_3",es="P25_3"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-Rented-in, leased or sharecropped with written agreement",
+                                   fr="régime foncier-Location ou métayage avec un acte écrit",
+                                   es="tenencia de la tierra-En	alquiler,	arrendamiento	financiero	o	aparcería	con	acuerdo	por	escrito"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+  #Q25_4
+  Questionnaire$Q25_4 <-
+    createQuestion(QuestVar = list(en="Q25_4",fr="Q25_4",es="P25_4"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-Rented-in, leased or sharecropped without written agreement",
+                                   fr="régime foncier-Location ou métayage sans acte écrit",
+                                   es="tenencia de la tierra- En	alquiler,	arrendamiento	financiero	o	aparcería	sin	acuerdo	por	escrito"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+  #Q25_5
+  Questionnaire$Q25_5 <-
+    createQuestion(QuestVar = list(en="Q25_5",fr="Q25_5",es="P25_5"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-State or communal land used with written agreement (certified use rights)",
+                                   fr="régime foncier-Superficie communale ou d'État utilisée avec un accord écrit (droits d'usage certifiés)",
+                                   es="tenencia de la tierra- Tierra	estatal	o	comunal	utilizada	con	acuerdo	por	escrito	(derechos	de	uso	certificados)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+
+
+  #Q25_6
+  Questionnaire$Q25_6 <-
+    createQuestion(QuestVar = list(en="Q25_6",fr="Q25_6",es="P25_6"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-State or communal land used without written agreement (uncertified use rights)",
+                                   fr="régime foncier-Superficie communale ou d'État utilisée sans accord écrit (droits d'usage non certifiés)",
+                                   es="tenencia de la tierra-Tierra	estatal	o	comunal	utilizada	sin	acuerdo	por	escrito	(derechos	de	uso	certificados)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+  #Q25_7
+  Questionnaire$Q25_7 <-
+    createQuestion(QuestVar = list(en="Q25_7",fr="Q25_7",es="P25_7"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-Occupied/squatted without any permission",
+                                   fr="régime foncier-Occupé/squatté sans permission",
+                                   es="tenencia de la tierra- Ocupada/ocupada	ilegalmente	sin	ningún	permiso"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+  #Q25_8
+  Questionnaire$Q25_8 <-
+    createQuestion(QuestVar = list(en="Q25_8",fr="Q25_8",es="P25_8"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Land tenure-No agricultural land",
+                                   fr="régime foncier- Pas de superficie agricole",
+                                   es="tenencia de la tierra-Tierra	no	agrícola"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
+
+
+  #Q26
+  Questionnaire$Q26 <-
+    createQuestion(QuestVar = list(en="Q26",fr="Q26",es="P26"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="From an economic perspective, what is the holding’s main agricultural focus for the reference period?",
+                                   fr="D'un point de vue économique, quelle a été l'activité agricole principale de l'exploitation pendant la période de référence?",
+                                   es="Desde	una	perspectiva	económica,	¿cuál	es	el	principal	enfoque	agrícola	de	la	unidad	de	producción	para	el	periodo	de	referencia?"),
+                   QuestValue = list(en=c("Mainly crop production","Mainly livestock production","A mix of crop and livestock production"),
+                                     fr=c("Principalement production végétale","Principalement production animale","Productions animale et végétale"),
+                                     es=c(" Principalmente	producción	de	cultivos","Principalmente	producción	de	ganado","Una	combinación	de	producción	de	cultivos	y	producción")),
+                   QuestValProbs =prob = c(0.9,0.2,0.3)
+    )
+
+
+  #Q27
+  Questionnaire$Q27 <-
+    createQuestion(QuestVar = list(en="Q27",fr="Q27",es="P27"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="From an economic perspective, what is the main cropping activity?",
+                                   fr="D'un point de vue économique, quelle a été l'activité végétale principale?",
+                                   es="tenencia de la tierra-Tierra	no	agrícola"),
+                   QuestValue = list(en=c("Production of annual field crops (cereals, oilseeds, protein crops, root crops, tobacco, cotton, etc.)",
+                                          "Production of vegetables, mushrooms, flowers, ornamental plants, etc.",
+                                          "Production of grapes for wine",
+                                          "Production of fruits","Production of other perennial crops (cacao, coffee, etc.)",
+                                          "Mixed cropping (no real prevalence of a specific crop activity)"),
+                                     fr=c("Production de grandes cultures annuelles (céréales, oléagineux, protéagineux, tubercules, tabac, coton, etc.)",
+                                          "Production de légumes, champignons, fleurs, plantes ornementales, etc",
+                                          "Production de raisin de cuve","Production de fruits","Production d'autres cultures pérennes (cacao, café, etc.)",
+                                          "Cultures mélangées sans réelle dominante ou activité spécifique"),
+                                     es=c("Si","No")),
+                   QuestValProbs =prob = c(0.6,02)
+    )
 
 return(Questionnaire)
 

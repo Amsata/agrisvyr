@@ -4,14 +4,10 @@
 \alias{surveyDesign}
 \title{Specify sample design for information loss asessment}
 \usage{
-surveyDesign(obj_i, obj_f, ...)
+surveyDesign(x, y, df = FALSE, ...)
 }
 \arguments{
-\item{obj_i}{initial \code{"sdcMicroObj"} object}
-
-\item{obj_f}{final \code{"sdcMicroObj"} object}
-
-\item{...}{argument of the function \code{"svydesing"} from the package \code{"survey"} (exept the \code{"data"} arguement)}
+\item{df}{}
 }
 \description{
 Specify sample design for information loss asessment

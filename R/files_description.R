@@ -67,7 +67,7 @@ genFileDes <- function(file, name, id_cols, wb,type) {
         sep = ": N=", collapse = "\n"
       )
     } else {
-      if (length(unique(data[,var]))< id_cols) {
+      if (class(data %>% dplyr::pull(rlang::sym(var)))[1] %in% c("numeric", "integer", "double")) {
         result <- paste(names(summary(data[, var])), summary(data[, var]), collapse = "\n")
       } else {
         result <- "-"

@@ -4,24 +4,33 @@
 #' @param obj_i initial SDC object
 #' @param obj_f final SDC object
 #' @param var categorical quasi-identifier
+#' @param df
 #'
 #' @return
 #' @export
 #'
 #' @examples
-display_miss=function(obj_i,obj_f,var){
+display_miss=function(obj_i,obj_f,var,df){
 
   # Check if there is a grouping of not
   # If there is a grouping filter out that variable
 
-  ano_df=extractManipData(obj_f)
+  if(df==TRUE){
+  raw_df=obj_i
+  ano_df=obj_f
+  }
 
-  levels_before=level=unique(obj_i@origData[[var]])
+  if(df==FALSE){
+    raw_df=obj_i@origData
+    ano_df=extractManipData(obj_f)
+  }
+
+  levels_before=level=unique(raw_df[[var]])
   levels_after=level=unique(ano_df[[var]])
 
   res=sum(!(sapply(as.character(levels_after)[!is.na(as.character(levels_after))], function(x){ x %in% as.character(levels_before)})))
 
-  df=data.frame(cbind(v1=as.character(obj_i@origData[[var]]),v2=as.character(ano_df[[var]])))
+  df=data.frame(cbind(v1=to_character(raw_df[[var]]),v2=to_character(ano_df[[var]])))
 
   df$missing=(!is.na(df$v1) & is.na(df$v2))
 
@@ -49,47 +58,74 @@ display_miss=function(obj_i,obj_f,var){
 #'
 #' @param obj_i initial SDCmicro Object
 #' @param obj_f Final sdcMicro object
+#' @param vars variable to include
 #' @param alpha dependancy threshold (for p-value)
+#'
 #' @return
 #' @export
 #'
 #' @examples
-cat_relation=function(obj_i,obj_f,alpha){
+cat_relation=function(obj_i,obj_f,alpha,vars=NULL,df){
 
-  ano_df=extractManipData(obj_f)
-  ori_df=obj_i@origData
 
-  key_vars_ind=obj_i@keyVars
-  names_key_vars=names(obj_i@origData)[key_vars_ind]
-
-  m=matrix(nrow = length(key_vars_ind),ncol = length(key_vars_ind))
-  dimnames(m)=list(names_key_vars,names_key_vars)
-  for (vi in names_key_vars) {
-
-    for (vj in names_key_vars) {
-
-      res1=as.numeric(chisq.test(ori_df[[vi]],ori_df[[vj]])$p.value)
-      res2=as.numeric(chisq.test(ano_df[[vi]],ano_df[[vj]])$p.value)
-      res=ifelse(res1<alpha & res2 < alpha, FALSE,ifelse(res1>alpha & res2>alpha,FALSE,TRUE))
-
-      pct_point_change=round((res2*100-res1*100),2)
-
-      i=which(names_key_vars==vi)
-      j=which(names_key_vars==vj)
-
-      if(i<j) {
-        m[vi,vj]=res
-      }else {
-        m[vi,vj]=pct_point_change
-      }
-      if (vi==vj) {
-        m[i,j]="____"
-      }
-
+    if(df==TRUE){
+      ano_df=obj_f
+      ori_df=obj_i
+      names_key_vars=vars
     }
-  }
 
-  return(as.data.frame(m))
+    if(df==FALSE){
+      ano_df=extractManipData(obj_f)
+      ori_df=obj_i@origData
+      key_vars_ind=obj_i@keyVars
+      names_key_vars=names(obj_i@origData)[key_vars_ind]
+    }
+
+
+    if(!is.null(vars)){
+      names_key_vars=vars
+    }
+
+    m=matrix(nrow = length(names_key_vars),ncol = length(names_key_vars))
+    dimnames(m)=list(names_key_vars,names_key_vars)
+    for (vi in names_key_vars) {
+
+      for (vj in names_key_vars) {
+
+        res1=tryCatch({
+          as.numeric(chisq.test(ori_df[[vi]],ori_df[[vj]])$p.value)
+        },
+        error = function(cond) {
+          NA
+        })
+        res2=tryCatch({
+          as.numeric(chisq.test(ano_df[[vi]],ano_df[[vj]])$p.value)    },
+          error = function(cond) {
+            NA
+          })
+
+        # res1=as.numeric(chisq.test(ori_df[[vi]],ori_df[[vj]])$p.value)
+        # res2=as.numeric(chisq.test(ano_df[[vi]],ano_df[[vj]])$p.value)
+        res=ifelse(res1<alpha & res2 < alpha, FALSE,ifelse(res1>alpha & res2>alpha,FALSE,TRUE))
+
+        pct_point_change=round((res2*100-res1*100),2)
+
+        i=which(names_key_vars==vi)
+        j=which(names_key_vars==vj)
+
+        if(i<j) {
+          m[vi,vj]=res
+        }else {
+          m[vi,vj]=pct_point_change
+        }
+        if (vi==vj) {
+          m[i,j]="____"
+        }
+
+      }
+    }
+
+    return(as.data.frame(m))
 
 }
 
@@ -98,31 +134,43 @@ cat_relation=function(obj_i,obj_f,alpha){
 #'
 #' @param obj_i initial sdcMicro object
 #' @param obj_f final sdcMicro Object
+#' @param df
+#' @param vars
 #'
 #' @return
 #' @export
 #'
 #' @examples
-miss_values_sum <- function(obj_i,obj_f){
+miss_values_sum <- function(obj_i,obj_f,df,vars){
 
-  key_vars_ind=obj_i@keyVars
-  names_key_vars=names(obj_i@origData)[key_vars_ind]
 
-  missing_before=sapply(names_key_vars,function(x){sum(is.na(obj_i@origData[,x]))})
-  missing_after=sapply(names_key_vars,function(x){sum(is.na(extractManipData(obj_f)[,x]))})
-  missing_pct_before=round((missing_before)/nrow(obj_i@origData)*100,2)
-  missing_pct_after=round((missing_after)/nrow(obj_i@origData)*100,2)
-  missing_increase=round(missing_pct_after-missing_pct_before,2)
+
+  if(df==TRUE){
+    df_i=obj_i
+    df_f=obj_f
+    names_key_vars=vars
+  }
+
+  if(df==FALSE){
+    df_i=obj_i@origData
+    df_f=extractManipData(obj_f)
+    key_vars_ind=obj_i@keyVars
+    names_key_vars=names(obj_i@origData)[key_vars_ind]
+  }
+
+  missing_ano=sapply(names_key_vars,function(x){sum(!is.na(df_i[,x]) & is.na(df_f[,x]))})
+  non_missing_i=sapply(names_key_vars,function(x){sum(!is.na(df_i[,x]))})
+
+  missing_ano_pct=round(missing_ano/non_missing_i*100,2)
 
 
   df=data.frame(cbind(variable=names_key_vars,
-                      missing_before=missing_pct_before,
-                      missing_after=missing_pct_after,
-                      missing_increase=missing_increase
+                      missing_ano=missing_ano,
+                      missing_ano_pct=missing_ano_pct
   )
   )
 
-  names(df)=c("Categorical Quasi-identifiers","Percentage of missing value (before)","Percentage of missing value(after)","Increase of missing value in pct. points")
+  names(df)=c("Categorical Quasi-identifiers","# local supression","% local suppression")
   rownames(df)=NULL
 
   df %>%
@@ -131,7 +179,6 @@ miss_values_sum <- function(obj_i,obj_f){
     kableExtra::column_spec(1, width = "12em", bold = T, border_right = T) %>%
     kableExtra::column_spec(2, width = "10em") %>%
     kableExtra::column_spec(3, width = "10em") %>%
-    kableExtra::column_spec(4, width = "10em") %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 }
 
@@ -139,18 +186,29 @@ miss_values_sum <- function(obj_i,obj_f){
 
 #' Specify sample design for information loss asessment
 #'
-#' @param obj_i initial \code{"sdcMicroObj"} object
-#' @param obj_f final \code{"sdcMicroObj"} object
-#' @param ... argument of the function \code{"svydesing"} from the package \code{"survey"} (exept the \code{"data"} arguement)
+#' @param x
+#' @param y
+#' @param df
 #'
 #' @return
 #' @export
 #'
 #' @examples
-surveyDesign <- function(obj_i,obj_f,...){
-  list(design_i=survey::svydesign(...,data = extractManipData(obj_i)),
-       design_f=survey::svydesign(...,data=extractManipData(obj_f)),
+surveyDesign <- function(x,y,df=FALSE,...){
+
+if(df==FALSE){
+
+  res=list(design_i=survey::svydesign(...,data = extractManipData(x)),
+       design_f=survey::svydesign(...,data=extractManipData(y)),
        obj_i=obj_i,obj_f=obj_f)
+}
+
+if (df==TRUE) {
+  res=list(design_i=survey::svydesign(...,data = x),
+       design_f=survey::svydesign(...,data=y))
+}
+
+  return(res)
 }
 
 
@@ -288,5 +346,203 @@ anova_test_comp <- function(design,test="wilcoxon",alpha=0.05){
     kableExtra::kable_paper(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
     kableExtra::column_spec(6, color = ifelse(df$does.test.change=="NO", "green", "red"),bold = T) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
+}
+
+
+
+
+
+
+#' Compare proportion before and after anonymization
+#'
+#' @param variable
+#' @param design
+#'
+#' @return
+#' @export
+#'
+#' @examples
+compare_ind_cat_mean <- function(variable,design){
+
+  var=as.formula(paste0("~","factor(",variable,")"))
+
+  res_i=as.data.frame(svymean(var,design$design_i,na.rm=TRUE))
+  res_f=as.data.frame(svymean(var,design$design_f,na.rm=TRUE))
+  val_labels=gsub(paste0("factor","\\(",variable,"\\)"),"",row.names(res_i))
+
+  ci=as.data.frame(confint(svymean(var,design$design_i,na.rm=TRUE)))
+  cv=as.data.frame(cv(svymean(var,design$design_i,na.rm=TRUE)))
+  names(cv)="cv"
+
+  df=data.frame(
+    cbind(
+      ori_value=round(res_i$mean,3)*100,
+      conf_int=paste("[",round(ci$`2.5 %`,3)*100,",",round(ci$`97.5 %`,3)*100,"]"),
+      ano_value=round(res_f$mean,3)*100,
+      pct_pt_change=round((res_f$mean-res_i$mean)*100,2),
+      is_ano_in_cf= ifelse(res_f$mean>=ci$`2.5 %` & res_f$mean<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+    )
+  ) %>% dplyr::mutate(!!sym(variable):=val_labels,.before="ori_value")
+
+  row.names(df)=NULL
+
+
+  df %>% kableExtra::kbl(align='cc',
+                         caption=paste0("COMPARISON OF PROPORTION: ",variable)) %>%
+    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
+    kableExtra::column_spec(6, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
+    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
+
+}
+
+
+
+
+
+#' Compare total of categorical variable values before and after anonymization
+#'
+#' @param variable
+#' @param design
+#'
+#' @return
+#' @export
+#'
+#' @examples
+compare_ind_cat_tot <- function(variable,design){
+
+  var=as.formula(paste0("~","factor(",variable,")"))
+
+  res_i=as.data.frame(svytotal(var,design$design_i,na.rm=TRUE))
+  res_f=as.data.frame(svytotal(var,design$design_f,na.rm=TRUE))
+  val_labels=gsub(paste0("factor","\\(",variable,"\\)"),"",row.names(res_i))
+
+  ci=as.data.frame(confint(svytotal(var,design$design_i,na.rm=TRUE)))
+  cv=as.data.frame(cv(svytotal(var,design$design_i,na.rm=TRUE)))
+  names(cv)="cv"
+
+  df=data.frame(
+    cbind(
+      ori_value=round(res_i$total),
+      conf_int=paste("[",round(ci$`2.5 %`),",",round(ci$`97.5 %`),"]"),
+      ano_value=round(res_f$total),
+      pct_pt_change=round((res_f$total-res_i$total)/res_i$total*100,2),
+      is_ano_in_cf= ifelse(res_f$total>=ci$`2.5 %` & res_f$total<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+    )
+  ) %>% dplyr::mutate(!!sym(variable):=val_labels,.before="ori_value")
+
+  row.names(df)=NULL
+
+
+  df %>% kableExtra::kbl(align='cc',
+                         caption=paste0("COMPARISON OF TOTAL: ",variable)) %>%
+    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
+    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
+    kableExtra::column_spec(6, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
+
+}
+
+
+
+
+
+
+#' Compare crosstabulation proportion before and after anonymization
+#'
+#' @param variable1
+#' @param variable2
+#' @param design
+#'
+#' @return
+#' @export
+#'
+#' @examples
+compare_ind_cats <- function(variable1,variable2,design){
+
+  var=as.formula(paste0("~","interaction(",variable1,",",variable2,")"))
+
+  res_i=as.data.frame(svymean(var,design$design_i,na.rm = TRUE))
+  res_f=as.data.frame(svymean(var,design$design_f,na.rm = TRUE))
+
+  val_labels=gsub(paste0("interaction","\\(",variable1,", ",variable2,"\\)"),"",row.names(res_i))
+  var1_labels=gsub("\\.(.*)$","",val_labels)
+  var2_labels=gsub("^(.*)\\.","",val_labels)
+  ci=as.data.frame(confint(svymean(var,design$design_i,na.rm = TRUE)))
+  cv=as.data.frame(cv(svymean(var,design$design_i,na.rm=TRUE)))
+  names(cv)="cv"
+
+  df=data.frame(
+    cbind(
+      ori_value=round(res_i$mean,3)*100,
+      conf_int=paste("[",round(ci$`2.5 %`,3)*100,",",round(ci$`97.5 %`,3)*100,"]"),
+      ano_value=round(res_f$mean,3)*100,
+      pct_pt_change=round((res_f$mean-res_i$mean)*100,2),
+      is_ano_in_cf= ifelse(res_f$mean>=ci$`2.5 %` & res_f$mean<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+    )
+  ) %>% dplyr::mutate(!!sym(variable1):=var1_labels,.before="ori_value")%>%
+    dplyr::mutate(!!sym(variable2):=var2_labels,.before="ori_value")
+
+  row.names(df)=NULL
+
+
+  df %>% kableExtra::kbl(align='cc',
+                         caption=paste0("COMPARISON OF INTERACTION: ",variable1, " and ",variable2)) %>%
+    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
+    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
+    kableExtra::column_spec(7, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
+}
+
+
+
+
+#' Compare crosstabulation total before and after anonymization
+#'
+#' @param variable1
+#' @param variable2
+#' @param design
+#'
+#' @return
+#' @export
+#'
+#' @examples
+compare_ind_cats_tot <- function(variable1,variable2,design){
+
+  var=as.formula(paste0("~","interaction(",variable1,",",variable2,")"))
+
+  res_i=as.data.frame(svytotal(var,design$design_i,na.rm = TRUE))
+  res_f=as.data.frame(svytotal(var,design$design_f,na.rm = TRUE))
+
+  val_labels=gsub(paste0("interaction","\\(",variable1,", ",variable2,"\\)"),"",row.names(res_i))
+  var1_labels=gsub("\\.(.*)$","",val_labels)
+  var2_labels=gsub("^(.*)\\.","",val_labels)
+  ci=as.data.frame(confint(svytotal(var,design$design_i,na.rm = TRUE)))
+  cv=as.data.frame(cv(svytotal(var,design$design_i,na.rm=TRUE)))
+  names(cv)="cv"
+  df=data.frame(
+    cbind(
+      ori_value=round(res_i$total),
+      conf_int=paste("[",round(ci$`2.5 %`),",",round(ci$`97.5 %`),"]"),
+      ano_value=round(res_f$total),
+      pct_pt_change=round((res_f$total-res_i$total)/res_i$total*100),
+      is_ano_in_cf= ifelse(res_f$total>=ci$`2.5 %` & res_f$total<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+    )
+  ) %>% dplyr::mutate(!!sym(variable1):=var1_labels,.before="ori_value")%>%
+    dplyr::mutate(!!sym(variable2):=var2_labels,.before="ori_value")
+
+  row.names(df)=NULL
+
+
+  df %>% kableExtra::kbl(align='cc',
+                         caption=paste0("COMPARISON OF INTERACTION: ",variable1, " and ",variable2)) %>%
+    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
+    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
+    kableExtra::column_spec(7, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 }
