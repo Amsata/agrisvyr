@@ -4,7 +4,7 @@
 \alias{cat_relation}
 \title{Provide a matrix to assess dependancy loss due to anonymiziation}
 \usage{
-cat_relation(obj_i, obj_f, alpha)
+cat_relation(obj_i, obj_f, alpha, vars = NULL, df)
 }
 \arguments{
 \item{obj_i}{initial SDCmicro Object}
@@ -12,6 +12,8 @@ cat_relation(obj_i, obj_f, alpha)
 \item{obj_f}{Final sdcMicro object}
 
 \item{alpha}{dependancy threshold (for p-value)}
+
+\item{vars}{variable to include}
 }
 \description{
 Provide a matrix to assess dependancy loss due to anonymiziation

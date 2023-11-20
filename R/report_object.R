@@ -130,17 +130,17 @@ if (!is.null(suda)) obj@suda             <- suda
 #Put the full path to avoir error with the workshop object when running quarto
 
 #SDC report
-saveRDS(obj,file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
+saveRDS(obj,file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
 # Info loss report
-saveRDS(obj,file.path(agrisvy@workingDir,infoLossReport(agrisvy),glue::glue("child_{childName}.rds")))
+saveRDS(obj,file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rds")))
 
 #SDC report
-file_sdc <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
+file_sdc <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
 file.create(file_sdc)
 fileConn_sdc<-file(file_sdc)
 
 #Info loss report
-file_infol <- file.path(agrisvy@workingDir,infoLossReport(agrisvy),glue::glue("child_{childName}.rmd"))
+file_infol <- file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rmd"))
 file.create(file_infol)
 fileConn_infol<-file(file_infol)
 
@@ -169,8 +169,8 @@ close(fileConn_infol)
 
 #---------------------------------
 
-rpt_file_sdc=file.path(agrisvy@workingDir,anoreportDir(agrisvy),"sdc_report.rmd")
-rpt_file_infol=file.path(agrisvy@workingDir,infoLossReport(agrisvy),"information_loss_report.rmd")
+rpt_file_sdc=file.path(anoreportDir(agrisvy),"sdc_report.rmd")
+rpt_file_infol=file.path(infoLossReport(agrisvy),"information_loss_report.rmd")
 
 
 # Update anonymization report-----------------------------------

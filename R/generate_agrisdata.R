@@ -130,14 +130,17 @@ generateAgrisData <- function(quest,shpfile, level=3,
 
 
   data=final_points
+  n=nrow(final_points)
 
+  #TODO: why loop do not run?
 
   # CREATING CATEGORICAL VARIABLES
   for (q in seq_along(quest)) {
+    var=sym(quest[[q]]@QuestVar[[lang]])
     cat_vars=quest[[q]]@QuestType=="cat." & !is.null(quest[[q]]@QuestValProbs)
-    if(cat_vars) {
+    if(cat_vars==TRUE) {
       data=data %>% dplyr::mutate(
-        !!quest[[q]]@QuestVar[[lang]]:= wakefield::r_sample(n,x=quest[[q]]@QuestValue[[lang]],
+        {{var}}:= wakefield::r_sample(n,x=quest[[q]]@QuestValue[[lang]],
                                                             prob=quest[[q]]@QuestValProbs)
       )
     }
@@ -177,8 +180,9 @@ generateAgrisData <- function(quest,shpfile, level=3,
   #LABELLING VARIABLES
 
   for (q in seq_along(quest)) {
+    var=sym(quest[[q]]@QuestVar[[lang]])
     data=data %>% labelled::set_variable_labels(
-      !!quest[[q]]@QuestVar[[lang]]:= quest[[q]]@QuestLab[[lang]]
+      {{var}}:= quest[[q]]@QuestLab[[lang]]
     )
   }
 
@@ -188,12 +192,14 @@ generateAgrisData <- function(quest,shpfile, level=3,
 
     if (!is.null(quest[[q]]@QuestValue[[lang]])) {
 
+      var=sym(quest[[q]]@QuestVar[[lang]])
+
       levels=seq_along(quest[[q]]@QuestValue[[lang]])
       labels=quest[[q]]@QuestValue[[lang]]
       names(levels)=labels
 
-      data=data %>% mutate(!!quest[[q]]@QuestVar[[lang]]:=to_labelled(
-        as.factor(as.character(!!quest[[q]]@QuestVar[[lang]])),
+      data=data %>% mutate({{var}}:=to_labelled(
+        as.factor(as.character({{var}})),
         levels
       ))
 

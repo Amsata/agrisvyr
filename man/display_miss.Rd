@@ -4,7 +4,7 @@
 \alias{display_miss}
 \title{Summarise missing value due to anonymization}
 \usage{
-display_miss(obj_i, obj_f, var)
+display_miss(obj_i, obj_f, var, df)
 }
 \arguments{
 \item{obj_i}{initial SDC object}
@@ -12,6 +12,8 @@ display_miss(obj_i, obj_f, var)
 \item{obj_f}{final SDC object}
 
 \item{var}{categorical quasi-identifier}
+
+\item{df}{}
 }
 \description{
 Summarise missing value due to anonymization
