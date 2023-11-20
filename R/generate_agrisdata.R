@@ -203,9 +203,33 @@ generateAgrisData <- function(quest,shpfile, level=3,
         levels
       ))
 
-    }
+    }}
 
-  }
+  data=data %>%   dplyr::mutate(!!quest$Q12a@QuestVar[[lang]]:=!!quest$Q12a@QuestVar[[lang]] %>% labelled::recode_if(!(!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                !!quest$Q12b@QuestVar[[lang]]:=!!quest$Q12b@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                !!quest$Q12c@QuestVar[[lang]]:=!!quest$Q12c@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                !!quest$Q12d@QuestVar[[lang]]:=!!quest$Q12d@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                !!quest$Q13a@QuestVar[[lang]]:=!!quest$Q13a@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                !!quest$Q13b@QuestVar[[lang]]:=!!quest$Q13b@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                !!quest$Q13c@QuestVar[[lang]]:=!!quest$Q13c@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                !!quest$Q14@QuestVar[[lang]] :=!!quest$Q14@QuestVar[[lang]]  %>% labelled::recode_if(!(!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),NA),
+                                #If Q17 = 1 → Go to Q18
+                                !!quest$Q17@QuestVar[[lang]] :=!!quest$Q17@QuestVar[[lang]]  %>% labelled::recode_if(!(!!quest$Q10@QuestVar[[lang]]==quest$Q10@QuestValue$en[3]),quest$Q17@QuestValue$en[2]),
+                                !!quest$Q17a@QuestVar[[lang]]:=!!quest$Q17a@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q17@QuestVar[[lang]]==quest$Q17@QuestValue$en[1]),NA),
+                                !!quest$Q17b@QuestVar[[lang]]:=!!quest$Q17b@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q17@QuestVar[[lang]]==quest$Q17@QuestValue$en[1]),NA),
+                                !!quest$Q17c@QuestVar[[lang]]:=!!quest$Q17c@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q17@QuestVar[[lang]]==quest$Q17@QuestValue$en[1]),NA),
+                                !!quest$Q17d@QuestVar[[lang]]:=!!quest$Q17d@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q17@QuestVar[[lang]]==quest$Q17@QuestValue$en[1]),NA),
+                                !!quest$Q17e@QuestVar[[lang]]:=!!quest$Q17e@QuestVar[[lang]] %>% labelled::recode_if((!!quest$Q17@QuestVar[[lang]]==quest$Q17@QuestValue$en[1]),NA),
+                                #replace by NA if same region, same district, same village and correct Q17
+                                check= (!!quest$Q17c@QuestVar[[lang]]==!!quest$Q13a@QuestVar[[lang]]) & (!!quest$Q17b@QuestVar[[lang]]==!!quest$Q13c@QuestVar[[lang]]) & (!!quest$Q17d@QuestVar[[lang]]==!!quest$Q13b@QuestVar[[lang]]) & !!quest$Q17@QuestVar[[lang]]==quest$Q17@QuestValue$en[2],
+                                !!quest$Q17a@QuestVar[[lang]]:=!!quest$Q17a@QuestVar[[lang]] %>% labelled::recode_if(check==TRUE,NA),
+                                !!quest$Q17b@QuestVar[[lang]]:=!!quest$Q17b@QuestVar[[lang]] %>% labelled::recode_if(check==TRUE,NA),
+                                !!quest$Q17c@QuestVar[[lang]]:=!!quest$Q17c@QuestVar[[lang]] %>% labelled::recode_if(check==TRUE,NA),
+                                !!quest$Q17d@QuestVar[[lang]]:=!!quest$Q17d@QuestVar[[lang]] %>% labelled::recode_if(check==TRUE,NA),
+                                !!quest$Q17e@QuestVar[[lang]]:=!!quest$Q17e@QuestVar[[lang]] %>% labelled::recode_if(check==TRUE,NA),
+                                !!quest$Q17@QuestVar[[lang]] :=!!quest$Q17@QuestVar[[lang]]  %>% labelled::recode_if(check==TRUE,quest$Q17@QuestValue$en[1])
+                  )
+
 
 
   return(data)
