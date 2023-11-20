@@ -92,7 +92,7 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
                    QuestValProbs = c(0.9,0.05)
                    )
-  
+
   #Q01f
   Questionnaire$Q01f <-
     createQuestion(QuestVar =list(en="Q01f",fr="Q01f",es="P01f"),
@@ -114,7 +114,7 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
                    QuestValProbs = c(0.9,0.05)
     )
-  
+
   #Q03
   Questionnaire$Q03a <-
     createQuestion(QuestVar   = list(en="Q03a",fr="Q03a",es="P03a"),
@@ -125,7 +125,7 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
     )
-  
+
   Questionnaire$Q03b <-
     createQuestion(QuestVar   = list(en="Q03b",fr="Q03b",es="P03b"),
                    QuestType  = "text",
@@ -135,7 +135,7 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
     )
-  
+
   Questionnaire$Q03c <-
     createQuestion(QuestVar   = list(en="Q03c",fr="Q03c",es="P03c"),
                    QuestType  = "cat.",
@@ -145,7 +145,7 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
                    QuestValProbs = c(0.50,0.45)
     )
-  
+
   Questionnaire$Q03d <-
     createQuestion(QuestVar   = list(en="Q03d",fr="Q03d",es="P03d"),
                    QuestType  = "cat.",
@@ -172,7 +172,7 @@ createQuestionnaire <- function(){
                                           "Otro")),
                    QuestValProbs = c(0.3,0.3,0.15,0.15,0.05,0.01)
     )
-  
+
   #Q04
   Questionnaire$Q04 <-
     createQuestion(QuestVar   = list(en="Q04",fr="Q04",es="P04"),
@@ -183,7 +183,7 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
                    QuestValProbs = c(0.9,0.05)
     )
-  
+
   #Q05
   Questionnaire$Q05 <-
     createQuestion(QuestVar   = list(en="Q05",fr="Q05",es="P05"),
@@ -194,7 +194,7 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
                    QuestValProbs = c(0.05,0.9)
     )
-  
+
   #Q06
   Questionnaire$Q05 <-
     createQuestion(QuestVar   = list(en="Q05",fr="Q05",es="P05"),
@@ -205,7 +205,7 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
                    QuestValProbs = c(0.9,0.05)
     )
-  
+
   #Q10
   Questionnaire$Q10 <-
     createQuestion(QuestVar = list(en="Q10",fr="Q10",es="P10"),
@@ -234,7 +234,7 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
     )
-  
+
   Questionnaire$Q12b <-
     createQuestion(QuestVar   = list(en="Q12b",fr="Q12b",es="P12b"),
                    QuestType  = "text",
@@ -244,7 +244,7 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
     )
-  
+
   Questionnaire$Q12c <-
     createQuestion(QuestVar   = list(en="Q12c",fr="Q12c",es="P12c"),
                    QuestType  = "cat.",
@@ -254,8 +254,8 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
                    QuestValProbs = c(0.50,0.45)
     )
-  
-  
+
+
   #Q13a
   Questionnaire$Q13a <-
     createQuestion(QuestVar = list(en="Q13a",fr="Q13a",es="P13a"),
@@ -295,7 +295,7 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
                    )
-  
+
   #Q17
   Questionnaire$Q17 <-
     createQuestion(QuestVar   = list(en="Q17",fr="Q17",es="P17"),
@@ -309,17 +309,17 @@ createQuestionnaire <- function(){
                    QuestValProbs = c(0.9,0.05)
     )
 
-  
-  # #Q17a
-  # Questionnaire$Q17a <-
-  #   createQuestion(QuestVar = list(en="Q17a",fr="Q17a",es="P17a"),
-  #                  QuestType = "cat.",
-  #                  QuestLab = list(en="a Address (street)",
-  #                                  fr="a Adresse (rue)",
-  #                                  es="Dirección	(calle)"),
-  #                  QuestValue = NULL,
-  #                  QuestValProbs = NULL
-  #                  )
+
+  #Q17a
+  Questionnaire$Q17a <-
+    createQuestion(QuestVar = list(en="Q17a",fr="Q17a",es="P17a"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="a Address (street)",
+                                   fr="a Adresse (rue)",
+                                   es="Dirección	(calle)"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+                   )
 
   #Q17b
   Questionnaire$Q17b <-
