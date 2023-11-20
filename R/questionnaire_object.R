@@ -81,10 +81,14 @@ createQuestion <- function( QuestVar      = NULL,
 createQuestionnaire <- function(){
 
   Questionnaire <- list()
+  
+  ##### SECTION 1: THE HOLDING
+  
+  ## PART 1.1: SURVEY PREPARATION
 
   #Q01
-  Questionnaire$Q01 <-
-    createQuestion(QuestVar   = list(en="Q01",fr="Q01",es="P01"),
+  Questionnaire$S1_Q01 <-
+    createQuestion(QuestVar   = list(en="S1_Q01",fr="S1_Q01",es="S1_P01"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Did I find a farm at the same address or same name?",
                                      fr="Ai-je trouvé une exploitation de même nom et/ou même adresse?",
@@ -93,55 +97,10 @@ createQuestionnaire <- function(){
                    QuestValProbs = c(0.9,0.05)
                    )
   
-  #Q01d
-  Questionnaire$Q01d <-
-    createQuestion(QuestVar   = list(en="Q01d",fr="Q01d",es="P01d"),
-                   QuestType  = "cat.",
-                   QuestLab   = list(en="Sex of the holder",
-                                     fr="Sexe de l'exploitant",
-                                     es="Sexo del	Titular"),
-                   QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
-                   QuestValProbs = c(0.50,0.45)
-    )
-  
-  #Q01e
-  Questionnaire$Q01e <-
-    createQuestion(QuestVar = list(en="Q01e",fr="Q01e",es="P01e"),
-                   QuestType = "cont.",
-                   QuestLab = list(en="Age in completed years of the holder",
-                                   fr="Age en années révolues de l'exploitation",
-                                   es="Edad del	Titular	en	años	completos"),
-                   QuestValue = NULL,
-                   QuestValProbs = NULL
-    )
-  
-  #Q01f
-  Questionnaire$Q01f <-
-    createQuestion(QuestVar =list(en="Q01f",fr="Q01f",es="P01f"),
-                   QuestType     ="cat.",
-                   QuestLab      =list(en="Nationality",fr="Nationalité",es="Nacionalidad"),
-                   QuestValue    = list(en=c("Local country","Neighbouring country","Other"),
-                                        fr=c("Pays de résidence","Pays voisin","Autre"),
-                                        es=c("País	local","País	vecino","Otro")),
-                   QuestValProbs = c(0.8,0.2,0.1)
-                   )
-
-  #Q01h
-  Questionnaire$Q01h <-
-    createQuestion(QuestVar =list(en="Q01h",fr="Q01h",es="Q01h"),
-                   QuestType     ="cat.",
-                   QuestLab      =list(en="Highest level of education completed",
-                                       fr="Plus haut niveau d'étude atteint",
-                                       es="h Nivel	de	educación	más	alto	completado"),
-                   QuestValue    = list(en=c("None","Less than primary","Primary","Lower secondary","Upper secondary","Tertiary/post-secondary"),
-                                        fr=c("Aucun","Moins que primaire","Primaire","Secondaire court","Secondaire long","Postsecondaire"),
-                                        es=c("Ninguna","Inferior	a	primaria","Primaria","Secundaria	inferior","Secundaria	superior"," Terciaria/postsecundaria")),
-                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.1,0.1)
-    )
   
   #Q02
-  Questionnaire$Q02 <-
-    createQuestion(QuestVar   = list(en="Q02",fr="Q02",es="P02"),
+  Questionnaire$S1_Q02 <-
+    createQuestion(QuestVar   = list(en="S1_Q02",fr="S1_Q02",es="S1_P02"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Did I find somebody from the holding who accepted to answer?",
                                      fr="Ai-je trouvé quelqu'un dans l'exploitation qui accepte de répondre ?",
@@ -151,8 +110,8 @@ createQuestionnaire <- function(){
     )
   
   #Q03
-  Questionnaire$Q03a <-
-    createQuestion(QuestVar   = list(en="Q03a",fr="Q03a",es="P03a"),
+  Questionnaire$S1_Q03a <-
+    createQuestion(QuestVar   = list(en="S1_Q03a",fr="S1_Q03a",es="S1_P03a"),
                    QuestType  = "text",
                    QuestLab   = list(en="First name of the respondent",
                                      fr="Prénom du répondant",
@@ -161,8 +120,8 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
     )
   
-  Questionnaire$Q03b <-
-    createQuestion(QuestVar   = list(en="Q03b",fr="Q03b",es="P03b"),
+  Questionnaire$S1_Q03b <-
+    createQuestion(QuestVar   = list(en="S1_Q03b",fr="S1_Q03b",es="S1_P03b"),
                    QuestType  = "text",
                    QuestLab   = list(en="Surname of the respondent",
                                      fr="Nom de famille du répondant",
@@ -171,8 +130,8 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
     )
   
-  Questionnaire$Q03c <-
-    createQuestion(QuestVar   = list(en="Q03c",fr="Q03c",es="P03c"),
+  Questionnaire$S1_Q03c <-
+    createQuestion(QuestVar   = list(en="S1_Q03c",fr="S1_Q03c",es="S1_P03c"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Sex of the respondant",
                                      fr="Sexe du répondant",
@@ -181,8 +140,8 @@ createQuestionnaire <- function(){
                    QuestValProbs = c(0.50,0.45)
     )
   
-  Questionnaire$Q03d <-
-    createQuestion(QuestVar   = list(en="Q03d",fr="Q03d",es="P03d"),
+  Questionnaire$S1_Q03d <-
+    createQuestion(QuestVar   = list(en="S1_Q03d",fr="S1_Q03d",es="S1_P03d"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="What is your function on the agricultural holding?",
                                      fr="Quelle est votre fonction dans l'exploitation agricole ?",
@@ -209,8 +168,8 @@ createQuestionnaire <- function(){
     )
   
   #Q04
-  Questionnaire$Q04 <-
-    createQuestion(QuestVar   = list(en="Q04",fr="Q04",es="P04"),
+  Questionnaire$S1_Q04 <-
+    createQuestion(QuestVar   = list(en="S1_Q04",fr="S1_Q04",es="S1_P04"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Is the holding currently growing any crops or fruits, or raising animals, or did it do so during the reference period?",
                                      fr="L'exploitation a-t-elle et/ou a-t-elle eu pendant la période de référence une activité de production végétale et/ou animale (végétaux, fruits, animaux élevés) ?",
@@ -220,8 +179,8 @@ createQuestionnaire <- function(){
     )
   
   #Q05
-  Questionnaire$Q05 <-
-    createQuestion(QuestVar   = list(en="Q05",fr="Q05",es="P05"),
+  Questionnaire$S1_Q05 <-
+    createQuestion(QuestVar   = list(en="S1_Q05",fr="S1_Q05",es="S1_P05"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Has the holding ceased its activity without any transfer of its means of production?",
                                      fr="L'exploitation a-t-elle cessé son activité sans aucun transfert de ses moyens de production ?",
@@ -231,8 +190,8 @@ createQuestionnaire <- function(){
     )
   
   #Q06
-  Questionnaire$Q05 <-
-    createQuestion(QuestVar   = list(en="Q05",fr="Q05",es="P05"),
+  Questionnaire$S1_Q05 <-
+    createQuestion(QuestVar   = list(en="S1_Q05",fr="S1_Q05",es="S1_P05"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Will the holding resume its activity?",
                                      fr="L'exploitation va-t-elle reprendre son activité ?",
@@ -241,9 +200,12 @@ createQuestionnaire <- function(){
                    QuestValProbs = c(0.9,0.05)
     )
   
+  
+  ## PART 1.2: IDENTIFICATION OF THE HOLDING
+  
   #Q10
-  Questionnaire$Q10 <-
-    createQuestion(QuestVar = list(en="Q10",fr="Q10",es="P10"),
+  Questionnaire$S1_Q10 <-
+    createQuestion(QuestVar = list(en="S1_Q10",fr="S1_Q10",es="S1_P10"),
                    QuestType = "cat.",
                    QuestLab = list(en="What is the legal status of the Holder?",
                                    fr="Quel est le statut légal de l'exploitant?",
@@ -260,8 +222,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q12
-  Questionnaire$Q12a <-
-    createQuestion(QuestVar   = list(en="Q12a",fr="Q12a",es="P12a"),
+  Questionnaire$S1_Q12a <-
+    createQuestion(QuestVar   = list(en="S1_Q12a",fr="S1_Q12a",es="S1_P12a"),
                    QuestType  = "text",
                    QuestLab   = list(en="First name of the Holder/Co-holders",
                                      fr="Prénom de l'exploitant ou des co-exploitants",
@@ -270,8 +232,8 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
     )
   
-  Questionnaire$Q12b <-
-    createQuestion(QuestVar   = list(en="Q12b",fr="Q12b",es="P12b"),
+  Questionnaire$S1_Q12b <-
+    createQuestion(QuestVar   = list(en="S1_Q12b",fr="S1_Q12b",es="S1_P12b"),
                    QuestType  = "text",
                    QuestLab   = list(en="Surname of the Holder/Co-holders",
                                      fr="Nom de famille de l'exploitant ou des co-exploitants",
@@ -280,8 +242,8 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
     )
   
-  Questionnaire$Q12c <-
-    createQuestion(QuestVar   = list(en="Q12c",fr="Q12c",es="P12c"),
+  Questionnaire$S1_Q12c <-
+    createQuestion(QuestVar   = list(en="S1_Q12c",fr="S1_Q12c",es="S1_P12c"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Sex of the Holder/Co-holders",
                                      fr="Sexe de l'exploitant ou des co-exploitants",
@@ -292,8 +254,8 @@ createQuestionnaire <- function(){
   
   
   #Q13a
-  Questionnaire$Q13a <-
-    createQuestion(QuestVar = list(en="Q13a",fr="Q13a",es="P13a"),
+  Questionnaire$S1_Q13a <-
+    createQuestion(QuestVar = list(en="S1_Q13a",fr="S1_Q13a",es="S1_P13a"),
                    QuestType = "cat.",
                    QuestLab = list(en="Region",fr="Région",es="Región"),
                    QuestValue = NULL,
@@ -301,8 +263,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q13b
-  Questionnaire$Q13b <-
-    createQuestion(QuestVar = list(en="Q13b",fr="Q13b",es="P13b"),
+  Questionnaire$S1_Q13b <-
+    createQuestion(QuestVar = list(en="S1_Q13b",fr="S1_Q13b",es="S1_P13b"),
                    QuestType = "cat.",
                    QuestLab = list(en="District",fr="District",es="Distrito"),
                    QuestValue = NULL,
@@ -310,8 +272,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q13c
-  Questionnaire$Q13c <-
-    createQuestion(QuestVar = list(en="Q13c",fr="Q13c",es="P13c"),
+  Questionnaire$S1_Q13c <-
+    createQuestion(QuestVar = list(en="S1_Q13c",fr="S1_Q13c",es="S1_P13c"),
                    QuestType = "cat.",
                    QuestLab = list(en="Village or town name",
                                    fr="Nom du village ou ville",
@@ -321,8 +283,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q15
-  Questionnaire$Q15 <-
-    createQuestion(QuestVar = list(en="Q15",fr="Q15",es="P15"),
+  Questionnaire$S1_Q15 <-
+    createQuestion(QuestVar = list(en="S1_Q15",fr="S1_Q15",es="S1_P15"),
                    QuestType = "cont.",
                    QuestLab = list(en="Enumeration area of the holding",
                                    fr="Zone de recensement de l'exploitation",
@@ -332,8 +294,8 @@ createQuestionnaire <- function(){
                    )
   
   #Q17
-  Questionnaire$Q17 <-
-    createQuestion(QuestVar   = list(en="Q17",fr="Q17",es="P17"),
+  Questionnaire$S1_Q17 <-
+    createQuestion(QuestVar   = list(en="S1_Q17",fr="S1_Q17",es="S1_P17"),
                    QuestType  = "cat.",
                    QuestLab   = list(en="Address of the holding",
                                      fr="L'adresse de l'exploitation est-elle",
@@ -346,8 +308,8 @@ createQuestionnaire <- function(){
 
   
   # #Q17a
-  # Questionnaire$Q17a <-
-  #   createQuestion(QuestVar = list(en="Q17a",fr="Q17a",es="P17a"),
+  # Questionnaire$S1_Q17a <-
+  #   createQuestion(QuestVar = list(en="S1_Q17a",fr="S1_Q17a",es="S1_P17a"),
   #                  QuestType = "cat.",
   #                  QuestLab = list(en="a Address (street)",
   #                                  fr="a Adresse (rue)",
@@ -357,8 +319,8 @@ createQuestionnaire <- function(){
   #                  )
 
   #Q17b
-  Questionnaire$Q17b <-
-    createQuestion(QuestVar = list(en="Q17b",fr="Q17b",es="P17b"),
+  Questionnaire$S1_Q17b <-
+    createQuestion(QuestVar = list(en="S1_Q17b",fr="S1_Q17b",es="S1_P17b"),
                    QuestType = "cat.",
                    QuestLab = list(en="Village or town name",
                                    fr="Nom du village ou de la ville",
@@ -368,8 +330,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q17c
-  Questionnaire$Q17c <-
-    createQuestion(QuestVar = list(en="Q17c",fr="Q17c",es="P17c"),
+  Questionnaire$S1_Q17c <-
+    createQuestion(QuestVar = list(en="S1_Q17c",fr="S1_Q17c",es="S1_P17c"),
                    QuestType = "cat.",
                    QuestLab = list(en="Region",fr="Région",es="Región"),
                    QuestValue = NULL,
@@ -377,8 +339,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q17d
-  Questionnaire$Q17d <-
-    createQuestion(QuestVar = list(en="Q17d",fr="Q17d",es="P17d"),
+  Questionnaire$S1_Q17d <-
+    createQuestion(QuestVar = list(en="S1_Q17d",fr="S1_Q17d",es="S1_P17d"),
                    QuestType = "cat.",
                    QuestLab = list(en="District",fr="District",es="Distrito"),
                    QuestValue = NULL,
@@ -386,8 +348,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q18
-  Questionnaire$Q18 <-
-    createQuestion(QuestVar = list(en="Q18",fr="Q18",es="P18"),
+  Questionnaire$S1_Q18 <-
+    createQuestion(QuestVar = list(en="S1_Q18",fr="S1_Q18",es="S1_P18"),
                    QuestType = "cat.",
                    QuestLab = list(en="What is the main location type of the address reported above?",
                                    fr="A quoi correspond l'adresse ci-dessus ?",
@@ -405,16 +367,16 @@ createQuestionnaire <- function(){
     )
 
   #Q19a
-  Questionnaire$Q19a <-
-    createQuestion(QuestVar = list(en="Q19a",fr="Q19a",es="P19a"),
+  Questionnaire$S1_Q19a <-
+    createQuestion(QuestVar = list(en="S1_Q19a",fr="S1_Q19a",es="S1_P19a"),
                    QuestType = "cont.",
                    QuestLab = list(en="Latitude",fr="Latitude",es="Latitud"),
                    QuestValue = NULL,
                    QuestValProbs = NULL
                    )
   #Q19b
-  Questionnaire$Q19b <-
-    createQuestion(QuestVar = list(en="Q19b",fr="Q19b",es="P19b"),
+  Questionnaire$S1_Q19b <-
+    createQuestion(QuestVar = list(en="S1_Q19b",fr="S1_Q19b",es="S1_P19b"),
                    QuestType = "cont.",
                    QuestLab = list(en="Longitude",fr="Longitude",es="Longitud"),
                    QuestValue = NULL,
@@ -422,8 +384,8 @@ createQuestionnaire <- function(){
                    )
 
   #Q20
-  Questionnaire$Q20 <-
-    createQuestion(QuestVar = list(en="Q20",fr="Q20",es="P20"),
+  Questionnaire$S1_Q20 <-
+    createQuestion(QuestVar = list(en="S1_Q20",fr="S1_Q20",es="S1_P20"),
                    QuestType = "cont.",
                    QuestLab = list(en="What is the official identification number of the holding in the national business register?",
                                    fr="Quel est l'identifiant de l'exploitation dans le répertoire national d'entreprises ?",
@@ -434,8 +396,8 @@ createQuestionnaire <- function(){
 
 
   #Q21a
-  Questionnaire$Q21a <-
-    createQuestion(QuestVar = list(en="Q21a",fr="Q21a",es="P21a"),
+  Questionnaire$S1_Q21a <-
+    createQuestion(QuestVar = list(en="S1_Q21a",fr="S1_Q21a",es="S1_P21a"),
                    QuestType = "cat.",
                    QuestLab = list(en="What are the other administrative identification numbers of the holding?-Livestock",
                                    fr="Quels sont les autres identifiants administratifs de l'exploitation?-Cheptel",
@@ -445,8 +407,8 @@ createQuestionnaire <- function(){
     )
 
   #Q21b
-  Questionnaire$Q21b <-
-    createQuestion(QuestVar = list(en="Q21b",fr="Q21b",es="P21b"),
+  Questionnaire$S1_Q21b <-
+    createQuestion(QuestVar = list(en="S1_Q21b",fr="S1_Q21b",es="S1_P21b"),
                    QuestType = "cat.",
                    QuestLab = list(en="What are the other administrative identification numbers of the holding?-Wine production",
                                    fr="Quels sont les autres identifiants administratifs de l'exploitation?-Production de vin",
@@ -456,8 +418,8 @@ createQuestionnaire <- function(){
     )
 
   #Q21c
-  Questionnaire$Q21c <-
-    createQuestion(QuestVar = list(en="Q21c",fr="Q21c",es="P21c"),
+  Questionnaire$S1_Q21c <-
+    createQuestion(QuestVar = list(en="S1_Q21c",fr="S1_Q21c",es="S1_P21c"),
                    QuestType = "cat.",
                    QuestLab = list(en="What are the other administrative identification numbers of the holding?-Organic production",
                                    fr="Quels sont les autres identifiants administratifs de l'exploitation?-Production biologique",
@@ -469,8 +431,8 @@ createQuestionnaire <- function(){
 
 
   #Q21d
-  Questionnaire$Q21d <-
-    createQuestion(QuestVar = list(en="Q21d",fr="Q21d",es="P21d"),
+  Questionnaire$S1_Q21d <-
+    createQuestion(QuestVar = list(en="S1_Q21d",fr="S1_Q21d",es="S1_P21d"),
                    QuestType = "cat.",
                    QuestLab = list(en="What are the other administrative identification numbers of the holding?-Other",
                                    fr="Quels sont les autres identifiants administratifs de l'exploitation?-Other",
@@ -482,8 +444,8 @@ createQuestionnaire <- function(){
 
 
   #Q22
-  Questionnaire$Q22 <-
-    createQuestion(QuestVar = list(en="Q22",fr="Q22",es="P22"),
+  Questionnaire$S1_Q22 <-
+    createQuestion(QuestVar = list(en="S1_Q22",fr="S1_Q22",es="S1_P22"),
                    QuestType = "cat.",
                    QuestLab = list(en=". What is the identification number of the holding from the last agricultural census? (Can be prefilled)",
                                    fr="Quel est l'identifiant de l'exploitation dans le dernier recensement de l'agriculture? (Peut être pré renseigné)",
@@ -492,10 +454,12 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
     )
 
-
+  
+  ## PART 1.2: AGRICULTURAL ACTIVITY
+  
   #Q23
-  Questionnaire$Q23 <-
-    createQuestion(QuestVar = list(en="Q23",fr="Q23",es="P23"),
+  Questionnaire$S1_Q23 <-
+    createQuestion(QuestVar = list(en="S1_Q23",fr="S1_Q23",es="S1_P23"),
                    QuestType = "cat.",
                    QuestLab = list(en="Does the holding record its agricultural activity or finances on registers or logbooks?",
                                    fr="L'exploitation enregistre-t-elle son activité agricole ou comptable sur des registres ou carnets journaliers?",
@@ -508,8 +472,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_1
-  Questionnaire$Q24_1 <-
-    createQuestion(QuestVar = list(en="Q24_1",fr="Q24_1",es="P24_1"),
+  Questionnaire$S1_Q24_1 <-
+    createQuestion(QuestVar = list(en="S1_Q24_1",fr="S1_Q24_1",es="S1_P24_1"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Area cultivated/harvested",
                                    fr=". Quelles informations sont systématiquement enregistrées?- Superficie cultivée/récoltée",
@@ -521,8 +485,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_2
-  Questionnaire$Q24_2 <-
-    createQuestion(QuestVar = list(en="Q24_2",fr="Q24_2",es="P24_2"),
+  Questionnaire$S1_Q24_2 <-
+    createQuestion(QuestVar = list(en="S1_Q24_2",fr="S1_Q24_2",es="S1_P24_2"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Crop production",
                                    fr=". Quelles informations sont systématiquement enregistrées?-Productions végétales",
@@ -534,8 +498,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_3
-  Questionnaire$Q24_3 <-
-    createQuestion(QuestVar = list(en="Q24_3",fr="Q24_3",es="P24_3"),
+  Questionnaire$S1_Q24_3 <-
+    createQuestion(QuestVar = list(en="S1_Q24_3",fr="S1_Q24_3",es="S1_P24_3"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Livestock production",
                                    fr=". Quelles informations sont systématiquement enregistrées?-Productions animales",
@@ -547,8 +511,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_4
-  Questionnaire$Q24_4 <-
-    createQuestion(QuestVar = list(en="Q24_4",fr="Q24_4",es="P24_4"),
+  Questionnaire$S1_Q24_4 <-
+    createQuestion(QuestVar = list(en="S1_Q24_4",fr="S1_Q24_4",es="S1_P24_4"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Unit prices, amounts sold and total sales by product",
                                    fr=". Quelles informations sont systématiquement enregistrées?-Prix de vente, montants des ventes et total vendu par produit",
@@ -560,8 +524,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_5
-  Questionnaire$Q24_5 <-
-    createQuestion(QuestVar = list(en="Q24_5",fr="Q24_5",es="P24_5"),
+  Questionnaire$S1_Q24_5 <-
+    createQuestion(QuestVar = list(en="S1_Q24_5",fr="S1_Q24_5",es="S1_P24_5"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Input quantities used (seeds, fertilizers, plant protection products, etc.)",
                                    fr=". Quelles informations sont systématiquement enregistrées?-Quantités d'intrants utilisés (semences, fertilisants, produits de protection des plantes, etc.)",
@@ -573,8 +537,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_6
-  Questionnaire$Q24_6 <-
-    createQuestion(QuestVar = list(en="Q24_6",fr="Q24_6",es="P24_6"),
+  Questionnaire$S1_Q24_6 <-
+    createQuestion(QuestVar = list(en="S1_Q24_6",fr="S1_Q24_6",es="S1_P24_6"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Detailed quantities and prices of inputs bought",
                                    fr=". Quelles informations sont systématiquement enregistrées?-Quantités détaillées et prix des intrants achetés",
@@ -586,8 +550,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_7
-  Questionnaire$Q24_7 <-
-    createQuestion(QuestVar = list(en="Q24_7",fr="Q24_7",es="P24_7"),
+  Questionnaire$S1_Q24_7 <-
+    createQuestion(QuestVar = list(en="S1_Q24_7",fr="S1_Q24_7",es="S1_P24_7"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-7 Workers’ time",
                                    fr=". Quelles informations sont systématiquement enregistrées?-Temps de travail des salariés",
@@ -599,8 +563,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_8
-  Questionnaire$Q24_8 <-
-    createQuestion(QuestVar = list(en="Q24_8",fr="Q24_8",es="P24_8"),
+  Questionnaire$S1_Q24_8 <-
+    createQuestion(QuestVar = list(en="S1_Q24_8",fr="S1_Q24_8",es="S1_P24_8"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Workers’ payment",
                                    fr=". Quelles informations sont systématiquement enregistrées?- Paiement des salariés",
@@ -612,8 +576,8 @@ createQuestionnaire <- function(){
 
 
   #Q24_9
-  Questionnaire$Q24_9 <-
-    createQuestion(QuestVar = list(en="Q24_9",fr="Q24_9",es="P24_9"),
+  Questionnaire$S1_Q24_9 <-
+    createQuestion(QuestVar = list(en="S1_Q24_9",fr="S1_Q24_9",es="S1_P24_9"),
                    QuestType = "cat.",
                    QuestLab = list(en="What information is systematically registered?-Other",
                                    fr=". Quelles informations sont systématiquement enregistrées?-Autre",
@@ -625,8 +589,8 @@ createQuestionnaire <- function(){
 
 
   #Q25_1
-  Questionnaire$Q25_ <-
-    createQuestion(QuestVar = list(en="Q25_1",fr="Q25_1",es="P25_1"),
+  Questionnaire$S1_Q25_1 <-
+    createQuestion(QuestVar = list(en="S1_Q25_1",fr="S1_Q25_1",es="S1_P25_1"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-Owned with written documentation (includes a title deed, a will, a purchase agreement, etc.)",
                                    fr="régime foncier-En propriété avec un acte écrit (incluant un titre de propriété, une intention, un accord d'achat, etc.)",
@@ -637,8 +601,8 @@ createQuestionnaire <- function(){
 
 
   #Q25_2
-  Questionnaire$Q25_2 <-
-    createQuestion(QuestVar = list(en="Q25_2",fr="Q25_2",es="P25_2"),
+  Questionnaire$S1_Q25_2 <-
+    createQuestion(QuestVar = list(en="S1_Q25_2",fr="S1_Q25_2",es="S1_P25_2"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-Owned without written documentation",
                                    fr="régime foncier-En propriété sans acte écrit",
@@ -649,8 +613,8 @@ createQuestionnaire <- function(){
 
 
   #Q25_3
-  Questionnaire$Q25_3 <-
-    createQuestion(QuestVar = list(en="Q25_3",fr="Q25_3",es="P25_3"),
+  Questionnaire$S1_Q25_3 <-
+    createQuestion(QuestVar = list(en="S1_Q25_3",fr="S1_Q25_3",es="S1_P25_3"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-Rented-in, leased or sharecropped with written agreement",
                                    fr="régime foncier-Location ou métayage avec un acte écrit",
@@ -661,8 +625,8 @@ createQuestionnaire <- function(){
 
 
   #Q25_4
-  Questionnaire$Q25_4 <-
-    createQuestion(QuestVar = list(en="Q25_4",fr="Q25_4",es="P25_4"),
+  Questionnaire$S1_Q25_4 <-
+    createQuestion(QuestVar = list(en="S1_Q25_4",fr="S1_Q25_4",es="S1_P25_4"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-Rented-in, leased or sharecropped without written agreement",
                                    fr="régime foncier-Location ou métayage sans acte écrit",
@@ -673,8 +637,8 @@ createQuestionnaire <- function(){
 
 
   #Q25_5
-  Questionnaire$Q25_5 <-
-    createQuestion(QuestVar = list(en="Q25_5",fr="Q25_5",es="P25_5"),
+  Questionnaire$S1_Q25_5 <-
+    createQuestion(QuestVar = list(en="S1_Q25_5",fr="S1_Q25_5",es="S1_P25_5"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-State or communal land used with written agreement (certified use rights)",
                                    fr="régime foncier-Superficie communale ou d'État utilisée avec un accord écrit (droits d'usage certifiés)",
@@ -684,11 +648,9 @@ createQuestionnaire <- function(){
     )
 
 
-
-
   #Q25_6
-  Questionnaire$Q25_6 <-
-    createQuestion(QuestVar = list(en="Q25_6",fr="Q25_6",es="P25_6"),
+  Questionnaire$S1_Q25_6 <-
+    createQuestion(QuestVar = list(en="S1_Q25_6",fr="S1_Q25_6",es="S1_P25_6"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-State or communal land used without written agreement (uncertified use rights)",
                                    fr="régime foncier-Superficie communale ou d'État utilisée sans accord écrit (droits d'usage non certifiés)",
@@ -699,8 +661,8 @@ createQuestionnaire <- function(){
 
 
   #Q25_7
-  Questionnaire$Q25_7 <-
-    createQuestion(QuestVar = list(en="Q25_7",fr="Q25_7",es="P25_7"),
+  Questionnaire$S1_Q25_7 <-
+    createQuestion(QuestVar = list(en="S1_Q25_7",fr="S1_Q25_7",es="S1_P25_7"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-Occupied/squatted without any permission",
                                    fr="régime foncier-Occupé/squatté sans permission",
@@ -711,8 +673,8 @@ createQuestionnaire <- function(){
 
 
   #Q25_8
-  Questionnaire$Q25_8 <-
-    createQuestion(QuestVar = list(en="Q25_8",fr="Q25_8",es="P25_8"),
+  Questionnaire$S1_Q25_8 <-
+    createQuestion(QuestVar = list(en="S1_Q25_8",fr="S1_Q25_8",es="S1_P25_8"),
                    QuestType = "cat.",
                    QuestLab = list(en="Land tenure-No agricultural land",
                                    fr="régime foncier- Pas de superficie agricole",
@@ -723,8 +685,8 @@ createQuestionnaire <- function(){
 
 
   #Q26
-  Questionnaire$Q26 <-
-    createQuestion(QuestVar = list(en="Q26",fr="Q26",es="P26"),
+  Questionnaire$S1_Q26 <-
+    createQuestion(QuestVar = list(en="S1_Q26",fr="S1_Q26",es="S1_P26"),
                    QuestType = "cat.",
                    QuestLab = list(en="From an economic perspective, what is the holding’s main agricultural focus for the reference period?",
                                    fr="D'un point de vue économique, quelle a été l'activité agricole principale de l'exploitation pendant la période de référence?",
@@ -737,8 +699,8 @@ createQuestionnaire <- function(){
 
 
   #Q27
-  Questionnaire$Q27 <-
-    createQuestion(QuestVar = list(en="Q27",fr="Q27",es="P27"),
+  Questionnaire$S1_Q27 <-
+    createQuestion(QuestVar = list(en="S1_Q27",fr="S1_Q27",es="S1_P27"),
                    QuestType = "cat.",
                    QuestLab = list(en="From an economic perspective, what is the main cropping activity?",
                                    fr="D'un point de vue économique, quelle a été l'activité végétale principale?",
@@ -765,8 +727,8 @@ createQuestionnaire <- function(){
     )
   
   #Q28
-  Questionnaire$Q28 <-
-    createQuestion(QuestVar = list(en="Q28",fr="Q28",es="P28"),
+  Questionnaire$S1_Q28 <-
+    createQuestion(QuestVar = list(en="S1_Q28",fr="S1_Q28",es="S1_P28"),
                    QuestType = "cat.",
                    QuestLab = list(en="From an economic perspective, what is the main livestock activity?",
                                    fr="D'un point de vue économique, quelle a été l'activité animale principale?",
@@ -790,8 +752,8 @@ createQuestionnaire <- function(){
     )
   
   #Q29
-  Questionnaire$Q29 <-
-    createQuestion(QuestVar = list(en="Q29",fr="Q29",es="P29"),
+  Questionnaire$S1_Q29 <-
+    createQuestion(QuestVar = list(en="S1_Q29",fr="S1_Q29",es="S1_P29"),
                    QuestType = "cat.",
                    QuestLab = list(en="What is the main intended destination of your agricultural production?",
                                    fr="Quelle est la principale destination de vos productions agricoles?",
@@ -812,6 +774,279 @@ createQuestionnaire <- function(){
     )
   
   
+  ##### SECTION 2: CHARACTERISTICS OF THE HOLDERS AND MANAGERS
+  
+  ## CASE 1: THE HOLDER IS A CIVIL/NATURAL PERSON
+  
+  #Q01d
+  Questionnaire$S2_Q01d <-
+    createQuestion(QuestVar   = list(en="S2_Q01d",fr="S2_Q01d",es="S2_P01d"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Sex of the holder",
+                                     fr="Sexe de l'exploitant",
+                                     es="Sexo del	Titular"),
+                   QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
+                   QuestValProbs = c(0.50,0.45)
+    )
+  
+  #Q01e
+  Questionnaire$S2_Q01e <-
+    createQuestion(QuestVar = list(en="S2_Q01e",fr="S2_Q01e",es="S2_P01e"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="Age in completed years of the holder",
+                                   fr="Age en années révolues de l'exploitation",
+                                   es="Edad del	Titular	en	años	completos"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q01f
+  Questionnaire$S2_Q01f <-
+    createQuestion(QuestVar =list(en="S2_Q01f",fr="S2_Q01f",es="S2_P01f"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Nationality",fr="Nationalité",es="Nacionalidad"),
+                   QuestValue    = list(en=c("Local country","Neighbouring country","Other"),
+                                        fr=c("Pays de résidence","Pays voisin","Autre"),
+                                        es=c("País	local","País	vecino","Otro")),
+                   QuestValProbs = c(0.8,0.2,0.1)
+    )
+  
+  #Q01h
+  Questionnaire$S2_Q01h <-
+    createQuestion(QuestVar =list(en="S2_Q01h",fr="S2_Q01h",es="S2_Q01h"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Highest level of education completed",
+                                       fr="Plus haut niveau d'étude atteint",
+                                       es="Nivel	de	educación	más	alto	completado"),
+                   QuestValue    = list(en=c("None","Less than primary","Primary","Lower secondary","Upper secondary","Tertiary/post-secondary"),
+                                        fr=c("Aucun","Moins que primaire","Primaire","Secondaire court","Secondaire long","Postsecondaire"),
+                                        es=c("Ninguna","Inferior	a	primaria","Primaria","Secundaria	inferior","Secundaria	superior"," Terciaria/postsecundaria")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.1,0.1)
+    )
+  
+  #Q01i
+  Questionnaire$S2_Q01i <-
+    createQuestion(QuestVar =list(en="S2_Q01i",fr="S2_Q01i",es="S2_Q01i"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Share of working time spent working on the holding",
+                                       fr="Temps de travail sur l'exploitation",
+                                       es="Porción	de	tiempo	de	trabajo	que	dedicó	a	la	unidad	de	producción"),
+                   QuestValue    = list(en=c("Less than half ( < 40 %)","About half (40%-59%)","Most/almost all (60%-99%)","All (100%)"),
+                                        fr=c("Moins d'un mi-temps ( < 40 %)","Mi-temps (40%-59%)","Plus qu'un mi-temps (60%-99%","Temps complet (100%)"),
+                                        es=c("Menos	de	la	mitad	(<40%)","Alrededor	de	la	mitad	(40%-59%)","La	mayoría/casi	todo	(60%-99%)","Todo	(100%)")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2)
+    )
+  
+  #Q01j
+  Questionnaire$S2_Q01j <-
+    createQuestion(QuestVar   = list(en="S2_Q01j",fr="S2_Q01j",es="S2_P01j"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Does the Holder have another gainful activity outside of the holding?",
+                                     fr="L'exploitant a-t-il une autre activité rémunérée en dehors de l'exploitation?",
+                                     es="¿Realiza	el	Titular	otra	actividad	lucrativa	fuera	de	la	unidad	de	producción?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  #Q01k
+  Questionnaire$S2_Q01k <-
+    createQuestion(QuestVar   = list(en="S2_Q01k",fr="S2_Q01k",es="S2_P01k"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Is the Holder also the Manager?",
+                                     fr="L'exploitant est-il aussi le chef d'exploitation?",
+                                     es="¿Es	el	Titular	también	Gerente?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  #Q02d
+  Questionnaire$S2_Q02d <-
+    createQuestion(QuestVar   = list(en="S2_Q02d",fr="S2_Q02d",es="S2_P02d"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Sex of the manager",
+                                     fr="Sexe du chef d'exploitation",
+                                     es="Sexo del	Gerente"),
+                   QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
+                   QuestValProbs = c(0.50,0.45)
+    )
+  
+  #Q02e
+  Questionnaire$S2_Q02e <-
+    createQuestion(QuestVar = list(en="S2_Q02e",fr="S2_Q02e",es="S2_P02e"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="Age in completed years of the manager",
+                                   fr="Age en années révolues du chef d'exploitation",
+                                   es="Edad del	Gerente	en	años	completos"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q02f
+  Questionnaire$S2_Q02f <-
+    createQuestion(QuestVar =list(en="S2_Q02f",fr="S2_Q02f",es="S2_P02f"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Link with the Holder",fr="Lien de parenté avec l'exploitant",es="Nacionalidad del	Gerente"),
+                   QuestValue    = list(en=c("Wife/husband or consensual union partner","Other member of the household","External"),
+                                        fr=c("Epouse/mari ou vivant maritalement","Autre membre du ménage","Aucun lien de parenté"),
+                                        es=c("Esposa/esposo	o	socio	por	unión	consensual","Otro	miembro	del	hogar","Externo")),
+                   QuestValProbs = c(0.7,0.2,0.1)
+    )
+  
+  #Q02g
+  Questionnaire$S2_Q02g <-
+    createQuestion(QuestVar =list(en="S2_Q02g",fr="S2_Q02g",es="S2_P02g"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Nationality of the manager",fr="Nationalité du chef d'exploitation",es="Nacionalidad del	Gerente"),
+                   QuestValue    = list(en=c("Local country","Neighbouring country","Other"),
+                                        fr=c("Pays de résidence","Pays voisin","Autre"),
+                                        es=c("País	local","País	vecino","Otro")),
+                   QuestValProbs = c(0.7,0.2,0.05)
+    )
+  
+  #Q02i
+  Questionnaire$S2_Q02i <-
+    createQuestion(QuestVar =list(en="S2_Q02i",fr="S2_Q02i",es="S2_Q02i"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Highest level of education completed by the manager",
+                                       fr="Plus haut niveau d'étude atteint par le chef d'exploitation",
+                                       es="Nivel	de	educación	más	alto	completado del jefe de Gerente"),
+                   QuestValue    = list(en=c("None","Less than primary","Primary","Lower secondary","Upper secondary","Tertiary/post-secondary"),
+                                        fr=c("Aucun","Moins que primaire","Primaire","Secondaire court","Secondaire long","Postsecondaire"),
+                                        es=c("Ninguna","Inferior	a	primaria","Primaria","Secundaria	inferior","Secundaria	superior"," Terciaria/postsecundaria")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.1,0.1)
+    )
+  
+  #Q02j
+  Questionnaire$S2_Q02j <-
+    createQuestion(QuestVar =list(en="S2_Q02j",fr="S2_Q02j",es="S2_Q02j"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Share of working time spent working on the holding by the manager",
+                                       fr="Temps de travail sur l'exploitation",
+                                       es="Porción	de	tiempo	de	trabajo	que	dedicó	a	la	unidad	de	producción"),
+                   QuestValue    = list(en=c("Less than half ( < 40 %)","About half (40%-59%)","Most/almost all (60%-99%)","All (100%)"),
+                                        fr=c("Moins d'un mi-temps ( < 40 %)","Mi-temps (40%-59%)","Plus qu'un mi-temps (60%-99%","Temps complet (100%)"),
+                                        es=c("Menos	de	la	mitad	(<40%)","Alrededor	de	la	mitad	(40%-59%)","La	mayoría/casi	todo	(60%-99%)","Todo	(100%)")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2)
+    )
+  
+  #Q02k
+  Questionnaire$S2_Q02k <-
+    createQuestion(QuestVar   = list(en="S2_Q02k",fr="S2_Q02k",es="S2_P02k"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Does the manager have another gainful activity outside of the holding?",
+                                     fr="Le chef d'exploitation a-t-il une autre activité rémunérée en dehors de l'exploitation?",
+                                     es="¿Realiza	el	Titular	otra	actividad	lucrativa	fuera	de	la	unidad	de	producción?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  ## CASE 2: THE HOLDER IS A GROUP OF CIVIL/NATURAL PERSONS
+  ## ROSTER !!!
+  
+  #Q03
+  Questionnaire$S2_Q03 <-
+    createQuestion(QuestVar = list(en="S2_Q03",fr="S2_Q03",es="S2_P03"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="What is the number of civil/natural persons who are members of the Holder group?",
+                                   fr="Quel est le nombre de co-exploitants dans le groupe d'exploitants?",
+                                   es="¿Cuál	es	el	número	de	personas	civiles/naturales	que	son	miembros	del	grupo	del	Titular?"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #.
+  #.
+  #.
+  
+  ## CASE 3: THE HOLDER IS A LEGAL PERSON
+  ## ROSTER !!!
+  
+  #Q06
+  Questionnaire$S2_Q06 <-
+    createQuestion(QuestVar = list(en="S2_Q06",fr="S2_Q06",es="S2_P06"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="What is the number of civil/natural persons participating in the capital of the company?",
+                                   fr="Combien de personnes physiques participent au capital de L'exploitation?",
+                                   es=". ¿Cuál	es	el	número	de	personas	civiles/naturales	que	participa	en	el	capital	de	la	firma?"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q07
+  Questionnaire$S2_Q07 <-
+    createQuestion(QuestVar = list(en="S2_Q07",fr="S2_Q07",es="S2_P07"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="What is the number of legal persons participating in the capital of the company?",
+                                   fr="Combien de personnes morales participent au capital de l'exploitation?",
+                                   es="¿Cuál	es	el	número	de	personas	jurídicas	que	participan	en	el	capital	de	la	firma?"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q08
+  Questionnaire$S2_Q08 <-
+    createQuestion(QuestVar = list(en="S2_Q08",fr="S2_Q08",es="S2_P08"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="How many Managers are associated with the holding?",
+                                   fr="Combien de chefs d'exploitation dirigent l'exploitation?",
+                                   es="¿Cuántos	Gerentes	están	relacionados	con	la	unidad	de	producción?"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #.
+  #.
+  #.
+  
+  ##### SECTION 3: CROP PRODUCTION DURING THE REFERENCE PERIOD
+  
+  ## PART 3.1: CROP PRODUCTION AND DESTINATIONS
+  
+  #Q00
+  Questionnaire$S3_Q00 <-
+    createQuestion(QuestVar   = list(en="S3_Q00",fr="S3_Q00",es="S3_P00"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Did the holding grow crops during the reference period, whatever the production or destination?",
+                                     fr="Y a-t-il eu une production végétale sur l'exploitation pendant la période de référence, quelle que soit la production ou sa destination?",
+                                     es="¿Produjo	la	unidad	de	producción	cultivos	durante	el	periodo	de	referencia,	independientemente	de	la	producción	o	destino?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  #Q00a AS A ROSTER?
+  
+  #Q00b
+  Questionnaire$S3_Q00b <-
+    createQuestion(QuestVar   = list(en="S3_Q00b",fr="S3_Q00b",es="S3_P00b"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Do you plan to introduce crops in the upcomming period?",
+                                     fr="Avez-vous l'intention de commencer des cultures végétales dans un proche avenir?",
+                                     es="¿Tiene	usted	planeado	introducir	cultivos	en	el	próximo	periodo?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  #Q01
+  Questionnaire$S3_Q01 <-
+    createQuestion(QuestVar   = list(en="S3_Q01",fr="S3_Q01",es="S3_P01"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Would you be confident in providing an estimate of the area of your holding?",
+                                     fr="Pensez-vous pouvoir fournir une estimation correcte des superficies de votre exploitation?",
+                                     es="¿Estaría	usted	seguro	al	proporcionar	una	estimación	del	área	de	su	unidad	de	producción?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  #Q02
+  Questionnaire$S3_Q02 <-
+    createQuestion(QuestVar = list(en="S3_Q02",fr="S3_Q02",es="S3_P02"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="How many parcels did you use for agricultural production (for crops and livestock) during the reference period?",
+                                   fr="Combien de parcelles avez-vous utilisé pour les productions agricoles (végétales et animales) pendant la période de référence?",
+                                   es="¿Cuántas	parcelas	utilizó	para	producción	agrícola	(para	cultivos	y	ganadería)	durante	el	periodo	de	referencia?"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
   
 
 return(Questionnaire)
