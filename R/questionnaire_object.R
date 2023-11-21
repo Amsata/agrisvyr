@@ -722,7 +722,7 @@ createQuestionnaire <- function(){
                                           "Producción	de	fruta",
                                           "Producción	de	otros	cultivos	perennes	(cacao,	café,	etc.)",
                                           "Cultivos	mixtos	(sin	predominio	real	de	una	actividad	de	cultivo	específica)")),
-                   QuestValProbs =prob = c(0.2,0.2,0.2,0.2,0.1,0.05)
+                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.1,0.05)
     )
 
   #Q28
@@ -747,7 +747,7 @@ createQuestionnaire <- function(){
                                           "Producción	de	huevos",
                                           "Producción	de	leche",
                                           "Cultivos	mixtos	(sin	predominio	real	de	una	actividad	de	ganadería	específica)")),
-                   QuestValProbs =prob = c(0.2,0.2,0.2,0.2,0.05)
+                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.05)
     )
 
   #Q29
@@ -769,7 +769,7 @@ createQuestionnaire <- function(){
                                           "Producir	principalmente	para	venta,	y	algo	para	consumo	propio	(venta	de	más	del	50%	y	hasta	el	90%)",
                                           "Producir	principalmente	para	consumo	propio	y	algo	de	ventas	(venta	de	más	del	10%	y	hasta	el	50%)",
                                           "Producir	principalmente	para	consumo	propio	(vender	10%	o	menos)")),
-                   QuestValProbs =prob = c(0.2,0.2,0.2,0.2)
+                   QuestValProbs = c(0.2,0.2,0.2,0.2)
     )
 
 
