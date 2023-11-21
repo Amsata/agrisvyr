@@ -480,7 +480,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?- Superficie cultivée/récoltée",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?- Área	cultivada/cosechada"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -493,7 +493,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?-Productions végétales",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?- Producción	de	cultivos"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -506,7 +506,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?-Productions animales",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?-Producción	de	ganado"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -519,7 +519,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?-Prix de vente, montants des ventes et total vendu par produit",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?-Precios	unitarios,	montos	vendidos	y	ventas	totales	por	producto"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -532,7 +532,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?-Quantités d'intrants utilisés (semences, fertilisants, produits de protection des plantes, etc.)",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?-5 Cantidades	de	insumos	utilizados	(semillas,	fertilizantes,	productos	fitosanitarios,	etc.)"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -545,7 +545,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?-Quantités détaillées et prix des intrants achetés",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?-Cantidades	detalladas	y	precios	de	insumos	adquiridos"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -558,7 +558,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?-Temps de travail des salariés",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?- Tiempo	de	los	trabajadores"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -571,7 +571,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?- Paiement des salariés",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?- Pago	de	los	trabajadores"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -584,7 +584,7 @@ createQuestionnaire <- function(){
                                    fr=". Quelles informations sont systématiquement enregistrées?-Autre",
                                    es=". ¿Qué	información	se	registra	sistemáticamente?-Otro"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -597,7 +597,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier-En propriété avec un acte écrit (incluant un titre de propriété, une intention, un accord d'achat, etc.)",
                                    es="tenencia de la tierra-1 En	propiedad	con	documentación	por	escrito	(incluye	un	título	de	propiedad,	un	testamento,	un	contrato	de	compra,	etc.)"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -609,7 +609,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier-En propriété sans acte écrit",
                                    es="tenencia de la tierra-En	propiedad	sin	documentación	por	escrito"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -621,7 +621,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier-Location ou métayage avec un acte écrit",
                                    es="tenencia de la tierra-En	alquiler,	arrendamiento	financiero	o	aparcería	con	acuerdo	por	escrito"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -633,7 +633,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier-Location ou métayage sans acte écrit",
                                    es="tenencia de la tierra- En	alquiler,	arrendamiento	financiero	o	aparcería	sin	acuerdo	por	escrito"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -645,7 +645,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier-Superficie communale ou d'État utilisée avec un accord écrit (droits d'usage certifiés)",
                                    es="tenencia de la tierra- Tierra	estatal	o	comunal	utilizada	con	acuerdo	por	escrito	(derechos	de	uso	certificados)"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -659,7 +659,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier-Superficie communale ou d'État utilisée sans accord écrit (droits d'usage non certifiés)",
                                    es="tenencia de la tierra-Tierra	estatal	o	comunal	utilizada	sin	acuerdo	por	escrito	(derechos	de	uso	certificados)"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -671,7 +671,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier-Occupé/squatté sans permission",
                                    es="tenencia de la tierra- Ocupada/ocupada	ilegalmente	sin	ningún	permiso"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -683,7 +683,7 @@ createQuestionnaire <- function(){
                                    fr="régime foncier- Pas de superficie agricole",
                                    es="tenencia de la tierra-Tierra	no	agrícola"),
                    QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 
@@ -697,7 +697,7 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Mainly crop production","Mainly livestock production","A mix of crop and livestock production"),
                                      fr=c("Principalement production végétale","Principalement production animale","Productions animale et végétale"),
                                      es=c(" Principalmente	producción	de	cultivos","Principalmente	producción	de	ganado","Una	combinación	de	producción	de	cultivos	y	producción")),
-                   QuestValProbs =prob = c(0.9,0.2,0.3)
+                   QuestValProbs = c(0.9,0.2,0.3)
     )
 
 
@@ -718,7 +718,7 @@ createQuestionnaire <- function(){
                                           "Production de raisin de cuve","Production de fruits","Production d'autres cultures pérennes (cacao, café, etc.)",
                                           "Cultures mélangées sans réelle dominante ou activité spécifique"),
                                      es=c("Si","No")),
-                   QuestValProbs =prob = c(0.6,02)
+                   QuestValProbs = c(0.6,02)
     )
 
 return(Questionnaire)
