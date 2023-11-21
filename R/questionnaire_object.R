@@ -250,6 +250,16 @@ createQuestionnaire <- function(){
                    QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
                    QuestValProbs = c(0.50,0.45)
     )
+  
+  Questionnaire$S1_Q12d <-
+    createQuestion(QuestVar   = list(en="S1_Q12d",fr="S1_Q12d",es="S1_P12d"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="PERSONAL ID of the Holder",
+                                     fr="NUMERO PERSONNEL de l'exploitant",
+                                     es="ID	PERSONAL	del	Titular"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
 
 
   #Q13a
@@ -281,6 +291,18 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
                    )
 
+  #Q14
+  Questionnaire$S1_Q14 <-
+    createQuestion(QuestVar = list(en="S1_Q14",fr="S1_Q14",es="S1_P14"),
+                   QuestType = "text",
+                   QuestLab = list(en="What is the legal name of the holding?",
+                                   fr="Quelle est la raison sociale de l'exploitation ?",
+                                   es="¿Cuál	es	el	nombre	jurídico	de	la	unidad	de	producción"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  
   #Q15
   Questionnaire$S1_Q15 <-
     createQuestion(QuestVar = list(en="S1_Q15",fr="S1_Q15",es="S1_P15"),
@@ -292,6 +314,17 @@ createQuestionnaire <- function(){
                    QuestValProbs = NULL
                    )
 
+  #Q16
+  Questionnaire$S1_Q16 <-
+    createQuestion(QuestVar   = list(en="S1_Q16",fr="S1_Q16",es="S1_P16"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Holding Serial Number",
+                                     fr="Numéro de série de l'exploitation",
+                                     es="Número	de	Serie	de	la	Explotación"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
   #Q17
   Questionnaire$S1_Q17 <-
     createQuestion(QuestVar   = list(en="S1_Q17",fr="S1_Q17",es="S1_P17"),
@@ -306,16 +339,16 @@ createQuestionnaire <- function(){
     )
 
 
-  # #Q17a
-  # Questionnaire$S1_Q17a <-
-  #   createQuestion(QuestVar = list(en="S1_Q17a",fr="S1_Q17a",es="S1_P17a"),
-  #                  QuestType = "cat.",
-  #                  QuestLab = list(en="a Address (street)",
-  #                                  fr="a Adresse (rue)",
-  #                                  es="Dirección	(calle)"),
-  #                  QuestValue = NULL,
-  #                  QuestValProbs = NULL
-  #                  )
+  #Q17a
+  Questionnaire$S1_Q17a <-
+    createQuestion(QuestVar = list(en="S1_Q17a",fr="S1_Q17a",es="S1_P17a"),
+                   QuestType = "cat.",
+                   QuestLab = list(en="Address (street)",
+                                   fr="Adresse (rue)",
+                                   es="Dirección	(calle)"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+                   )
 
   #Q17b
   Questionnaire$S1_Q17b <-
@@ -345,6 +378,17 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
                    )
+  
+  #Q17e
+  Questionnaire$S1_Q17e <-
+    createQuestion(QuestVar = list(en="S1_Q17e",fr="S1_Q17e",es="S1_P17e"),
+                   QuestType = "cont.",
+                   QuestLab = list(en="Main telephone number of the holding",
+                                   fr="Numéro de téléphone principal de l'exploitation",
+                                   es="Número	de	teléfono	principal	de	la	unidad	de	producción"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
 
   #Q18
   Questionnaire$S1_Q18 <-
