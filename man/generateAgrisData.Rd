@@ -15,9 +15,6 @@ generateAgrisData(
   lang = "en"
 )
 }
-\arguments{
-\item{language}{}
-}
 \description{
 Title
 }
