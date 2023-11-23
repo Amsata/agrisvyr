@@ -856,7 +856,7 @@ createQuestionnaire <- function(){
 
   #Q01h
   Questionnaire$S2_Q01h <-
-    createQuestion(QuestVar =list(en="S2_Q01h",fr="S2_Q01h",es="S2_Q01h"),
+    createQuestion(QuestVar =list(en="S2_Q01h",fr="S2_Q01h",es="S2_P01h"),
                    QuestType     ="cat.",
                    QuestLab      =list(en="Highest level of education completed",
                                        fr="Plus haut niveau d'étude atteint",
@@ -869,7 +869,7 @@ createQuestionnaire <- function(){
 
   #Q01i
   Questionnaire$S2_Q01i <-
-    createQuestion(QuestVar =list(en="S2_Q01i",fr="S2_Q01i",es="S2_Q01i"),
+    createQuestion(QuestVar =list(en="S2_Q01i",fr="S2_Q01i",es="S2_P01i"),
                    QuestType     ="cat.",
                    QuestLab      =list(en="Share of working time spent working on the holding",
                                        fr="Temps de travail sur l'exploitation",
@@ -1003,6 +1003,115 @@ createQuestionnaire <- function(){
 
   ## CASE 3: THE HOLDER IS A LEGAL PERSON
   ## ROSTER !!!
+  
+  #Q05
+  
+  Questionnaire$S2_Q05a <-
+    createQuestion(QuestVar   = list(en="S2_Q05a",fr="S2_Q05a",es="S2_P05a"),
+                   QuestType  = "text",
+                   QuestLab   = list(en="First name of Manager",
+                                     fr="Prénom du chef d'exploitation",
+                                     es="Nombre del Gerente"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05b <-
+    createQuestion(QuestVar   = list(en="S2_Q05b",fr="S2_Q05b",es="S2_P05b"),
+                   QuestType  = "text",
+                   QuestLab   = list(en="Surname of Manager",
+                                     fr="Nom du chef d'exploitation",
+                                     es="Apellido del Gerente"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05c <-
+    createQuestion(QuestVar   = list(en="S2_Q05c",fr="S2_Q05c",es="S2_P05c"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Contact number (preferably cell phone)",
+                                     fr="Numéro de téléphone (de préférence mobile)",
+                                     es="Número	de	contacto	(preferiblemente	teléfono	cel"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05d <-
+    createQuestion(QuestVar   = list(en="S2_Q05d",fr="S2_Q05d",es="S2_P05d"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Sex of Manager",
+                                     fr="Sexe du chef d'exploitation",
+                                     es="Sexo del	Gerente"),
+                   QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
+                   QuestValProbs = c(0.50,0.45)
+    )
+  
+  Questionnaire$S2_Q05e <-
+    createQuestion(QuestVar   = list(en="S2_Q05e",fr="S2_Q05e",es="S2_P05e"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Age in completed years",
+                                     fr="Âge en années révolues",
+                                     es="Edad	en	años	completos"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05f <-
+    createQuestion(QuestVar =list(en="S2_Q05f",fr="S2_Q05f",es="S2_P05f"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Link with one of the Holders",
+                                       fr="Lien de parenté avec l'un des co-exploitants",
+                                       es="Vínculo	con	uno	de	los	Titulares"),
+                   QuestValue    = list(en=c("Wife/husband or consensual union partner","Other member of the household","External"),
+                                        fr=c("Epouse/mari ou vivant maritalement","Autre membre du ménage","Aucun lien de parenté"),
+                                        es=c("Esposa/esposo	o	socio	por	unión	consensual","Otro	miembro	del	hogar","Externo")),
+                   QuestValProbs = c(0.4,0.4,0.05)
+    )
+  
+  Questionnaire$S2_Q05g <-
+    createQuestion(QuestVar =list(en="S2_Q05g",fr="S2_Q05g",es="S2_P05g"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Nationality",fr="Nationalité",es="Nacionalidad"),
+                   QuestValue    = list(en=c("Local country","Neighbouring country","Other"),
+                                        fr=c("Pays de résidence","Pays voisin","Autre"),
+                                        es=c("País	local","País	vecino","Otro")),
+                   QuestValProbs = c(0.8,0.2,0.1)
+    )
+  
+  Questionnaire$S2_Q05i <-
+    createQuestion(QuestVar =list(en="S2_Q05i",fr="S2_Q05i",es="S2_P05i"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Highest level of education completed",
+                                       fr="Plus haut niveau d'étude atteint",
+                                       es="Nivel	de	educación	más	alto	completado"),
+                   QuestValue    = list(en=c("None","Less than primary","Primary","Lower secondary","Upper secondary","Tertiary/post-secondary"),
+                                        fr=c("Aucun","Moins que primaire","Primaire","Secondaire court","Secondaire long","Postsecondaire"),
+                                        es=c("Ninguna","Inferior	a	primaria","Primaria","Secundaria	inferior","Secundaria	superior"," Terciaria/postsecundaria")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.1,0.1)
+    )
+  
+  Questionnaire$S2_Q05j <-
+    createQuestion(QuestVar =list(en="S2_Q05j",fr="S2_Q05j",es="S2_P05j"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Share of working time spent working on the holding",
+                                       fr="Temps de travail sur l'exploitation",
+                                       es="Porción	de	tiempo	de	trabajo	que	dedicó	a	la	unidad	de	producción"),
+                   QuestValue    = list(en=c("Less than half ( < 40 %)","About half (40%-59%)","Most/almost all (60%-99%)","All (100%)"),
+                                        fr=c("Moins d'un mi-temps ( < 40 %)","Mi-temps (40%-59%)","Plus qu'un mi-temps (60%-99%","Temps complet (100%)"),
+                                        es=c("Menos	de	la	mitad	(<40%)","Alrededor	de	la	mitad	(40%-59%)","La	mayoría/casi	todo	(60%-99%)","Todo	(100%)")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2)
+    )
+  
+  Questionnaire$S2_Q05k <-
+    createQuestion(QuestVar   = list(en="S2_Q05k",fr="S2_Q05k",es="S2_P05k"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Does the Manager have another gainful activity outside of the holding?",
+                                     fr="Le chef d'exploitation a-t-il une autre activité rémunérée en dehors de l'exploitation?",
+                                     es="¿Realiza	el	Gerente	otra	actividad	lucrativa	fuera	de	la	unidad	de	producción?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
 
   #Q06
   Questionnaire$S2_Q06 <-
