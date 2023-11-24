@@ -856,7 +856,7 @@ createQuestionnaire <- function(){
 
   #Q01h
   Questionnaire$S2_Q01h <-
-    createQuestion(QuestVar =list(en="S2_Q01h",fr="S2_Q01h",es="S2_Q01h"),
+    createQuestion(QuestVar =list(en="S2_Q01h",fr="S2_Q01h",es="S2_P01h"),
                    QuestType     ="cat.",
                    QuestLab      =list(en="Highest level of education completed",
                                        fr="Plus haut niveau d'étude atteint",
@@ -869,7 +869,7 @@ createQuestionnaire <- function(){
 
   #Q01i
   Questionnaire$S2_Q01i <-
-    createQuestion(QuestVar =list(en="S2_Q01i",fr="S2_Q01i",es="S2_Q01i"),
+    createQuestion(QuestVar =list(en="S2_Q01i",fr="S2_Q01i",es="S2_P01i"),
                    QuestType     ="cat.",
                    QuestLab      =list(en="Share of working time spent working on the holding",
                                        fr="Temps de travail sur l'exploitation",
@@ -1003,6 +1003,115 @@ createQuestionnaire <- function(){
 
   ## CASE 3: THE HOLDER IS A LEGAL PERSON
   ## ROSTER !!!
+  
+  #Q05
+  
+  Questionnaire$S2_Q05a <-
+    createQuestion(QuestVar   = list(en="S2_Q05a",fr="S2_Q05a",es="S2_P05a"),
+                   QuestType  = "text",
+                   QuestLab   = list(en="First name of Manager",
+                                     fr="Prénom du chef d'exploitation",
+                                     es="Nombre del Gerente"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05b <-
+    createQuestion(QuestVar   = list(en="S2_Q05b",fr="S2_Q05b",es="S2_P05b"),
+                   QuestType  = "text",
+                   QuestLab   = list(en="Surname of Manager",
+                                     fr="Nom du chef d'exploitation",
+                                     es="Apellido del Gerente"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05c <-
+    createQuestion(QuestVar   = list(en="S2_Q05c",fr="S2_Q05c",es="S2_P05c"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Contact number (preferably cell phone)",
+                                     fr="Numéro de téléphone (de préférence mobile)",
+                                     es="Número	de	contacto	(preferiblemente	teléfono	cel"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05d <-
+    createQuestion(QuestVar   = list(en="S2_Q05d",fr="S2_Q05d",es="S2_P05d"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Sex of Manager",
+                                     fr="Sexe du chef d'exploitation",
+                                     es="Sexo del	Gerente"),
+                   QuestValue = list(en=c("Male","Female"),fr=c("Masculin","Féminin"),es=c("Masculino","Femenino")),
+                   QuestValProbs = c(0.50,0.45)
+    )
+  
+  Questionnaire$S2_Q05e <-
+    createQuestion(QuestVar   = list(en="S2_Q05e",fr="S2_Q05e",es="S2_P05e"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Age in completed years",
+                                     fr="Âge en années révolues",
+                                     es="Edad	en	años	completos"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S2_Q05f <-
+    createQuestion(QuestVar =list(en="S2_Q05f",fr="S2_Q05f",es="S2_P05f"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Link with one of the Holders",
+                                       fr="Lien de parenté avec l'un des co-exploitants",
+                                       es="Vínculo	con	uno	de	los	Titulares"),
+                   QuestValue    = list(en=c("Wife/husband or consensual union partner","Other member of the household","External"),
+                                        fr=c("Epouse/mari ou vivant maritalement","Autre membre du ménage","Aucun lien de parenté"),
+                                        es=c("Esposa/esposo	o	socio	por	unión	consensual","Otro	miembro	del	hogar","Externo")),
+                   QuestValProbs = c(0.4,0.4,0.05)
+    )
+  
+  Questionnaire$S2_Q05g <-
+    createQuestion(QuestVar =list(en="S2_Q05g",fr="S2_Q05g",es="S2_P05g"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Nationality",fr="Nationalité",es="Nacionalidad"),
+                   QuestValue    = list(en=c("Local country","Neighbouring country","Other"),
+                                        fr=c("Pays de résidence","Pays voisin","Autre"),
+                                        es=c("País	local","País	vecino","Otro")),
+                   QuestValProbs = c(0.8,0.2,0.1)
+    )
+  
+  Questionnaire$S2_Q05i <-
+    createQuestion(QuestVar =list(en="S2_Q05i",fr="S2_Q05i",es="S2_P05i"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Highest level of education completed",
+                                       fr="Plus haut niveau d'étude atteint",
+                                       es="Nivel	de	educación	más	alto	completado"),
+                   QuestValue    = list(en=c("None","Less than primary","Primary","Lower secondary","Upper secondary","Tertiary/post-secondary"),
+                                        fr=c("Aucun","Moins que primaire","Primaire","Secondaire court","Secondaire long","Postsecondaire"),
+                                        es=c("Ninguna","Inferior	a	primaria","Primaria","Secundaria	inferior","Secundaria	superior"," Terciaria/postsecundaria")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2,0.1,0.1)
+    )
+  
+  Questionnaire$S2_Q05j <-
+    createQuestion(QuestVar =list(en="S2_Q05j",fr="S2_Q05j",es="S2_P05j"),
+                   QuestType     ="cat.",
+                   QuestLab      =list(en="Share of working time spent working on the holding",
+                                       fr="Temps de travail sur l'exploitation",
+                                       es="Porción	de	tiempo	de	trabajo	que	dedicó	a	la	unidad	de	producción"),
+                   QuestValue    = list(en=c("Less than half ( < 40 %)","About half (40%-59%)","Most/almost all (60%-99%)","All (100%)"),
+                                        fr=c("Moins d'un mi-temps ( < 40 %)","Mi-temps (40%-59%)","Plus qu'un mi-temps (60%-99%","Temps complet (100%)"),
+                                        es=c("Menos	de	la	mitad	(<40%)","Alrededor	de	la	mitad	(40%-59%)","La	mayoría/casi	todo	(60%-99%)","Todo	(100%)")),
+                   QuestValProbs = c(0.2,0.2,0.2,0.2)
+    )
+  
+  Questionnaire$S2_Q05k <-
+    createQuestion(QuestVar   = list(en="S2_Q05k",fr="S2_Q05k",es="S2_P05k"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Does the Manager have another gainful activity outside of the holding?",
+                                     fr="Le chef d'exploitation a-t-il une autre activité rémunérée en dehors de l'exploitation?",
+                                     es="¿Realiza	el	Gerente	otra	actividad	lucrativa	fuera	de	la	unidad	de	producción?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
 
   #Q06
   Questionnaire$S2_Q06 <-
@@ -1056,7 +1165,213 @@ createQuestionnaire <- function(){
                    QuestValProbs = c(0.9,0.05)
     )
 
-  #Q00a AS A ROSTER?
+  #Q00a
+  
+  #Kitchen gardens and backyards
+  Questionnaire$S3_Q00a_1_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_1_1",fr="S3_Q00a_1_1",es="S3_P00a_1_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Area",
+                                     fr="Jardins familiaux et cours Superficie",
+                                     es="Huertos	caseros	y	traspatios Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_1_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_1_2",fr="S3_Q00a_1_2",es="S3_P00a_1_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Unit of measure",
+                                     fr="Jardins familiaux et cours Unité de mesure",
+                                     es="Huertos	caseros	y	traspatios Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_1_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_1_3",fr="S3_Q00a_1_3",es="S3_P00a_1_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Conversion factor to a standard unit",
+                                     fr="Jardins familiaux et cours Facteur de conversion en unité standard",
+                                     es="Huertos	caseros	y	traspatios Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_1_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_1_4",fr="S3_Q00a_1_4",es="S3_P00a_1_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Area calculated in standard unit",
+                                     fr="Jardins familiaux et cours Superficie calculée en unité standard",
+                                     es="Huertos	caseros	y	traspatios Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Farm buildings and farmyards
+  Questionnaire$S3_Q00a_2_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_2_1",fr="S3_Q00a_2_1",es="S3_P00a_2_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Farm buildings and farmyards Area",
+                                     fr="Bâtiments et cours de ferme Superficie",
+                                     es="Edificios	y	patios	de	la	finca Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_2_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_2_2",fr="S3_Q00a_2_2",es="S3_P00a_2_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Farm buildings and farmyards Unit of measure",
+                                     fr="Bâtiments et cours de ferme Unité de mesure",
+                                     es="Edificios	y	patios	de	la	finca Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_2_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_2_3",fr="S3_Q00a_2_3",es="S3_P00a_2_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Farm buildings and farmyards Conversion factor to a standard unit",
+                                     fr="Bâtiments et cours de ferme Facteur de conversion en unité standard",
+                                     es="Edificios	y	patios	de	la	finca Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_2_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_2_4",fr="S3_Q00a_2_4",es="S3_P00a_2_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Farm buildings and farmyards Area calculated in standard unit",
+                                     fr="Bâtiments et cours de ferme Superficie calculée en unité standard",
+                                     es="Edificios	y	patios	de	la	finca Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Forest and other wooded land
+  Questionnaire$S3_Q00a_3_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_3_1",fr="S3_Q00a_3_1",es="S3_P00a_3_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Forest and other wooded land Area",
+                                     fr="Forêts et autres superficies boisées Superficie",
+                                     es="Bosques	y	otros	terrenos	boscosos Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_3_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_3_2",fr="S3_Q00a_3_2",es="S3_P00a_3_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Forest and other wooded land Unit of measure",
+                                     fr="Forêts et autres superficies boisées Unité de mesure",
+                                     es="Bosques	y	otros	terrenos	boscosos Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_3_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_3_3",fr="S3_Q00a_3_3",es="S3_P00a_3_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Forest and other wooded land Conversion factor to a standard unit",
+                                     fr="Forêts et autres superficies boisées Facteur de conversion en unité standard",
+                                     es="Bosques	y	otros	terrenos	boscosos Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_3_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_3_4",fr="S3_Q00a_3_4",es="S3_P00a_3_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Forest and other wooded land Area calculated in standard unit",
+                                     fr="Forêts et autres superficies boisées Superficie calculée en unité standard",
+                                     es="Bosques	y	otros	terrenos	boscosos Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Aquaculture on the holding
+  Questionnaire$S3_Q00a_4_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_4_1",fr="S3_Q00a_4_1",es="S3_P00a_4_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Aquaculture on the holding Area",
+                                     fr="Aquaculture sur l'exploitation Superficie",
+                                     es="Acuicultura	en	la	unidad	de	producción Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_4_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_4_2",fr="S3_Q00a_4_2",es="S3_P00a_4_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Aquaculture on the holding Unit of measure",
+                                     fr="Aquaculture sur l'exploitation Unité de mesure",
+                                     es="Acuicultura	en	la	unidad	de	producción Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_4_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_4_3",fr="S3_Q00a_4_3",es="S3_P00a_4_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Aquaculture on the holding Conversion factor to a standard unit",
+                                     fr="Aquaculture sur l'exploitation Facteur de conversion en unité standard",
+                                     es="Acuicultura	en	la	unidad	de	producción Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_4_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_4_4",fr="S3_Q00a_4_4",es="S3_P00a_4_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Aquaculture on the holding Area calculated in standard unit",
+                                     fr="Aquaculture sur l'exploitation Superficie calculée en unité standard",
+                                     es="Acuicultura	en	la	unidad	de	producción Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Other land (unutilised, rocks, wetlands, etc.)
+  Questionnaire$S3_Q00a_5_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_5_1",fr="S3_Q00a_5_1",es="S3_P00a_5_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Other land (unutilised, rocks, wetlands, etc.) Area",
+                                     fr="Autres superficies (non utilisée, rochers, zones humides, etc.) Superficie",
+                                     es="Otra	tierra	(inutilizada,	peñas,	humedales,	etc.) Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_5_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_5_2",fr="S3_Q00a_5_2",es="S3_P00a_5_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Other land (unutilised, rocks, wetlands, etc.) Unit of measure",
+                                     fr="Autres superficies (non utilisée, rochers, zones humides, etc.) Unité de mesure",
+                                     es="Otra	tierra	(inutilizada,	peñas,	humedales,	etc.) Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_5_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_5_3",fr="S3_Q00a_5_3",es="S3_P00a_5_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Other land (unutilised, rocks, wetlands, etc.) Conversion factor to a standard unit",
+                                     fr="Autres superficies (non utilisée, rochers, zones humides, etc.) Facteur de conversion en unité standard",
+                                     es="Otra	tierra	(inutilizada,	peñas,	humedales,	etc.) Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q00a_5_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q00a_5_4",fr="S3_Q00a_5_4",es="S3_P00a_5_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Other land (unutilised, rocks, wetlands, etc.) Area calculated in standard unit",
+                                     fr="Autres superficies (non utilisée, rochers, zones humides, etc.) Superficie calculée en unité standard",
+                                     es="Otra	tierra	(inutilizada,	peñas,	humedales,	etc.) Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
 
   #Q00b
   Questionnaire$S3_Q00b <-
@@ -1090,6 +1405,566 @@ createQuestionnaire <- function(){
                    QuestValue = NULL,
                    QuestValProbs = NULL
     )
+  
+  #From Q03 to Q10 : ROSTER
+  
+  
+  ## PART 3.2: AREA UTILIZED
+  
+  #Q11a
+  Questionnaire$S3_Q11a_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11a_1",fr="S3_Q11a_1",es="S3_P11a_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary crops under greenhouses or high shelters Area",
+                                     fr="Cultures temporaires sous serres ou abris hauts Superficie",
+                                     es="Cultivos	temporales	en	invernaderos	o	techos	altos Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11a_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11a_2",fr="S3_Q11a_2",es="S3_P11a_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Temporary crops under greenhouses or high shelters Unit of measure",
+                                     fr="Cultures temporaires sous serres ou abris hauts Unité de mesure",
+                                     es="Cultivos	temporales	en	invernaderos	o	techos	altos Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11a_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11a_3",fr="S3_Q11a_3",es="S3_P11a_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary crops under greenhouses or high shelters Conversion factor to a standard unit",
+                                     fr="Cultures temporaires sous serres ou abris hauts Facteur de conversion en unité standard",
+                                     es="Cultivos	temporales	en	invernaderos	o	techos	altos Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11a_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11a_4",fr="S3_Q11a_4",es="S3_P11a_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary crops under greenhouses or high shelters Area calculated in standard unit",
+                                     fr="Cultures temporaires sous serres ou abris hauts Superficie calculée en unité standard",
+                                     es="Cultivos	temporales	en	invernaderos	o	techos	altos Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11b
+  Questionnaire$S3_Q11b_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11b_1",fr="S3_Q11b_1",es="S3_P11b_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary crops outdoors or under low shelters Area",
+                                     fr="Cultures temporaires en plein air ou sous abris bas Superficie",
+                                     es="Cultivos	temporales	al	aire	libre	o	bajo	techos	bajos Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11b_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11b_2",fr="S3_Q11b_2",es="S3_P11b_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Temporary crops outdoors or under low shelters Unit of measure",
+                                     fr="Cultures temporaires en plein air ou sous abris bas Unité de mesure",
+                                     es="Cultivos	temporales	al	aire	libre	o	bajo	techos	bajos Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11b_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11b_3",fr="S3_Q11b_3",es="S3_P11b_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary crops outdoors or under low shelters Conversion factor to a standard unit",
+                                     fr="Cultures temporaires en plein air ou sous abris bas Facteur de conversion en unité standard",
+                                     es="Cultivos	temporales	al	aire	libre	o	bajo	techos	bajos Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11b_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11b_4",fr="S3_Q11b_4",es="S3_P11b_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary crops outdoors or under low shelters Area calculated in standard unit",
+                                     fr="Cultures temporaires en plein air ou sous abris bas Superficie calculée en unité standard",
+                                     es="Cultivos	temporales	al	aire	libre	o	bajo	techos	bajos Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11c
+  Questionnaire$S3_Q11c_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11c_1",fr="S3_Q11c_1",es="S3_P11c_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary fallow Area",
+                                     fr="Jachère Superficie",
+                                     es="Barbecho	temporal Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11c_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11c_2",fr="S3_Q11c_2",es="S3_P11c_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Temporary fallow Unit of measure",
+                                     fr="Jachère Unité de mesure",
+                                     es="Barbecho	temporal Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11c_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11c_3",fr="S3_Q11c_3",es="S3_P11c_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary fallow Conversion factor to a standard unit",
+                                     fr="Jachère Facteur de conversion en unité standard",
+                                     es="Barbecho	temporal Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11c_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11c_4",fr="S3_Q11c_4",es="S3_P11c_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary fallow Area calculated in standard unit",
+                                     fr="Jachère Superficie calculée en unité standard",
+                                     es="Barbecho	temporal Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11d
+  Questionnaire$S3_Q11d_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11d_1",fr="S3_Q11d_1",es="S3_P11d_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary meadows and pastures Area",
+                                     fr="Prairies et pâturages temporaires Superficie",
+                                     es="Praderas	y	pastizales	temporales Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11d_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11d_2",fr="S3_Q11d_2",es="S3_P11d_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Temporary meadows and pastures Unit of measure",
+                                     fr="Prairies et pâturages temporaires Unité de mesure",
+                                     es="Praderas	y	pastizales	temporales Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11d_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11d_3",fr="S3_Q11d_3",es="S3_P11d_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary meadows and pastures Conversion factor to a standard unit",
+                                     fr="Prairies et pâturages temporaires Facteur de conversion en unité standard",
+                                     es="Praderas	y	pastizales	temporales Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11d_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11d_4",fr="S3_Q11d_4",es="S3_P11d_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Temporary meadows and pastures Area calculated in standard unit",
+                                     fr="Prairies et pâturages temporaires Superficie calculée en unité standard",
+                                     es="Praderas	y	pastizales	temporales Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11e
+  Questionnaire$S3_Q11e_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11e_1",fr="S3_Q11e_1",es="S3_P11e_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Area",
+                                     fr="Jardins familiaux et cours Superficie",
+                                     es="Huertos	caseros	y	traspatios Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11e_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11e_2",fr="S3_Q11e_2",es="S3_P11e_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Unit of measure",
+                                     fr="Jardins familiaux et cours Unité de mesure",
+                                     es="Huertos	caseros	y	traspatios Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11e_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11e_3",fr="S3_Q11e_3",es="S3_P11e_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Conversion factor to a standard unit",
+                                     fr="Jardins familiaux et cours Facteur de conversion en unité standard",
+                                     es="Huertos	caseros	y	traspatios Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11e_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11e_4",fr="S3_Q11e_4",es="S3_P11e_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Kitchen gardens and backyards Area calculated in standard unit",
+                                     fr="Jardins familiaux et cours Superficie calculée en unité standard",
+                                     es="Huertos	caseros	y	traspatios Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11f
+  Questionnaire$S3_Q11f_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11f_1",fr="S3_Q11f_1",es="S3_P11f_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent crops under greenhouses or high shelters Area",
+                                     fr="Cultures permanentes sous serres ou abris hauts Superficie",
+                                     es="Cultivos	permanentes	en	invernaderos	o	techos	altos Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11f_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11f_2",fr="S3_Q11f_2",es="S3_P11f_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Permanent crops under greenhouses or high shelters Unit of measure",
+                                     fr="Cultures permanentes sous serres ou abris hauts Unité de mesure",
+                                     es="Cultivos	permanentes	en	invernaderos	o	techos	altos Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11f_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11f_3",fr="S3_Q11f_3",es="S3_P11f_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent crops under greenhouses or high shelters Conversion factor to a standard unit",
+                                     fr="Cultures permanentes sous serres ou abris hauts Facteur de conversion en unité standard",
+                                     es="Cultivos	permanentes	en	invernaderos	o	techos	altos Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11f_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11f_4",fr="S3_Q11f_4",es="S3_P11f_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent crops under greenhouses or high shelters Area calculated in standard unit",
+                                     fr="Cultures permanentes sous serres ou abris hauts Superficie calculée en unité standard",
+                                     es="Cultivos	permanentes	en	invernaderos	o	techos	altos Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11g
+  Questionnaire$S3_Q11g_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11g_1",fr="S3_Q11g_1",es="S3_P11g_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent crops outdoors or under low shelters Area",
+                                     fr="Cultures permanentes en plein air ou sous abris bas Superficie",
+                                     es="Cultivos	permanentes	al	aire	libre	o	bajo	techos	bajos Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11g_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11g_2",fr="S3_Q11g_2",es="S3_P11g_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Permanent crops outdoors or under low shelters Unit of measure",
+                                     fr="Cultures permanentes en plein air ou sous abris bas Unité de mesure",
+                                     es="Cultivos	permanentes	al	aire	libre	o	bajo	techos	bajos Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11g_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11g_3",fr="S3_Q11g_3",es="S3_P11g_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent crops outdoors or under low shelters Conversion factor to a standard unit",
+                                     fr="Cultures permanentes en plein air ou sous abris bas Facteur de conversion en unité standard",
+                                     es="Cultivos	permanentes	al	aire	libre	o	bajo	techos	bajos Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11g_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11g_4",fr="S3_Q11g_4",es="S3_P11g_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent crops outdoors or under low shelters Area calculated in standard unit",
+                                     fr="Cultures permanentes en plein air ou sous abris bas Superficie calculée en unité standard",
+                                     es="Cultivos	permanentes	al	aire	libre	o	bajo	techos	bajos Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11h
+  Questionnaire$S3_Q11h_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11h_1",fr="S3_Q11h_1",es="S3_P11h_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent meadows and pastures Area",
+                                     fr="Prairies et pâturages permanents Superficie",
+                                     es="Praderas	y	pastizales	permanentes Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11h_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11h_2",fr="S3_Q11h_2",es="S3_P11h_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Permanent meadows and pastures Unit of measure",
+                                     fr="Prairies et pâturages permanents Unité de mesure",
+                                     es="Praderas	y	pastizales	permanentes Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11h_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11h_3",fr="S3_Q11h_3",es="S3_P11h_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent meadows and pastures Conversion factor to a standard unit",
+                                     fr="Prairies et pâturages permanents Facteur de conversion en unité standard",
+                                     es="Praderas	y	pastizales	permanentes Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11h_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11h_4",fr="S3_Q11h_4",es="S3_P11h_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Permanent meadows and pastures Area calculated in standard unit",
+                                     fr="Prairies et pâturages permanents Superficie calculée en unité standard",
+                                     es="Praderas	y	pastizales	permanentes Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11j
+  Questionnaire$S3_Q11j_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11j_1",fr="S3_Q11j_1",es="S3_P11j_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area equipped for irrigation in working order Area",
+                                     fr="Superficie équipée pour l'irrigation en état de fonctionner Superficie",
+                                     es="Área	equipada	para	riego	en	orden	de	trabajo Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11j_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11j_2",fr="S3_Q11j_2",es="S3_P11j_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Area equipped for irrigation in working order Unit of measure",
+                                     fr="Superficie équipée pour l'irrigation en état de fonctionner Unité de mesure",
+                                     es="Área	equipada	para	riego	en	orden	de	trabajo Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11j_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11j_3",fr="S3_Q11j_3",es="S3_P11j_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area equipped for irrigation in working order Conversion factor to a standard unit",
+                                     fr="Superficie équipée pour l'irrigation en état de fonctionner Facteur de conversion en unité standard",
+                                     es="Área	equipada	para	riego	en	orden	de	trabajo Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11j_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11j_4",fr="S3_Q11j_4",es="S3_P11j_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area equipped for irrigation in working order Area calculated in standard unit",
+                                     fr="Superficie équipée pour l'irrigation en état de fonctionner Superficie calculée en unité standard",
+                                     es="Área	equipada	para	riego	en	orden	de	trabajo Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11k
+  Questionnaire$S3_Q11k_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11k_1",fr="S3_Q11k_1",es="S3_P11k_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area equipped with soil drainage in working order Area",
+                                     fr="Superficie équipée de drains en état de fonctionner Superficie",
+                                     es="Área	equipada	con drenaje del suelo en buen estado de funcionamiento Área"), #Translation proposed, given that in the questionnaire the correct label is missing
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11k_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11k_2",fr="S3_Q11k_2",es="S3_P11k_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Area equipped with soil drainage in working order Unit of measure",
+                                     fr="Superficie équipée de drains en état de fonctionner Unité de mesure",
+                                     es="Área	equipada	con drenaje del suelo en buen estado de funcionamiento Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11k_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11k_3",fr="S3_Q11k_3",es="S3_P11k_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area equipped with soil drainage in working order Conversion factor to a standard unit",
+                                     fr="Superficie équipée de drains en état de fonctionner Facteur de conversion en unité standard",
+                                     es="Área	equipada	con drenaje del suelo en buen estado de funcionamiento Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11k_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11k_4",fr="S3_Q11k_4",es="S3_P11k_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area equipped with soil drainage in working order Area calculated in standard unit",
+                                     fr="Superficie équipée de drains en état de fonctionner Superficie calculée en unité standard",
+                                     es="Área	equipada	con drenaje del suelo en buen estado de funcionamiento Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q11l
+  Questionnaire$S3_Q11l_1 <-
+    createQuestion(QuestVar   = list(en="S3_Q11l_1",fr="S3_Q11l_1",es="S3_P11l_1"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area in organic farming (part of the AAU calculated above) Area",
+                                     fr="Superficie en agriculture bio (part de la SAU ci-dessus) Superficie",
+                                     es="Área	en	agricultura	orgánica	(parte	del	AAU	calculada	anteriormente) Área"), #Translation proposed, given that in the questionnaire the correct label is missing
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11l_2 <-
+    createQuestion(QuestVar   = list(en="S3_Q11l_2",fr="S3_Q11l_2",es="S3_P11l_2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Area in organic farming (part of the AAU calculated above) Unit of measure",
+                                     fr="Superficie en agriculture bio (part de la SAU ci-dessus) Unité de mesure",
+                                     es="Área	en	agricultura	orgánica	(parte	del	AAU	calculada	anteriormente) Unidad de medida"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11l_3 <-
+    createQuestion(QuestVar   = list(en="S3_Q11l_3",fr="S3_Q11l_3",es="S3_P11l_3"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area in organic farming (part of the AAU calculated above) Conversion factor to a standard unit",
+                                     fr="Superficie en agriculture bio (part de la SAU ci-dessus) Facteur de conversion en unité standard",
+                                     es="Área	en	agricultura	orgánica	(parte	del	AAU	calculada	anteriormente) Factor de conversión a una unidad estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  Questionnaire$S3_Q11l_4 <-
+    createQuestion(QuestVar   = list(en="S3_Q11l_4",fr="S3_Q11l_4",es="S3_P11l_4"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Area in organic farming (part of the AAU calculated above) Area calculated in standard unit",
+                                     fr="Superficie en agriculture bio (part de la SAU ci-dessus) Superficie calculée en unité standard",
+                                     es="Área	en	agricultura	orgánica	(parte	del	AAU	calculada	anteriormente) Área	calculada en	unidad	estándar"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  
+  #Q12
+  Questionnaire$S3_Q12 <-
+    createQuestion(QuestVar   = list(en="S3_Q12",fr="S3_Q12",es="S3_P12"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="If there is area equipped for irrigation in working order, did you irrigate during the reference period?",
+                                     fr="Si vous disposez de superficies équipées pour l'irrigation en état de fonctionnement, avez-vous irrigué pendant la période de référence?",
+                                     es="Si	existe	un	área	equipada	para	riego	en	orden	de	trabajo,	¿regó	usted	durante	el	periodo	de	referencia?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  #Q13a
+  Questionnaire$S3_Q13a <-
+    createQuestion(QuestVar   = list(en="S3_Q13a",fr="S3_Q13a",es="S3_P13a"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Farm buildings and farmyards",
+                                     fr="Bâtiments et cours agricoles",
+                                     es="Edificios	y	patios	de	la	finca"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  Questionnaire$S3_Q13a_bis <-
+    createQuestion(QuestVar   = list(en="S3_Q13a_bis",fr="S3_Q13a_bis",es="S3_P13a_bis"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Farm buildings and farmyards Area",
+                                     fr="Bâtiments et cours agricoles Superficie",
+                                     es="Edificios	y	patios	de	la	finca Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q13b
+  Questionnaire$S3_Q13b <-
+    createQuestion(QuestVar   = list(en="S3_Q13b",fr="S3_Q13b",es="S3_P13b"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Forest and other wooded land",
+                                     fr="Forêts et autres superficies boisées",
+                                     es="Bosques	y	otros	terrenos	boscosos"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  Questionnaire$S3_Q13b_bis <-
+    createQuestion(QuestVar   = list(en="S3_Q13b_bis",fr="S3_Q13b_bis",es="S3_P13b_bis"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Forest and other wooded land Area",
+                                     fr="Forêts et autres superficies boisées Superficie",
+                                     es="Bosques	y	otros	terrenos	boscosos Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q13c
+  Questionnaire$S3_Q13c <-
+    createQuestion(QuestVar   = list(en="S3_Q13c",fr="S3_Q13c",es="S3_P13c"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Aquaculture on the holding (area not included in Q11)",
+                                     fr="Aquaculture sur l'exploitation (superficie non incluse en Q11)",
+                                     es="Acuicultura	en	la	unidad	de	producción	(área	no	incluida	en	P11)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  Questionnaire$S3_Q13c_bis <-
+    createQuestion(QuestVar   = list(en="S3_Q13c_bis",fr="S3_Q13c_bis",es="S3_P13c_bis"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Aquaculture on the holding (area not included in Q11) Area",
+                                     fr="Aquaculture sur l'exploitation (superficie non incluse en Q11) Superficie",
+                                     es="Acuicultura	en	la	unidad	de	producción	(área	no	incluida	en	P11) Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  #Q13d
+  Questionnaire$S3_Q13d <-
+    createQuestion(QuestVar   = list(en="S3_Q13d",fr="S3_Q13d",es="S3_P13d"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Other land (unutilized, rocks, wetlands, etc.)",
+                                     fr="Autres surfaces (non utilisée, rochers, zones humides, etc.)",
+                                     es="Otra	tierra	(inutilizada,	rocas,	humedales,	etc.)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  Questionnaire$S3_Q13d_bis <-
+    createQuestion(QuestVar   = list(en="S3_Q13d_bis",fr="S3_Q13d_bis",es="S3_P13d_bis"),
+                   QuestType  = "cont.",
+                   QuestLab   = list(en="Other land (unutilized, rocks, wetlands, etc.) Area",
+                                     fr="Autres surfaces (non utilisée, rochers, zones humides, etc.) Superficie",
+                                     es="Otra	tierra	(inutilizada,	rocas,	humedales,	etc.) Área"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
+  
+  ## PART 3.3: CROP PRODUCTION MODES (TO CONTINUE THE ROSTER ON CROPS!)
+  
+  ## PART 3.4: INTENTIONS FOR CROP PRODUCTION FOR THE 12 MONTHS AFTER THE REFERENCE PERIOD (TO CONTINUE THE ROSTER ON CROPS!)
+  
+  
+  ##### SECTION 4: LIVESTOCK PRODUCTION DURING THE REFERENCE PERIOD
+  
 
 
 return(Questionnaire)
