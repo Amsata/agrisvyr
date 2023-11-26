@@ -1963,8 +1963,114 @@ createQuestionnaire <- function(){
   ## PART 3.4: INTENTIONS FOR CROP PRODUCTION FOR THE 12 MONTHS AFTER THE REFERENCE PERIOD (TO CONTINUE THE ROSTER ON CROPS!)
   
   
+  
   ##### SECTION 4: LIVESTOCK PRODUCTION DURING THE REFERENCE PERIOD
   
+  ## PART 4.1: RAISING ACTIVITIES AND PRODUCTION
+  
+  #Q01
+  Questionnaire$S4_Q01 <-
+    createQuestion(QuestVar   = list(en="S4_Q01",fr="S4_Q01",es="S4_P01"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Do you register the main events about the livestock you raise (births, sales, production, etc.)?",
+                                     fr="Enregistrez-vous les principaux évènements sur les cheptels que vous élevez (naissances, ventes, production, etc.) ?",
+                                     es="¿ Registra	usted	los	principales	eventos	acerca	del	ganado	que	cría	(nacimientos,	ventas,	producción,	etc.)?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.9,0.05)
+    )
+  
+  # PART 4.1.1: EQUINE LIVESTOCK
+  #Q02
+  Questionnaire$S4_Q02 <-
+    createQuestion(QuestVar   = list(en="S4_Q02",fr="S4_Q02",es="S4_P02"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="Were equines raised on the holding during the reference period (12 months)?",
+                                     fr="Des équins ont-ils été élevés sur l'exploitation pendant la période de référence (12 mois) ?",
+                                     es="¿Se	criaron	equinos	en	la	unidad	de	producción	durante	el	periodo	de	referencia	(12	meses)?"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  #Q02a
+  Questionnaire$S4_Q02a1 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a1",fr="S4_Q02a1",es="S4_P02a1"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="What equines were raised on the holding during the reference period? _ Saddle or racing mares",
+                                     fr="Quels types d'équins ont été élevés sur l'exploitation pendant la période de référence? _ Juments de selle ou de course",
+                                     es="¿Qué	equinos	se	criaron	en	la	unidad	de	producción	durante	el	periodo	de	referencia? _ De	montar	o	yeguas	de	carreras"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  Questionnaire$S4_Q02a2 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a2",fr="S4_Q02a2",es="S4_P02a2"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="What equines were raised on the holding during the reference period? _ Other mares",
+                                     fr="Quels types d'équins ont été élevés sur l'exploitation pendant la période de référence? _ Autre juments",
+                                     es="¿Qué	equinos	se	criaron	en	la	unidad	de	producción	durante	el	periodo	de	referencia? _ Otras	yeguas"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  Questionnaire$S4_Q02a3 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a3",fr="S4_Q02a3",es="S4_P02a3"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="What equines were raised on the holding during the reference period? _ Saddle or racing horses (excluding mares)",
+                                     fr="Quels types d'équins ont été élevés sur l'exploitation pendant la période de référence? _ Chevaux de selle ou de course (juments exclues)",
+                                     es="¿Qué	equinos	se	criaron	en	la	unidad	de	producción	durante	el	periodo	de	referencia? _  De	montar	o	caballos	de	carreras	(excluyendo	yeguas)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  Questionnaire$S4_Q02a4 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a4",fr="S4_Q02a4",es="S4_P02a4"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="What equines were raised on the holding during the reference period? _ Other horses (excluding mares)",
+                                     fr="Quels types d'équins ont été élevés sur l'exploitation pendant la période de référence? _ Autre chevaux (juments exclues)",
+                                     es="¿Qué	equinos	se	criaron	en	la	unidad	de	producción	durante	el	periodo	de	referencia? _ Otros	caballos	(excluyendo	yeguas)"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  Questionnaire$S4_Q02a5 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a5",fr="S4_Q02a5",es="S4_P02a5"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="What equines were raised on the holding during the reference period? _ Other horses (excluding mares)",
+                                     fr="Quels types d'équins ont été élevés sur l'exploitation pendant la période de référence? _ Autre chevaux (juments exclues)",
+                                     es="¿Qué	equinos	se	criaron	en	la	unidad	de	producción	durante	el	periodo	de	referencia? _ Mulas	o	mulas	hembras"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  Questionnaire$S4_Q02a6 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a6",fr="S4_Q02a6",es="S4_P02a6"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="What equines were raised on the holding during the reference period? _  Asses",
+                                     fr="Quels types d'équins ont été élevés sur l'exploitation pendant la période de référence? _ Ânes",
+                                     es="¿Qué	equinos	se	criaron	en	la	unidad	de	producción	durante	el	periodo	de	referencia? _ Asnos"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  Questionnaire$S4_Q02a7 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a7",fr="S4_Q02a7",es="S4_P02a7"),
+                   QuestType  = "cat.",
+                   QuestLab   = list(en="What equines were raised on the holding during the reference period? _ Other equines",
+                                     fr="Quels types d'équins ont été élevés sur l'exploitation pendant la période de référence? _ Autres équins",
+                                     es="¿Qué	equinos	se	criaron	en	la	unidad	de	producción	durante	el	periodo	de	referencia? _ Otros	equipos"),
+                   QuestValue = list(en=c("Yes","No"),fr=c("Oui","Non"),es=c("Si","No")),
+                   QuestValProbs = c(0.4,0.5)
+    )
+  
+  Questionnaire$S4_Q02a8 <-
+    createQuestion(QuestVar   = list(en="S4_Q02a8",fr="S4_Q02a8",es="S4_P02a8"),
+                   QuestType  = "text",
+                   QuestLab   = list(en="Specify other equines",
+                                     fr="Préciser autres équins",
+                                     es="Especifique Otros	equipos"),
+                   QuestValue = NULL,
+                   QuestValProbs = NULL
+    )
 
 
 return(Questionnaire)
