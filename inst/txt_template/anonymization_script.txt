@@ -120,7 +120,8 @@ sdc_final=sdc_obj
 #  individual = TRUE,
 #  suda = FALSE,
 #  hierarchical = FALSE,
-#  childName = "child_hh"
+#  childName = "child_hh",
+# inputdata="{agrisvy@workingDir}/{file_attributes$path}"
 #)
 
 

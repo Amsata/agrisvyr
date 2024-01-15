@@ -2,8 +2,6 @@
 
 raw_df={{read_function}}("{{inputdata_path}}")
 ano_df={{read_function}}("{{anodata_path}}")
-
-eval_cond=FALSE
 ```
 
 # INFORMATION LOSS ASSESSMENT FOR THE DATASET: {{df_name}}
@@ -63,7 +61,7 @@ Each table presents an in-depth examination of whether the indicator computed in
 
 
 
-```{r,echo=FALSE,eval=eval_cond}
+```{r,echo=FALSE,eval=FALSE}
 design=agrisvyr::surveyDesign(raw_df,ano_df,df=TRUE,
                               ids=~to_specify,
                             weights =~to_specify
@@ -75,7 +73,7 @@ design=agrisvyr::surveyDesign(raw_df,ano_df,df=TRUE,
 
 **Comparison for proportion**
 
-```{r,results='asis',echo=FALSE,eval=eval_cond}
+```{r,results='asis',echo=FALSE,eval=FALSE}
 
 for (v in keyvars) {
 
@@ -87,7 +85,7 @@ for (v in keyvars) {
 
 **Comparison for total**
 
-```{r,results='asis',echo=FALSE,eval=eval_cond}
+```{r,results='asis',echo=FALSE,eval=FALSE}
 
 for (v in keyvars) {
 
@@ -101,7 +99,7 @@ for (v in keyvars) {
 
 **Comparison for proportion**
 
-```{r,echo=FALSE,eval=eval_cond}
+```{r,echo=FALSE,eval=FALSE}
 
 
 compare_ind_cats("var1","var2",design)
@@ -110,7 +108,7 @@ compare_ind_cats("var1","var2",design)
 
 **Comparison for total**
 
-```{r,echo=FALSE,eval=eval_cond}
+```{r,echo=FALSE,eval=FALSE}
 compare_ind_cats_tot("var1","var2",design)
 
 ```
@@ -120,7 +118,7 @@ compare_ind_cats_tot("var1","var2",design)
 
 **Comparison af average**
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,eval=eval_cond}
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
 
 numvars=c({{trimws(paste('"',names(intialObj@origData)[intialObj@numVars],'"',sep="",collapse = ","))}})
 
@@ -130,7 +128,7 @@ confint_check_num(design,indicator="mean",numvars)
 
 **Comparison of total**
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,eval=eval_cond}
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
 
 numvars=c({{trimws(paste('"',names(intialObj@origData)[intialObj@numVars],'"',sep="",collapse = ","))}})
 
@@ -140,7 +138,7 @@ confint_check_num(design,indicator="total",numvars)
 
 **Comparison of median**
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE,eval=eval_cond}
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
 
 numvars=c({{trimws(paste('"',names(intialObj@origData)[intialObj@numVars],'"',sep="",collapse = ","))}})
 

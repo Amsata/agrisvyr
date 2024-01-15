@@ -16,8 +16,6 @@ library(knitr)
 library(sdcMicro)
 library(agrisvyr)
 library(survey)
-library(haven)
-library(labelled)
 library(ggplot2)
 library(readxl)
 library(dplyr)
@@ -69,5 +67,5 @@ To comprehensively evaluate and quantify this information loss, various assessme
 
 The following sections contain the application of these information loss assessment on the anonymized datasets.
 
-# Other infoirmation loss assessment
+# Autres mesures de perte d'information
 

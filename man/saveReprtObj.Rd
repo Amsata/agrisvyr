@@ -15,7 +15,8 @@ saveReprtObj(
   individual = TRUE,
   suda = FALSE,
   hierarchical = FALSE,
-  childName = NULL
+  childName = NULL,
+  inputdata_path = NULL
 )
 }
 \arguments{

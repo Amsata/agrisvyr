@@ -113,7 +113,8 @@ saveReprtObj <- function(agrisvy,
                       individual  =TRUE,
                       suda        =FALSE,
                       hierarchical=FALSE,
-                      childName   =NULL) {
+                      childName   =NULL,
+                      inputdata_path=NULL) {
 
             obj <- new("sdcReportObj")
 
@@ -123,11 +124,22 @@ if (!is.null(unit)) obj@unit             <- unit
 if (!is.null(hierarchy)) obj@hierarchy   <- hierarchy
 if (!is.null(global)) obj@global         <- global
 if (!is.null(individual)) obj@individual <- individual
-if (!is.null(individual)) obj@individual <- individual
+if (!is.null(hierarchical)) obj@hierarchical <- hierarchical
 if (!is.null(suda)) obj@suda             <- suda
 
+#extract file information
 
+
+anodata_path=gsub(agrisvy@preprocDataDir,my_agrisvy@anoDataDir,gsub("_proc","_ano",inputdata_path))
+read_function=readDataFunc(agrisvy)
+
+df_name=tail(unlist(strsplit(inputdata_path,split = "/")),1)
 #Put the full path to avoir error with the workshop object when running quarto
+
+
+# Controling hierarchical input
+if(is.null(obj@intialObj@hhId)) obj@hierarchical <- FALSE
+
 
 #SDC report
 saveRDS(obj,file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
@@ -151,6 +163,8 @@ if(agrisvy@language=="en"){
 
 if(agrisvy@language=="fr"){
   template_rpt_child=system.file("txt_template","sdc_report_child_fr.txt",package = "agrisvyr")
+  template_rpt_child_infol=system.file("txt_template","info_loss_report_child_fr.txt",package = "agrisvyr")
+  #TODO: create the french version
 }
 
 #SDC-----------------
@@ -220,7 +234,7 @@ if (agrisvy@language=="en"){
 }
 
 if (agrisvy@language=="fr"){
-  ind=grep("# Autres mesures d'anonymisation",info_loss_rpt)
+  ind=grep("# Autres mesures de perte d'information",info_loss_rpt)
 }
 
 before_infol=info_loss_rpt[1:(ind-1)]

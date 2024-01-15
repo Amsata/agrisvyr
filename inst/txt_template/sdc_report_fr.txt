@@ -108,5 +108,5 @@ This skewedness coefficient varies from -1 tp +1. Values close to +1 indicated t
 
 
 
-# Other anonymization measures of households
+# Autres mesures d'anonymisation
 

@@ -614,13 +614,19 @@ generate_report_template <- function(agrisvy,type) {
   stopifnot(type %in% c("svy","wksp"))
 
   if(type=="svy") {
-    template_sdc=system.file("txt_template",
-                         "sdc_report.txt",
-                         package = "agrisvyr")
 
-    template_info_loss=system.file("txt_template",
-                             "infos_loss_report_en.txt",
-                             package = "agrisvyr")
+
+    if (agrisvy@language=="en"){
+      template_sdc=system.file("txt_template","sdc_report.txt",package = "agrisvyr")
+      template_info_loss=system.file("txt_template","infos_loss_report_en.txt",package = "agrisvyr")
+    }
+
+
+    if (agrisvy@language=="fr"){
+      template_sdc=system.file("txt_template","sdc_report_fr.txt",package = "agrisvyr")
+      template_info_loss=system.file("txt_template","infos_loss_report_fr.txt",package = "agrisvyr")
+    }
+
   }
 
   if(type=="wksp") {
@@ -831,7 +837,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
   source(file.path(anoScriptDir(agrisvy),"final.R"))
 
  #generate files description
-  genAllFileDes(agrisvy)
+  genAllFileDes(agrisvy,id_cols=50)
   #archive data
   # ArchiveAnoData(agrisvy)
   # ArchiveCleanData(agrisvy)

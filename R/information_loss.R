@@ -215,14 +215,14 @@ if (df==TRUE) {
 #' CHeck in the anonymized indicator is within the initial confidence interval
 #'
 #' @param design survey design specified with the function \code{"agrisvyr::surveyDesign"}
-#' @param var_index index of continous variables to consider, il not specify, takes all the continous variables
 #' @param indicator parameter to estimate take \code{"mean"}, \code{"total"} or \code{"median"}
+#' @param numvars
 #'
 #' @return
 #' @export
 #'
 #' @examples
-confint_check_num <- function(design,indicator="mean",var_index=NULL){
+confint_check_num <- function(design,indicator="mean",numvars=NULL){
 
 
   confint_check <- function(num_var,design,indicator){
@@ -269,15 +269,15 @@ confint_check_num <- function(design,indicator="mean",var_index=NULL){
 
   }
 
-  if(is.null(var_index)){
-    names_num_vars=names(design$obj_i@manipNumVars)
-  } else {
-    names_num_vars=names(design$obj_i@manipNumVars)[var_index]
+  # if(is.null(var_index)){
+  #   names_num_vars=names(design$obj_i@manipNumVars)
+  # } else {
+  #   names_num_vars=names(design$obj_i@manipNumVars)[var_index]
+  #
+  # }
 
-  }
 
-
-  df=lapply(names_num_vars, function(x){confint_check(x,design,indicator)})
+  df=lapply(numvars, function(x){confint_check(x,design,indicator)})
 
   df=do.call("rbind",df)
   row.names(df)=NULL
@@ -293,6 +293,84 @@ confint_check_num <- function(design,indicator="mean",var_index=NULL){
 
 
 
+# confint_check_num_by <- function(design,indicator="mean",numvars=NULL,by=NULL){
+#
+# byvar=as.formula(paste0("~",paste(LETTERS[1:3],collapse = "+")))
+# var=as.formula(paste0("~",num_var))
+#
+#   confint_check <- function(num_var,design,indicator){
+#
+#
+#     if(indicator=="mean") {
+#
+#       svyfunc_i=rlang::parse_expr("svyby(var,byvar,design$design_i),na=TRUE, svymean)")
+#       svyfunc_f=rlang::parse_expr("svyby(var,byvar,design$design_f),na=TRUE, svymean)")
+#
+#     }
+#
+#
+#     if(indicator=="total") {
+#       svyfunc_i=rlang::parse_expr("svyby(var,byvar,design$design_i),na=TRUE, svytotal)")
+#       svyfunc_f=rlang::parse_expr("svyby(var,byvar,design$design_f),na=TRUE, svytotal)")
+#     }
+#
+#     est_i=eval(svyfunc_i)[[length(by)+1]]
+#     lb_ci=round(confint(eval(svyfunc_i))[1],2)
+#     ub_ci=round(confint(eval(svyfunc_i))[2],2)
+#     est_f=eval(svyfunc_f)[[length(by)+1]]
+#
+#
+#     for (i in seq_along(by)){
+#
+#     }
+#
+#     var1_labels=gsub("\\.(.*)$","",row.names(as.data.frame(eval(svyfunc_i))))
+#     var2_labels=gsub("^(.*)\\.","",row.names(as.data.frame(eval(svyfunc_i))))
+#     var2_labels=gsub("/\.([^\.]+)\./","",row.names(as.data.frame(eval(svyfunc_i))))
+#
+#
+#     df=data.frame(
+#       variable=num_var,
+#       raw_value=round(est_i,2),
+#       conf_int=paste("[",lb_ci,",",ub_ci,"]"),
+#       ano_value=round(est_f,2),
+#       pct_change=paste0(round((est_f-est_i)/est_i*100,2),"%"),
+#       is_ano_in_cf= ifelse(est_f>=lb_ci & est_f<= ub_ci,"YES","NO")
+#     )
+#
+#     names(df)=c("quasi.identifier",
+#                 "orig.value",
+#                 "conf.int",
+#                 "ano.value",
+#                 "pct.change",
+#                 "is.ano.in.ci")
+#     return(df)
+#
+#   }
+#
+#   # if(is.null(var_index)){
+#   #   names_num_vars=names(design$obj_i@manipNumVars)
+#   # } else {
+#   #   names_num_vars=names(design$obj_i@manipNumVars)[var_index]
+#   #
+#   # }
+#
+#
+#   df=lapply(numvars, function(x){confint_check(x,design,indicator)})
+#
+#   df=do.call("rbind",df)
+#   row.names(df)=NULL
+#
+#
+#   df %>% kableExtra::kbl(align='cc',
+#                          caption=paste0(indicator," value of numerical quasi-identifier before and after anonymization")) %>%
+#     kableExtra::kable_paper(full_width = F) %>%
+#     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
+#     kableExtra::column_spec(6, color = ifelse(df$is.ano.in.ci=="YES", "green", "red"),bold = T) %>%
+#     kableExtra::kable_styling(latex_options = "HOLD_position")
+# }
+
+
 #' Compare one way ANOVA test before and after anonymization
 #'
 #' @param design survey design specified with the function \code{"agrisvyr::surveyDesign"}
@@ -305,7 +383,7 @@ confint_check_num <- function(design,indicator="mean",var_index=NULL){
 #' @examples
 anova_test_comp <- function(design,test="wilcoxon",alpha=0.05){
 
-  .anova_test_comp <- function(num_var,cat_var,design,test="wilcoxon",alpha=0.05){
+  .anova_test_comp <- function(num_var,cat_var,design,test="wilcoxon",alpha=alpha){
 
     stopifnot(test %in% c("wilcoxon", "vanderWaerden", "median","KruskalWallis"))
 
@@ -372,28 +450,46 @@ compare_ind_cat_mean <- function(variable,design){
   val_labels=gsub(paste0("factor","\\(",variable,"\\)"),"",row.names(res_i))
 
   ci=as.data.frame(confint(svymean(var,design$design_i,na.rm=TRUE)))
+  ci_f=as.data.frame(confint(svymean(var,design$design_f,na.rm=TRUE)))
+
+  names(ci)=c("il","iu")
+  names(ci_f)=c("fl","fu")
+
+  ci_df=ci %>% bind_cols(ci_f) %>%
+    dplyr::mutate(cond=(fl>iu) | (il>fu)) %>%
+    dplyr::mutate( inter_l=ifelse(cond==TRUE,NULL,ifelse(il>fl,il,fl)),
+                   inter_u=ifelse(cond==TRUE,NULL,ifelse(iu<fu,iu,fu))) %>%
+    dplyr::mutate(UC=ifelse(cond==TRUE,0,((inter_u-inter_l)/(iu-fl)+(inter_u-inter_l)/(fu-fl))/2*100))
+
   cv=as.data.frame(cv(svymean(var,design$design_i,na.rm=TRUE)))
   names(cv)="cv"
+des=design$design_i
+des$prob=rep(1,times=nrow(des$cluster))
+sample_freq=as.vector(svytable(var, des))
 
   df=data.frame(
     cbind(
+      sample_n=sample_freq,
       ori_value=round(res_i$mean,3)*100,
-      conf_int=paste("[",round(ci$`2.5 %`,3)*100,",",round(ci$`97.5 %`,3)*100,"]"),
+      CV_in_pct=round(cv$cv*100,2),
+      conf_int=paste("[",round(ci$il,3)*100,",",round(ci$iu,3)*100,"]"),
       ano_value=round(res_f$mean,3)*100,
       pct_pt_change=round((res_f$mean-res_i$mean)*100,2),
-      is_ano_in_cf= ifelse(res_f$mean>=ci$`2.5 %` & res_f$mean<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+      is_ano_in_cf= ifelse(res_f$mean>=ci$il & res_f$mean<= ci$iu,"Ano. in inside conf. Int.",
+                           "Ano. val. outside conf. int."),
+      CI_coverage=paste0(ci_df$UC,"%")
     )
-  ) %>% dplyr::mutate(!!sym(variable):=val_labels,.before="ori_value")
+  ) %>% dplyr::mutate(!!sym(variable):=val_labels,.before="sample_n") %>%
+    dplyr::arrange(desc(abs(as.numeric(pct_pt_change))))
 
   row.names(df)=NULL
 
 
   df %>% kableExtra::kbl(align='cc',
                          caption=paste0("COMPARISON OF PROPORTION: ",variable)) %>%
-    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(6, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
-    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
+    kableExtra::column_spec(8, color = ifelse(df$is_ano_in_cf=="Ano. in inside conf. Int.", "green", "red"),bold = T) %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 
 }
@@ -420,28 +516,49 @@ compare_ind_cat_tot <- function(variable,design){
   val_labels=gsub(paste0("factor","\\(",variable,"\\)"),"",row.names(res_i))
 
   ci=as.data.frame(confint(svytotal(var,design$design_i,na.rm=TRUE)))
+  ci_f=as.data.frame(confint(svymean(var,design$design_f,na.rm=TRUE)))
+
+  names(ci)=c("il","iu")
+  names(ci_f)=c("fl","fu")
+
+  ci_df=ci %>% bind_cols(ci_f) %>%
+    dplyr::mutate(cond=(fl>iu) | (il>fu)) %>%
+    dplyr::mutate( inter_l=ifelse(cond==TRUE,NULL,ifelse(il>fl,il,fl)),
+                   inter_u=ifelse(cond==TRUE,NULL,ifelse(iu<fu,iu,fu))) %>%
+    dplyr::mutate(UC=ifelse(cond==TRUE,0,((inter_u-inter_l)/(iu-fl)+(inter_u-inter_l)/(fu-fl))/2*100))
+
   cv=as.data.frame(cv(svytotal(var,design$design_i,na.rm=TRUE)))
   names(cv)="cv"
 
+  des=design$design_i
+  des$prob=rep(1,times=nrow(des$cluster))
+  sample_freq=as.vector(svytable(var, des))
+
   df=data.frame(
     cbind(
+      sample_n=sample_freq,
       ori_value=round(res_i$total),
-      conf_int=paste("[",round(ci$`2.5 %`),",",round(ci$`97.5 %`),"]"),
+      CV_in_pct=round(cv$cv*100,2),
+      conf_int=paste("[",round(ci$il),",",round(ci$iu),"]"),
       ano_value=round(res_f$total),
-      pct_pt_change=round((res_f$total-res_i$total)/res_i$total*100,2),
-      is_ano_in_cf= ifelse(res_f$total>=ci$`2.5 %` & res_f$total<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+      pct_change=round((res_f$total-res_i$total)/res_i$total*100,2),
+      is_ano_in_cf= ifelse(res_f$total>=ci$il & res_f$total<= ci$iu,
+                           "Ano. in inside conf. Int.",
+                           "Ano. val. outside conf. int."),
+      CI_coverage=paste0(ci_df$UC,"%")
     )
-  ) %>% dplyr::mutate(!!sym(variable):=val_labels,.before="ori_value")
+  ) %>% dplyr::mutate(!!sym(variable):=val_labels,.before="sample_n") %>%
+    dplyr::arrange(desc(abs(as.numeric(pct_change))))
 
   row.names(df)=NULL
 
 
   df %>% kableExtra::kbl(align='cc',
                          caption=paste0("COMPARISON OF TOTAL: ",variable)) %>%
-    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
-    kableExtra::column_spec(6, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
+    kableExtra::column_spec(8, color = ifelse(df$is_ano_in_cf=="Ano. in inside conf. Int.", "green", "red"),
+                            bold = T) %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 
 }
@@ -472,29 +589,50 @@ compare_ind_cats <- function(variable1,variable2,design){
   var1_labels=gsub("\\.(.*)$","",val_labels)
   var2_labels=gsub("^(.*)\\.","",val_labels)
   ci=as.data.frame(confint(svymean(var,design$design_i,na.rm = TRUE)))
+  ci_f=as.data.frame(confint(svymean(var,design$design_f,na.rm=TRUE)))
+
+  names(ci)=c("il","iu")
+  names(ci_f)=c("fl","fu")
+
+  ci_df=ci %>% bind_cols(ci_f) %>%
+    dplyr::mutate(cond=(fl>iu) | (il>fu)) %>%
+    dplyr::mutate( inter_l=ifelse(cond==TRUE,NULL,ifelse(il>fl,il,fl)),
+                   inter_u=ifelse(cond==TRUE,NULL,ifelse(iu<fu,iu,fu))) %>%
+    dplyr::mutate(UC=ifelse(cond==TRUE,0,((inter_u-inter_l)/(iu-fl)+(inter_u-inter_l)/(fu-fl))/2*100))
   cv=as.data.frame(cv(svymean(var,design$design_i,na.rm=TRUE)))
   names(cv)="cv"
 
+  des=design$design_i
+  des$prob=rep(1,times=nrow(des$cluster))
+  sample_freq=as.vector(svytable(var, des))
+
+
   df=data.frame(
     cbind(
+      sample_n=sample_freq,
       ori_value=round(res_i$mean,3)*100,
-      conf_int=paste("[",round(ci$`2.5 %`,3)*100,",",round(ci$`97.5 %`,3)*100,"]"),
+      CV_in_pct=round(cv$cv*100,2),
+      conf_int=paste("[",round(ci$il,3)*100,",",round(ci$iu,3)*100,"]"),
       ano_value=round(res_f$mean,3)*100,
       pct_pt_change=round((res_f$mean-res_i$mean)*100,2),
-      is_ano_in_cf= ifelse(res_f$mean>=ci$`2.5 %` & res_f$mean<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+      is_ano_in_cf= ifelse(res_f$mean>=ci$il & res_f$mean<= ci$iu,"Ano. in inside conf. Int.",
+                           "Ano. val. outside conf. int."),
+      CI_coverage=paste0(ci_df$UC,"%")
+
     )
-  ) %>% dplyr::mutate(!!sym(variable1):=var1_labels,.before="ori_value")%>%
-    dplyr::mutate(!!sym(variable2):=var2_labels,.before="ori_value")
+  ) %>% dplyr::mutate(!!sym(variable1):=var1_labels,.before="sample_n")%>%
+    dplyr::mutate(!!sym(variable2):=var2_labels,.before="sample_n") %>%
+    dplyr::arrange(desc(abs(as.numeric(pct_pt_change))))
 
   row.names(df)=NULL
 
 
   df %>% kableExtra::kbl(align='cc',
                          caption=paste0("COMPARISON OF INTERACTION: ",variable1, " and ",variable2)) %>%
-    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
-    kableExtra::column_spec(7, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
+    kableExtra::column_spec(9, color = ifelse(df$is_ano_in_cf=="Ano. in inside conf. Int.", "green", "red"),
+                            bold = T) %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 }
 
@@ -522,27 +660,51 @@ compare_ind_cats_tot <- function(variable1,variable2,design){
   var1_labels=gsub("\\.(.*)$","",val_labels)
   var2_labels=gsub("^(.*)\\.","",val_labels)
   ci=as.data.frame(confint(svytotal(var,design$design_i,na.rm = TRUE)))
+
+  ci_f=as.data.frame(confint(svymean(var,design$design_f,na.rm=TRUE)))
+
+  names(ci)=c("il","iu")
+  names(ci_f)=c("fl","fu")
+
+  ci_df=ci %>% bind_cols(ci_f) %>%
+    dplyr::mutate(cond=(fl>iu) | (il>fu)) %>%
+    dplyr::mutate( inter_l=ifelse(cond==TRUE,NULL,ifelse(il>fl,il,fl)),
+                   inter_u=ifelse(cond==TRUE,NULL,ifelse(iu<fu,iu,fu))) %>%
+    dplyr::mutate(UC=ifelse(cond==TRUE,0,((inter_u-inter_l)/(iu-fl)+(inter_u-inter_l)/(fu-fl))/2*100))
+
   cv=as.data.frame(cv(svytotal(var,design$design_i,na.rm=TRUE)))
   names(cv)="cv"
+
+  des=design$design_i
+  des$prob=rep(1,times=nrow(des$cluster))
+  sample_freq=as.vector(svytable(var, des))
+
+
   df=data.frame(
     cbind(
+      sample_n=sample_freq,
       ori_value=round(res_i$total),
-      conf_int=paste("[",round(ci$`2.5 %`),",",round(ci$`97.5 %`),"]"),
+      CV_in_pct=round(cv$cv*100,2),
+      conf_int=paste("[",round(ci$il),",",round(ci$iu),"]"),
       ano_value=round(res_f$total),
-      pct_pt_change=round((res_f$total-res_i$total)/res_i$total*100),
-      is_ano_in_cf= ifelse(res_f$total>=ci$`2.5 %` & res_f$total<= ci$`97.5 %`,"Anonymized value inside conf. Int.","Anonymized value outside conf. Int.")
+      pct_change=round((res_f$total-res_i$total)/res_i$total*100),
+      is_ano_in_cf= ifelse(res_f$total>=ci$il & res_f$total<= ci$iu,"Ano. in inside conf. Int.",
+                           "Ano. val. outside conf. int."),
+      CI_coverage=paste0(ci_df$UC,"%")
+
     )
-  ) %>% dplyr::mutate(!!sym(variable1):=var1_labels,.before="ori_value")%>%
-    dplyr::mutate(!!sym(variable2):=var2_labels,.before="ori_value")
+  ) %>% dplyr::mutate(!!sym(variable1):=var1_labels,.before="sample_n")%>%
+    dplyr::mutate(!!sym(variable2):=var2_labels,.before="sample_n")%>%
+    dplyr::arrange(desc(abs(as.numeric(pct_change))))
 
   row.names(df)=NULL
 
 
   df %>% kableExtra::kbl(align='cc',
                          caption=paste0("COMPARISON OF INTERACTION: ",variable1, " and ",variable2)) %>%
-    kableExtra::kable_paper(full_width = F) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(3, color = ifelse(cv$cv > 0.33, "red", "black")) %>%
-    kableExtra::column_spec(7, color = ifelse(df$is_ano_in_cf=="Anonymized value inside conf. Int.", "green", "red"),bold = T) %>%
+    kableExtra::column_spec(9, color = ifelse(df$is_ano_in_cf=="Ano. in inside conf. Int.",
+                                              "green", "red"),bold = T) %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 }

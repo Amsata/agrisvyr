@@ -4,14 +4,14 @@
 \alias{confint_check_num}
 \title{CHeck in the anonymized indicator is within the initial confidence interval}
 \usage{
-confint_check_num(design, indicator = "mean", var_index = NULL)
+confint_check_num(design, indicator = "mean", numvars = NULL)
 }
 \arguments{
 \item{design}{survey design specified with the function \code{"agrisvyr::surveyDesign"}}
 
 \item{indicator}{parameter to estimate take \code{"mean"}, \code{"total"} or \code{"median"}}
 
-\item{var_index}{index of continous variables to consider, il not specify, takes all the continous variables}
+\item{numvars}{}
 }
 \description{
 CHeck in the anonymized indicator is within the initial confidence interval
