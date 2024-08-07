@@ -130,7 +130,7 @@ if (!is.null(suda)) obj@suda             <- suda
 #extract file information
 
 
-anodata_path=gsub(agrisvy@preprocDataDir,my_agrisvy@anoDataDir,gsub("_proc","_ano",inputdata_path))
+anodata_path=gsub(agrisvy@preprocDataDir,agrisvy@anoDataDir,gsub("_proc","_ano",inputdata_path))
 read_function=readDataFunc(agrisvy)
 
 df_name=tail(unlist(strsplit(inputdata_path,split = "/")),1)
