@@ -572,7 +572,7 @@ compare_ind_cat_tot <- function(variable,design){
       ano_value=round(res_f$total),
       pct_change=round((res_f$total-res_i$total)/res_i$total*100,2),
       is_ano_in_cf= ifelse(res_f$total>=ci$il & res_f$total<= ci$iu,
-                           "Ano. in inside conf. Int.",
+                           "Ano. val. inside conf. Int.",
                            "Ano. val. outside conf. int."),
       CI_coverage=paste0(round(ci_df$UC),"%")
     )
@@ -644,7 +644,7 @@ compare_ind_cats <- function(variable1,variable2,design){
       conf_int=paste("[",round(ci$il,3)*100,",",round(ci$iu,3)*100,"]"),
       ano_value=round(res_f$mean,3)*100,
       pct_pt_change=round((res_f$mean-res_i$mean)*100,2),
-      is_ano_in_cf= ifelse(res_f$mean>=ci$il & res_f$mean<= ci$iu,"Ano. in inside conf. Int.",
+      is_ano_in_cf= ifelse(res_f$mean>=ci$il & res_f$mean<= ci$iu,"Ano. val. inside conf. Int.",
                            "Ano. val. outside conf. int."),
       CI_coverage=paste0(round(ci_df$UC),"%")
 
