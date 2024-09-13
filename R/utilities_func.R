@@ -106,7 +106,7 @@ label_val_gen=function(labels,levels) {
 #' @examples
 readDataFunc <- function(agrisvy){
   if (agrisvy@type==".dta"){res="read_dta"}
-  if (agrisvy@type==".SAV"){res="read_sav"}
+  if (agrisvy@type %in% c(".SAV",".sav")){res="read_sav"}
 return(res)
 }
 
@@ -122,6 +122,6 @@ return(res)
 #' @examples
 writeDataFunc <- function(agrisvy){
   if (agrisvy@type==".dta"){res="write_dta"}
-  if (agrisvy@type==".SAV"){res="write_sav"}
+  if (agrisvy@type %in% c(".SAV",".sav")){res="write_sav"}
   return(res)
 }

@@ -143,7 +143,7 @@ setMethod("show",signature="agrisvy",function(object){
 #'  \code{"fr"} for French and \code{"es"} for Spanish. The default value is \code{"en"}.
 #' @param workingDir path to the working directory (where the anonymization working folder will be generated).
 #' It is recommended for this folder to be empty.
-#' @param type Format of the microdata. The possible values are \code{".dta"} for STATA, \code{".sav"} for SPSS
+#' @param type Format of the microdata. The possible values are \code{".dta"} for STATA, \code{".sav"} or \code{".sav"} for SPSS
 #' @param dataDir path to the folder where the data to be anonymized are located
 #'
 #' @return an \code{agrisvy} object
@@ -183,8 +183,8 @@ setMethod("show",signature="agrisvy",function(object){
       stop("the option language should be \nen (for english),\nfr (for french) or \nes (for spanish)")
     }
 
-    if(!(type %in% c(".dta",".SAV"))){
-      stop("the option type should be \n.dta (for stata), or \n.SAV (for SPSS)")
+    if(!(type %in% c(".dta",".SAV",".sav"))){
+      stop("the option type should be \n.dta (for stata), or \n.SAV or .sav (for SPSS)")
     }
 
     if (nchar(svyName) > 51) {
@@ -445,7 +445,7 @@ genDataList <- function(path,type){
   data_list=lapply(unique_wb, function(x){
     df=data_summary %>% dplyr::filter(workbook==x)
     if(type==".dta") res=lapply(df$path,read_dta)
-    if(type==".SAV") res=lapply(df$path,read_sav)
+    if(type %in% c(".SAV",".sav")) res=lapply(df$path,read_sav)
     names(res)=df$file_name
     return(res)
   })

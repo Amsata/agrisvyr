@@ -27,7 +27,7 @@ It is recommended for this folder to be empty.}
 
 \item{dataDir}{path to the folder where the data to be anonymized are located}
 
-\item{type}{Format of the microdata. The possible values are \code{".dta"} for STATA, \code{".sav"} for SPSS}
+\item{type}{Format of the microdata. The possible values are \code{".dta"} for STATA, \code{".sav"} or \code{".sav"} for SPSS}
 }
 \value{
 an \code{agrisvy} object

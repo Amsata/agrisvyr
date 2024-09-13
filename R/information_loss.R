@@ -26,7 +26,7 @@ display_miss=function(obj_i,obj_f,var,df){
   }
 
   levels_before=level=unique(raw_df[[var]])
-  levels_after=level=unique(ano_df[[var]])
+  levels_after=level=unique(ano_df[[var]])[!is.na(unique(ano_df[[var]]))]
 
   res=sum(!(sapply(as.character(levels_after)[!is.na(as.character(levels_after))], function(x){ x %in% as.character(levels_before)})))
 
@@ -38,11 +38,11 @@ display_miss=function(obj_i,obj_f,var,df){
                                        missing_pct=round(sum(missing,na.rm = TRUE)/n()*100,2))
 
   names(df)[1]=var
-
+  label=attributes(raw_df[[var]])$label
   if(res==0) {
 
     df%>%
-      kableExtra::kbl(align='rc',caption=paste0("Information loss: missing value count of value of the variable ", var),booktabs = T) %>%
+      kableExtra::kbl(align='rc',caption=paste0("Information loss: missing value count of value of the variable ", var,": ",label),booktabs = T) %>%
       kableExtra::kable_classic_2(full_width = F) %>%
       kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
       kableExtra::column_spec(2, width = "10em") %>%
@@ -162,23 +162,25 @@ miss_values_sum <- function(obj_i,obj_f,df,vars){
   non_missing_i=sapply(names_key_vars,function(x){sum(!is.na(df_i[,x]))})
 
   missing_ano_pct=round(missing_ano/non_missing_i*100,2)
-
+labels=as.character(sapply(names_key_vars, function(x){attributes(df_i[[x]])$label}))
 
   df=data.frame(cbind(variable=names_key_vars,
+                      label=labels,
                       missing_ano=missing_ano,
                       missing_ano_pct=missing_ano_pct
   )
   )
 
-  names(df)=c("Categorical Quasi-identifiers","# local supression","% local suppression")
+  names(df)=c("Categorical Quasi-identifiers","Variable label","# local supression","% local suppression")
   rownames(df)=NULL
 
   df %>%
-    kableExtra::kbl(align='rc',caption="Information loss: missing value count (variable level)",booktabs = T) %>%
+    kableExtra::kbl(align='rlcc',caption="Information loss: missing value count (variable level)",booktabs = T) %>%
     kableExtra::kable_classic_2(full_width = F) %>%
     kableExtra::column_spec(1, width = "12em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(2, width = "10em") %>%
-    kableExtra::column_spec(3, width = "10em") %>%
+    kableExtra::column_spec(2, width = "25em") %>%
+    kableExtra::column_spec(3, width = "5em") %>%
+    kableExtra::column_spec(4, width = "5em") %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 }
 
@@ -513,9 +515,9 @@ sample_freq=as.vector(svytable(var, des))
     dplyr::arrange(desc(abs(as.numeric(pct_pt_change))))
 
   row.names(df)=NULL
-
+  label=attributes(design$design_i$variables[[variable]])$label
   df %>% kableExtra::kbl(align='cc',
-                         caption=paste0("COMPARISON OF PROPORTION: ",variable)) %>%
+                         caption=paste0("COMPARISON OF PROPORTION: ",variable,": ",label)) %>%
     kableExtra::kable_classic_2(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
     kableExtra::column_spec(8, color = ifelse(df$is_ano_in_cf %in% "Ano. Val. inside conf. Int.", "green", "red"),bold = T) %>%
@@ -581,9 +583,10 @@ compare_ind_cat_tot <- function(variable,design){
 
   row.names(df)=NULL
 
+  label=attributes(design$design_i$variables[[variable]])$label
 
   df %>% kableExtra::kbl(align='cc',
-                         caption=paste0("COMPARISON OF TOTAL: ",variable)) %>%
+                         caption=paste0("COMPARISON OF TOTAL: ",variable,": ",label)) %>%
     kableExtra::kable_classic_2(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
     kableExtra::column_spec(8, color = ifelse(df$is_ano_in_cf=="Ano. val. inside conf. Int.", "green", "red"),

@@ -58,7 +58,7 @@ labels <- function(fileName,type) {
     curData <- haven::read_dta(fileName, encoding = "latin1")
     }
 
-  if(type %in% ".SAV"){
+  if(type %in% c(".SAV",".sav")){
     curData <- haven::read_sav(fileName, encoding = "latin1")
     }
   curLabels <- data.frame(
@@ -475,7 +475,7 @@ if(type=="ano"){
   dirs=list.dirs(DataPath(agrisvy), full.names = FALSE)
 
   if(!("" %in% dirs & length(dirs)>1)) {
-    varclass=file.path(varClassDir(agrisvy),paste0(data_flder,"_VarClas.xlsx"))
+    varclass=file.path(varClassDir(agrisvy),gsub(" ","_",paste0(data_flder,"_VarClas.xlsx")))
   }
 
   file_attributes <- list(
