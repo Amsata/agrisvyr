@@ -214,7 +214,7 @@ label_binary_pattern=function(data,pattern,bin="01",lang) {
   for (v in vars) {
     vv=sym(v)
     data=data %>% label_binary({{vv}},bin=bin, lang=lang)
-
+#
   }
 
   return(data)
