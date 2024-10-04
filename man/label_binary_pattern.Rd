@@ -13,7 +13,7 @@ label_binary_pattern(data, pattern, bin = "01", lang)
 
 \item{bin}{takes \code{"01"} or \code{"12"}}
 
-\item{lang}{takes \code{"en"} for english or \code{"fr'} for french}
+\item{lang}{takes \code{"en"} for english or \code{"fr"} for french}
 }
 \description{
 Label binary variable based on pattern in variable names
