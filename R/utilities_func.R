@@ -125,3 +125,98 @@ writeDataFunc <- function(agrisvy){
   if (agrisvy@type %in% c(".SAV",".sav")){res="write_sav"}
   return(res)
 }
+
+
+
+
+
+#' Lebeling binary variable
+#'
+#' @param data dataset
+#' @param var binary variable to be labeled
+#' @param lang takes \code{"en"} for English or \code{"fr"} for french
+#' @param bin takes \code{"01"} or \code{"12"}
+#'
+#' @importFrom dplyr pull
+#' @importFrom dplyr mutate
+#' @importFrom labelled is.labelled
+#' @importFrom labelled set_value_labels
+#'
+#'
+#' @return
+#' @export
+#'
+#' @examples
+label_binary=function(data,var,bin="01",lang="en") {
+  if(is.factor(data %>% dplyr::pull({{var}}))==TRUE) {
+    data=data %>% dplyr::mutate({{var}}:=as.numeric({{var}}))
+  }
+
+  if(data %>% pull({{var}}) %>% is.labelled(.)==FALSE) {
+
+    if (bin=="01"){
+      data=data %>% set_value_labels(
+        {{var}}:=c("Yes"=1,"No"=0)
+      )
+    }
+
+    if (bin=="12"){
+      data=data %>% set_value_labels(
+        {{var}}:=c("Yes"=1,"No"=2)
+      )
+    }
+
+
+  }
+  return(data)
+}
+
+
+#' Label a set of binary labels
+#'
+#' @param data dataframe
+#' @param vars list of binary labels to be labeled
+#' @param bin  takes \code{"01"} or \code{"12"}
+#' @param lang takes \code{"en"} or \code{"fr"}
+#'
+#' @return
+#' @export
+#'
+#' @examples
+label_binary_at=function(data,vars,bin="01", lang) {
+
+  for (v in vars) {
+
+    vv=sym(v)
+    data=data %>% label_binary({{vv}}, bin=bin, lang=lang)
+
+  }
+
+  return(data)
+}
+
+
+#' Label binary variable based on pattern in variable names
+#'
+#' @param data dataframe
+#' @param pattern common pattern of binary variables
+#' @param bin takes \code{"01"} or \code{"12"}
+#' @param lang takes \code{"en"} for english or \code{"fr'} for french
+#'
+#' @return
+#' @export
+#'
+#' @examples
+label_binary_pattern=function(data,pattern,bin="01",lang) {
+
+  vars=grep(pattern,names(data),value = TRUE)
+
+  for (v in vars) {
+    vv=sym(v)
+    data=data %>% label_binary({{vv}},bin=bin, lang=lang)
+
+  }
+
+  return(data)
+
+}
