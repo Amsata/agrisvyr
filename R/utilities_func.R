@@ -201,7 +201,7 @@ label_binary_at=function(data,vars,bin="01", lang) {
 #' @param data dataframe
 #' @param pattern common pattern of binary variables
 #' @param bin takes \code{"01"} or \code{"12"}
-#' @param lang takes \code{"en"} for english or \code{"fr'} for french
+#' @param lang takes \code{"en"} for english or \code{"fr"} for french
 #'
 #' @return
 #' @export
