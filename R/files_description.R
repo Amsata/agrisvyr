@@ -55,7 +55,7 @@ genFileDes <- function(file, name, id_cols, wb,type) {
 
   counter <- 2
   if(type %in% ".dta")   data <- haven::read_dta(file)
-  if(type %in% ".SAV")   data <- haven::read_sav(file)
+  if(type %in% c(".SAV",".sav"))   data <- haven::read_sav(file)
 
   label <- sapply(data, function(x) attr(x, "label")) %>% as.character()
   variable_names <- names(data)
