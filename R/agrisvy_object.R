@@ -94,13 +94,17 @@ methods::setClass(
       stop("message")
     }
 
-
-
     if (length(list.files(object@dataDir,pattern = object@type)==0)) {
       stop("The data folder does not contain data file of the specified format!")
     }
 
+    if (nchar(object@dataDir)>260) {
+      stop("The path of the data folder is too long!")
+    }
 
+    if (nchar(object@workingDir)>260) {
+      stop("The path of the working directory folder is too long!")
+    }
   }
 )
 

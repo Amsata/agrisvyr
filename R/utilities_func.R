@@ -220,3 +220,133 @@ label_binary_pattern=function(data,pattern,bin="01",lang) {
   return(data)
 
 }
+
+#' Label binary variable based on pattern in variable names
+#'
+#' @param agrisvy dataframe
+
+#' @return
+#'
+#' @examples
+
+check_path_limit=function(agrisvy) {
+
+  .throw_message=function(x){
+    long_path_data=full_data_path[which(nchar(x)>260)]
+    #check limit path length for input data
+    if(length(long_path_data)!=0) {
+      message("The below file path are too long!")
+      for(i in seq_along(long_path_data)) {
+        cli::cli_alert_danger(paste(crayon::red("PATH:"),crayon::silver(crayon::italic(long_path_data[i]))))
+      }
+      stop()
+    }
+  }
+
+
+  data_flder=unlist(strsplit(agrisvy@dataDir, "/"))
+
+  datafd_n=nchar(agrisvy@dataDir)
+  wdfld_n=nchar(agrisvy@workingDir)
+
+  if(datafd_n>260) stop("The path of the data folder is too long")
+
+  if(wdfld_n>260) stop("The path of the working directory folder is too long")
+
+  data_flder=data_flder[length(data_flder)]
+
+  data_files   <- list.files(file.path(agrisvy@dataDir),
+                             pattern = glue::glue("{agrisvy@type}$"),
+                             recursive = TRUE)
+
+  full_data_path=file.path(file.path(agrisvy@dataDir),data_files)
+
+  #check limit path lenth for preprocessed data
+  file_path_proc_df=file.path(file.path(agrisvy@workingDir),agrisvy@preprocDataDir,
+                              glue::glue("{gsub(agrisvy@type,\"\",{data_files})}_proc{agrisvy@type}"))
+
+  #Check limit path length for anonymized data
+  file_path_ano_df=file.path(file.path(agrisvy@workingDir),agrisvy@anoDataDir,
+                             glue::glue("{gsub(agrisvy@type,\"\",{data_files})}_ano{agrisvy@type}"))
+
+  #check limit path length for temporary anonymized data
+  file_path_tmp_df=file.path(file.path(agrisvy@workingDir),agrisvy@tempfileDir,"temp_ano",
+                             glue::glue("{gsub(agrisvy@type,\"\",{data_files})}_tmp{agrisvy@type}"))
+
+  #check limit path length for preprocesed scripts
+  file_path_proc_r=file.path(file.path(agrisvy@workingDir),agrisvy@preProcScriptDir,
+                             glue::glue("{gsub(agrisvy@type,\"\",{data_files})}_proc.R"))
+
+  #check limit path length for anonymization scripts
+  file_path_ano_r=file.path(file.path(agrisvy@workingDir),agrisvy@anoScriptDir,
+                            glue::glue("{gsub(agrisvy@type,\"\",{data_files})}_ano.R"))
+
+
+  file_path=c(full_data_path,file_path_proc_df,file_path_ano_df,file_path_tmp_df,
+              file_path_proc_r,file_path_ano_r)
+  .throw_message(file_path)
+
+
+  # check limit path length for varclass
+  df_name=gsub(agrisvy@type,"",data_files)
+  df_name_nchar_31=df_name[which(nchar(df_name)>31)]
+  if(length(df_name_nchar_31)!=0) {
+    message("The below dataset name are too long to be used as Excel sheet name in the variable classification file!")
+    for(i in seq_along(df_name_nchar_31)) {
+      cli::cli_alert_danger(paste(crayon::red("Dataset name:"),crayon::silver(crayon::italic(df_name_nchar_31[i]))))
+    }
+    stop("Please shorten the name(s) of the dataset(s) above to less or equal than 26 characters")
+  }
+
+# sheet names for file description
+  df_name=paste0(gsub(agrisvy@type,"",data_files),"_ano")
+  df_name_nchar_31=df_name[which(nchar(df_name)>31)]
+  if(length(df_name_nchar_31)!=0) {
+    message("The below dataset name are too long to be used as Excel sheet name in the dataset description file!")
+    for(i in seq_along(df_name_nchar_31)) {
+      cli::cli_alert_danger(paste(crayon::red("Dataset name:"),crayon::silver(crayon::italic(df_name_nchar_31[i]))))
+    }
+    stop("Please shorten the name(s) of the original dataset(s) above to less or equal than 26 characters")
+  }
+
+
+
+  x            <- lapply(strsplit(data_files, "/"), function(z) as.data.frame(t(z)))
+  x1           <- rbind.fill(x)
+  wb           <- lapply(x, function(z) {
+    res=paste(z[1:length(z) - 1], sep = "", collapse = "_")
+    if(res=="") res=data_flder
+    res=gsub(" ","_",res)
+
+    return(res)
+  })
+
+  unique_wb    <- unique(unlist(wb))
+  file_name = unlist(lapply(x, function(z) {
+    paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_")
+  }))
+
+  varclass=file.path(agrisvy@workingDir,agrisvy@varClassDir,gsub(" ","_",paste0(data_flder,"_VarClas.xlsx")))
+  long_varclass_path=varclass[which(nchar(varclass)>260)]
+  if(length(long_varclass_path)!=0) {
+    message("The path to the variable classication workbook below will be too long!")
+    for(i in seq_along(df_name_nchar_31)) {
+      cli::cli_alert_danger(paste(crayon::red("workbook:"),crayon::silver(crayon::italic(long_varclass_path[i]))))
+    }
+    stop()
+  }
+
+  #check limit path length for file description
+  filedes=file.path(agrisvy@workingDir,agrisvy@fileDesDir,gsub(" ","_",paste0(data_flder,".xlsx")))
+  long_filedes_path=filedes[which(nchar(filedes)>260)]
+
+  if(length(long_varclass_path)!=0) {
+    message("The path to the file sdescription workbook below will be too long!")
+    for(i in seq_along(long_varclass_path)) {
+      cli::cli_alert_danger(paste(crayon::red("workbook:"),crayon::silver(crayon::italic(long_varclass_path[i]))))
+    }
+    stop()
+  }
+
+
+}

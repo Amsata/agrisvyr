@@ -11,6 +11,9 @@ labels(fileName, type)
 
 \item{type}{data type}
 }
+\value{
+dataframe
+}
 \description{
 Extract label of all variable of a dataset
 }

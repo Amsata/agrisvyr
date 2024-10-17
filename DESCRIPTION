@@ -37,7 +37,7 @@ Imports:
     usethis,
     wakefield
 Remotes: github::sdcTools/sdcMicro
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr

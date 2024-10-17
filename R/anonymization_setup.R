@@ -18,7 +18,6 @@ create_folder <- function(directory, overwrite = FALSE) {
 #' @importFrom purrr walk
 #' @importFrom usethis create_project
 
-
 create_ano_folders <- function(agrisvy, overwrite = FALSE) {
   # rstudioapi::getActiveProject()
   agrisMsg("INITIAL SETUP","creating folders")
@@ -47,7 +46,7 @@ create_ano_folders <- function(agrisvy, overwrite = FALSE) {
 #' @param fileName dataset name
 #' @param type data type
 #'
-#' @return
+#' @return dataframe
 #' @importFrom haven read_dta
 #' @importFrom haven read_sav
 #' @export
@@ -707,16 +706,28 @@ generate_report_template <- function(agrisvy,type) {
 #'
 #' }
 setup_anonymization <- function(agrisvy, overwrite) {
+
+  #verifify the limit of path lengh that exist and for files that will be
+  check_path_limit(agrisvy)
+
   obj_name=deparse(substitute(agrisvy))
 
   setwd(agrisvy@workingDir)
   old_wd=agrisvy@workingDir
- if(dir.exists("data")){
-   unlink("data",recursive = TRUE)
- }
-  dir.create("data")
-  R.utils::copyDirectory(DataPath(agrisvy), "data")
+  if (isTRUE(dir.exists("SDC_project")) & isFALSE(overwrite)) {
+    message(glue::glue("SDC_project already exists!"))
+  } else {
+    unlink("SDC_project", recursive = TRUE)
+  }
 
+  if (isTRUE(dir.exists("data")) & isFALSE(overwrite)) {
+    message(glue::glue("the folder data already exists!"))
+  } else {
+    unlink("data", recursive = TRUE)
+    dir.create("data")
+  }
+  R.utils::copyDirectory(DataPath(agrisvy), "data")
+  options(usethis.allow_nested_project = TRUE)
   create_project(path = "SDC_project", open = TRUE, rstudio = TRUE)
   agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC_project")
   setwd(agrisvy@workingDir)
