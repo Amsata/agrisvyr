@@ -714,22 +714,16 @@ setup_anonymization <- function(agrisvy, overwrite) {
 
   setwd(agrisvy@workingDir)
   old_wd=agrisvy@workingDir
-  if (isTRUE(dir.exists("SDC_project")) & isFALSE(overwrite)) {
-    message(glue::glue("SDC_project already exists!"))
+  if (isTRUE(dir.exists("SDC")) & isFALSE(overwrite)) {
+    message(glue::glue("SDC already exists!"))
   } else {
-    unlink("SDC_project", recursive = TRUE)
+    unlink("SDC", recursive = TRUE)
   }
 
-  if (isTRUE(dir.exists("data")) & isFALSE(overwrite)) {
-    message(glue::glue("the folder data already exists!"))
-  } else {
-    unlink("data", recursive = TRUE)
-    dir.create("data")
-  }
-  R.utils::copyDirectory(DataPath(agrisvy), "data")
+  #R.utils::copyDirectory(DataPath(agrisvy), "data")
   options(usethis.allow_nested_project = TRUE)
-  create_project(path = "SDC_project", open = TRUE, rstudio = TRUE)
-  agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC_project")
+  create_project(path = "SDC", open = TRUE, rstudio = TRUE)
+  agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC")
   setwd(agrisvy@workingDir)
   unlink("R",recursive = TRUE)
 
@@ -753,7 +747,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
 
   writeLines(
     c(glue::glue("#setwd(\"{agrisvy@workingDir}\")"),"",
-      glue::glue("#data_path=\"{agrisvy@dataDir}\""),"",
+      glue::glue("data_path=\"{agrisvy@dataDir}\""),"",
       glue::glue("{obj_name} <-readRDS(\"_R/{obj_name}.rds\")")),
     fileConn
   )

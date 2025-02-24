@@ -22,7 +22,7 @@ purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
 preprocMessage("{file_attributes$msg}")
 
-data={file_attributes$read_function}(file.path("../data","{file_attributes$path}"))
+data={file_attributes$read_function}(file.path(data_path,"{file_attributes$path}"))
 
 variable_classification=read_excel(path="{file_attributes$xlsx_var_class}",
                                    sheet ="{file_attributes$file_name}") %>% select(Name:Questions)

@@ -397,6 +397,14 @@ setMethod("aobDir",
 )
 
 
+#' Contain the path to the data to be anonymized
+#'
+#' @param agrissvy object of the anonymization
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DataPath <- function(obj){
   DataPathX(obj)
 }

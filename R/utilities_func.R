@@ -350,3 +350,26 @@ check_path_limit=function(agrisvy) {
 
 
 }
+
+
+#' Load the agrisvy object in the R session by executing the  script '_R/_setup.R'
+#'
+#' @return
+#' @export
+#'
+#' @examples
+loadAgrisvyObj=function(){
+source("_R/_setup.R")
+}
+
+#' load all R scripts in the folder '_R'
+#'
+#' @return
+#' @importFrom purrr walk
+#' @export
+#'
+#' @examples
+loadRscripts=function(){
+  purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
+
+}

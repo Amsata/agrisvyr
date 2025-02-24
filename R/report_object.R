@@ -193,26 +193,34 @@ appended=grep(glue::glue("child_{childName}.rmd"),sdc_rpt)
 
 
 if(length(appended)!=0){
-  sdc_rpt=sdc_rpt[-c((appended-1):(appended+2))]
+  before=sdc_rpt[1:(appended-1)]
+  after=sdc_rpt[(appended+2):length(sdc_rpt)]
+  new_sdc_rpt=c(before,
+                "",
+                glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
+                after)
+  #sdc_rpt=sdc_rpt[-c((appended-1):(appended+2))]
+} else{
+  new_sdc_rpt=c(sdc_rpt,
+                "",
+                glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```")
 }
-
-if (agrisvy@language=="en"){
-
-ind=grep("# Other anonymization measures of",sdc_rpt)
-}
-
-if (agrisvy@language=="fr"){
-  ind=grep("# Autres mesures d'anonymisation",sdc_rpt)
-}
-
-before=sdc_rpt[1:(ind-1)]
-
-after=sdc_rpt[ind:length(sdc_rpt)]
-
-new_sdc_rpt=c(before,
-              "",
-              glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
-              after)
+#
+# if (agrisvy@language=="en"){
+#
+# ind=grep("# Other anonymization measures of",sdc_rpt)
+# }
+#
+# if (agrisvy@language=="fr"){
+#   ind=grep("# Autres mesures d'anonymisation",sdc_rpt)
+# }
+#
+#
+#
+# new_sdc_rpt=c(before,
+#               "",
+#               glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
+#               after)
 
 
 fileConn_sdc<-file(rpt_file_sdc)
