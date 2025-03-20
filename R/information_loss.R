@@ -258,7 +258,8 @@ confint_check_num <- function(design,indicator="mean",numvars=NULL){
       conf_int=paste("[",lb_ci,",",ub_ci,"]"),
       ano_value=round(est_f,2),
       pct_change=paste0(round((est_f-est_i)/est_i*100,2),"%"),
-      is_ano_in_cf= ifelse(est_f>=lb_ci & est_f<= ub_ci,"YES","NO")
+      is_ano_in_cf= ifelse(est_f>=lb_ci & est_f<= ub_ci,"Ano. val. inside conf. Int.",
+                           "Ano. val. outside conf. int.")
     )
 
     names(df)=c("quasi.identifier",
@@ -289,7 +290,7 @@ confint_check_num <- function(design,indicator="mean",numvars=NULL){
                          caption=paste0(indicator," value of numerical quasi-identifier before and after anonymization")) %>%
     kableExtra::kable_paper(full_width = F) %>%
     kableExtra::column_spec(1, width = "10em", bold = T, border_right = T) %>%
-    kableExtra::column_spec(6, color = ifelse(df$is.ano.in.ci=="YES", "green", "red"),bold = T) %>%
+    kableExtra::column_spec(6, color = ifelse(df$is.ano.in.ci=="Ano. val. inside conf. Int.", "green", "red"),bold = T) %>%
     kableExtra::kable_styling(latex_options = "HOLD_position")
 }
 
@@ -379,13 +380,13 @@ stopifnot(!is.null(by) | is.null(numvar) | is.null(design))
     sample_n=sample_freq,
     ori_value=round(est_i,3),
     CV_in_pct=round(cv$cv*100,2),
-    conf_int=paste("[",round(ci$il,3)*100,",",round(ci$iu,3)*100,"]"),
+    conf_int=paste("[",round(ci$il,3),",",round(ci$iu,3),"]"),
     ano_value=round(est_f,3),
-    pct_pt_change=round((est_f-est_i)*100,2),
+    pct_change=round((est_f-est_i)/est_i*100,2),
     is_ano_in_cf= ifelse(est_f>=ci$il & est_f<= ci$iu,"Ano. val. inside conf. Int.",
                          "Ano. val. outside conf. int."),
     CI_coverage=paste0(ci_df$UC,"%"))  %>%
-    dplyr::arrange(desc(abs(as.numeric(pct_pt_change))))
+    dplyr::arrange(desc(abs(as.numeric(pct_change))))
 
   row.names(df)=NULL
 
