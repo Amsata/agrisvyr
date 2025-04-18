@@ -136,130 +136,78 @@ read_function=readDataFunc(agrisvy)
 df_name=tail(unlist(strsplit(inputdata_path,split = "/")),1)
 #Put the full path to avoir error with the workshop object when running quarto
 
-
 # Controling hierarchical input
 if(is.null(obj@intialObj@hhId)) obj@hierarchical <- FALSE
 
 
-#SDC report
+#-------------------------------------------------------------------------------
+#---------------------------------SDC report -----------------------------------
+#-------------------------------------------------------------------------------
 saveRDS(obj,file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
-# Info loss report
+
+file_sdc <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
+if (isFALSE(file.exists(file_sdc))) {
+  file.create(file_sdc)
+  fileConn_sdc<-file(file_sdc)
+  if(agrisvy@language=="en") template_rpt_child=system.file("txt_template","sdc_report_child_en.txt",package = "agrisvyr")
+  if(agrisvy@language=="fr") template_rpt_child=system.file("txt_template","sdc_report_child_fr.txt",package = "agrisvyr")
+  if(agrisvy@language=="es") template_rpt_child=system.file("txt_template","sdc_report_child_es.txt",package = "agrisvyr")
+  if(agrisvy@language=="pt") template_rpt_child=system.file("txt_template","sdc_report_child_pt.txt",package = "agrisvyr")
+
+  #TODO: create the french version
+  writeLines(c(glue::glue(paste(readLines(template_rpt_child),collapse = "\n"),.open = "{{",.close = "}}")),fileConn_sdc)
+  close(fileConn_sdc)
+
+  rpt_file_sdc=file.path(anoreportDir(agrisvy),"sdc_report.rmd")
+  # TODO: update by removing the if, else if it works
+
+  sdc_rpt=readLines(rpt_file_sdc)
+  appended=grep(glue::glue("child_{childName}.rmd"),sdc_rpt)
+  if (length(appended)==0) {
+    new_sdc_rpt=c(sdc_rpt, "",glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```")
+  }
+
+  fileConn_sdc<-file(rpt_file_sdc)
+  writeLines(new_sdc_rpt,fileConn_sdc)
+  close(fileConn_sdc)
+}
+
+# End sdc report------------------------------------------------------
+
+################################################################################
+#------------------------------Info loss report---------------------------------
+################################################################################
+
 saveRDS(obj,file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rds")))
 
-#SDC report
-file_sdc <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
-file.create(file_sdc)
-fileConn_sdc<-file(file_sdc)
-
-#Info loss report
 file_infol <- file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rmd"))
-file.create(file_infol)
-fileConn_infol<-file(file_infol)
+if (isFALSE(file.exists(file_infol))) {
+  file.create(file_infol)
+  fileConn_infol<-file(file_infol)
 
-if(agrisvy@language=="en"){
-  template_rpt_child=system.file("txt_template","sdc_report_child.txt",package = "agrisvyr")
-  template_rpt_child_infol=system.file("txt_template","info_loss_report_child.txt",package = "agrisvyr")
-}
+  if(agrisvy@language=="en") template_rpt_child_infol=system.file("txt_template","info_loss_report_child.txt",package = "agrisvyr")
+  if(agrisvy@language=="fr") template_rpt_child_infol=system.file("txt_template","info_loss_report_child_fr.txt",package = "agrisvyr")
+  if(agrisvy@language=="es") template_rpt_child_infol=system.file("txt_template","info_loss_report_child_es.txt",package = "agrisvyr")
+  if(agrisvy@language=="pt") template_rpt_child_infol=system.file("txt_template","info_loss_report_child_pt.txt",package = "agrisvyr")
 
-if(agrisvy@language=="fr"){
-  template_rpt_child=system.file("txt_template","sdc_report_child_fr.txt",package = "agrisvyr")
-  template_rpt_child_infol=system.file("txt_template","info_loss_report_child_fr.txt",package = "agrisvyr")
   #TODO: create the french version
+  writeLines(c(glue::glue(paste(readLines(template_rpt_child_infol), collapse = "\n"),.open = "{{",.close = "}}")),fileConn_infol)
+  close(fileConn_infol)
+
+  rpt_file_infol=file.path(infoLossReport(agrisvy),"information_loss_report.rmd")
+
+  # Update information loss report
+  info_loss_rpt=readLines(rpt_file_infol)
+  appended_infol=grep(glue::glue("child_{childName}.rmd"),info_loss_rpt)
+
+  if (length(appended_infol)==0) {
+    new_sdc_rpt=c(info_loss_rpt, "",glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```")
+  }
+
+  fileConn_infol<-file(rpt_file_infol)
+  writeLines(new_infol_rpt,fileConn_infol)
+  close(fileConn_infol)
 }
-
-#SDC-----------------
-writeLines(c(glue::glue(paste(readLines(template_rpt_child),
-                              collapse = "\n"),.open = "{{",.close = "}}"))
-           ,
-           fileConn_sdc)
-close(fileConn_sdc)
-
-#Info loss----------------------------
-writeLines(c(glue::glue(paste(readLines(template_rpt_child_infol),
-                              collapse = "\n"),.open = "{{",.close = "}}"))
-           ,
-           fileConn_infol)
-close(fileConn_infol)
-
-#---------------------------------
-
-rpt_file_sdc=file.path(anoreportDir(agrisvy),"sdc_report.rmd")
-rpt_file_infol=file.path(infoLossReport(agrisvy),"information_loss_report.rmd")
-
-
-# Update anonymization report-----------------------------------
-sdc_rpt=readLines(rpt_file_sdc)
-appended=grep(glue::glue("child_{childName}.rmd"),sdc_rpt)
-
-
-if(length(appended)!=0){
-  before=sdc_rpt[1:(appended-1)]
-  after=sdc_rpt[(appended+2):length(sdc_rpt)]
-  new_sdc_rpt=c(before,
-                "",
-                glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
-                after)
-  #sdc_rpt=sdc_rpt[-c((appended-1):(appended+2))]
-} else{
-  new_sdc_rpt=c(sdc_rpt,
-                "",
-                glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```")
-}
-#
-# if (agrisvy@language=="en"){
-#
-# ind=grep("# Other anonymization measures of",sdc_rpt)
-# }
-#
-# if (agrisvy@language=="fr"){
-#   ind=grep("# Autres mesures d'anonymisation",sdc_rpt)
-# }
-#
-#
-#
-# new_sdc_rpt=c(before,
-#               "",
-#               glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
-#               after)
-
-
-fileConn_sdc<-file(rpt_file_sdc)
-writeLines(new_sdc_rpt,fileConn_sdc)
-close(fileConn_sdc)
-
-# Update information loss report ------------------------------
-info_loss_rpt=readLines(rpt_file_infol)
-appended_infol=grep(glue::glue("child_{childName}.rmd"),info_loss_rpt)
-
-
-if(length(appended_infol)!=0){
-  info_loss_rpt=info_loss_rpt[-c((appended_infol-1):(appended_infol+2))]
-}
-
-if (agrisvy@language=="en"){
-
-  ind=grep("# Other infoirmation loss assessment",info_loss_rpt)
-}
-
-if (agrisvy@language=="fr"){
-  ind=grep("# Autres mesures de perte d'information",info_loss_rpt)
-}
-
-before_infol=info_loss_rpt[1:(ind-1)]
-
-after_infol=info_loss_rpt[ind:length(info_loss_rpt)]
-
-new_infol_rpt=c(before_infol,
-              "",
-              glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```","",
-              after_infol)
-
-
-fileConn_infol<-file(rpt_file_infol)
-writeLines(new_infol_rpt,fileConn_infol)
-close(fileConn_infol)
-
-
 }
 
 
@@ -521,3 +469,48 @@ setMethod("renderHierRiskSummaryX",signature = "sdcReportObj",
 
             HierRiskSummary(sdcObj,dfl = FALSE,time, obj)
           })
+
+
+#' Title
+#'
+#' @param agrisvy
+#'
+#' @return
+#' @export
+#'
+#' @examples
+genDandDIVariables=function(agrisvy,overwrite=TRUE) {
+  f=agrisvyr:::.createExcelInfos(agrisvy)
+  numberOfWOrkbook=length(unique(f$files_infos$workbook))
+  res_list=list()
+  for (i in seq_along(1:nrow(f$files_infos))) {
+    df=readxl::read_excel(path=file.path(agrisvyr:::varClassDir(agrisvy),paste0(f$files_infos$workbook[i],"_VarClas.xlsx")),sheet = ,f$files_infos$file_name[i])
+    Dvars=df %>% dplyr::filter(Classification=="D") %>% dplyr::pull(Name) %>% paste(collapse = ";")
+    DIVars=df %>% dplyr::filter(Classification=="DI") %>% dplyr::pull(Name) %>% paste(collapse = ";")
+
+    if (numberOfWOrkbook==1) results=data.frame(file=f$files_infos$file_name[i],Dvars=Dvars,DIVars=DIVars)
+    if (numberOfWOrkbook>1) results=data.frame(wb=f$files_infos$workbook[i],file=f$files_infos$file_name[i],DIVars=DIVars,Dvars=Dvars)
+
+    res_list[[i]]=results
+
+  }
+
+  df_final=do.call("rbind",res_list)
+
+  if (numberOfWOrkbook==1){
+    if(agrisvy@language=="en") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+    if(agrisvy@language=="fr") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+    if(agrisvy@language=="es") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+    if(agrisvy@language=="pt") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+  } else {
+    if (numberOfWOrkbook>1){
+      if(agrisvy@language=="en") names(df_final)=c("Data folder","File","Variable not useful","Direct identifiers variables")
+      if(agrisvy@language=="fr") names(df_final)=c("Dossier de données","Fichier de données","Identifiant direct","Variables pas utiles à diffuser")
+      if(agrisvy@language=="es") names(df_final)=c("Data folder","File","Variable not useful","Direct identifiers variables")
+      if(agrisvy@language=="pt") names(df_final)=c("Data folder","File","Variable not useful","Direct identifiers variables")
+    }
+  }
+
+  openxlsx::write.xlsx(df_final,file.path(anoreportDir(agrisvy),"DandDIvariables.xlsx"),overwrite=overwrite)
+
+}

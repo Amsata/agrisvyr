@@ -373,3 +373,48 @@ loadRscripts=function(){
   purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
 }
+
+
+
+#' Information on Excel files and workbook to be created
+#'
+#' @param agrisvy agrisurvey object
+#'  @importFrom  plyr rbind.fill
+#' @return
+#'
+#' @examples
+.createExcelInfos=function(agrisvy) {
+  data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
+  data_flder=data_flder[length(data_flder)]
+
+  data_files   <- list.files(file.path(DataPath(agrisvy)),
+                             pattern = glue::glue("{agrisvy@type}$"),
+                             recursive = TRUE)
+
+  x            <- lapply(strsplit(data_files, "/"), function(z) as.data.frame(t(z)))
+  x1           <- rbind.fill(x)
+
+  wb           <- lapply(x, function(z) {
+    res=paste(z[1:length(z) - 1], sep = "", collapse = "_")
+    if(res=="") res=data_flder
+    res=gsub(" ","_",res)
+
+    return(res)
+  })
+
+  unique_wb    <- unique(unlist(wb))
+
+  file_name = unlist(lapply(x, function(z) {
+    paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_")
+  }))
+
+  data_summary <- data.frame(
+    file_name = file_name,
+    path      = file.path(DataPath(agrisvy), data_files),
+    workbook  = unlist(wb)
+  )
+
+  final_res=list(workbook=unique_wb,files_infos=data_summary)
+
+  return(final_res)
+}
