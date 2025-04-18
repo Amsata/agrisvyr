@@ -5,9 +5,9 @@ create_folder <- function(directory, overwrite = FALSE) {
   } else {
     if (isTRUE(dir.exists(directory))) {
       unlink(directory, recursive = TRUE)
-      dir.create(directory)
+      dir.create(directory,showWarnings = FALSE)
     } else {
-      dir.create(directory)
+      dir.create(directory,showWarnings = FALSE)
     }
   }
 }
@@ -371,7 +371,7 @@ copyDirStr <- function(from, to) {
 
   if("" %in% dir_list & length(dir_list)>1){
     dir_list <- dir_list[2:length(dir_list)]
-    purrr::walk(file.path(to, dir_list), base::dir.create)
+    purrr::walk(file.path(to, dir_list), base::dir.create,showWarnings = FALSE)
   }
 }
 
@@ -464,7 +464,7 @@ if(type=="ano"){
     read_function=readDataFunc(agrisvy),
     write_function=writeDataFunc(agrisvy)
   )
-  file.create(r_file)
+  file.create(r_file,showWarnings = FALSE)
   fileConn <- file(r_file)
 
   writeLines(
@@ -555,7 +555,7 @@ if(md==TRUE) {
   clse = "}}"
 }
 
-  file.create(r_file)
+  file.create(r_file,showWarnings = FALSE)
   fileConn <- file(r_file)
   writeLines(
     c(glue::glue(paste(readLines(template,
@@ -612,10 +612,10 @@ generate_report_template <- function(agrisvy,type) {
   }
 #SDC
   file_sdc <- file.path(anoreportDir(agrisvy), "sdc_report.rmd")
-  file.create(file_sdc)
+  file.create(file_sdc,showWarnings = FALSE)
 #Information loss
   file_info_loss <- file.path(infoLossReport(agrisvy), "information_loss_report.rmd")
-  file.create(file_info_loss)
+  file.create(file_info_loss,showWarnings = FALSE)
 
   #SDC
   fileConn_sdc <- file(file_sdc)
@@ -745,7 +745,7 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE) {
   saveRDS(agrisvy,file.path("_R",paste0(obj_name,".rds")))
 
   set_up=file.path("_R","_setup.R")
-  file.create(set_up)
+  file.create(set_up,showWarnings = FALSE)
   fileConn <- file(set_up)
 
   writeLines(
@@ -824,7 +824,7 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE) {
 
   }
 
-  file.create(file.path(anoScriptDir(agrisvy),"final.R"))
+  file.create(file.path(anoScriptDir(agrisvy),"final.R"),showWarnings = FALSE)
 
   conn=file(file.path(anoScriptDir(agrisvy),"final.R"))
 
