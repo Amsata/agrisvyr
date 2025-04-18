@@ -4,7 +4,7 @@
 \alias{setup_anonymization}
 \title{set up the anonymization working directory by creating folders and files}
 \usage{
-setup_anonymization(agrisvy, overwrite)
+setup_anonymization(agrisvy, overwrite = FALSE, open = FALSE)
 }
 \arguments{
 \item{agrisvy}{an \code{agrisvy} object}
