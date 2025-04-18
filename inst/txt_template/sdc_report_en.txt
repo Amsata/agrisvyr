@@ -1,12 +1,13 @@
 ---
-title: "Anonymization of {{agrisvy@svyName}}"
+title: "{{agrisvy@svyName}}"
+subtitle: "Anonymization report"
 author: '{{agrisvy@author}}'
 date: "`r Sys.Date()`"
 output:
   pdf_document:
     toc: true
     number_sections: true
-classoption: landscape, a4paper
+classoption: portrait, a4paper
 ---
 
 ```{r setup, include=FALSE}
@@ -33,29 +34,26 @@ options(knitr.duplicate.label = "allow")
 
 * Datasets of the survey
 ```{r dataset-f,echo=FALSE}
-#data=as.data.frame(read_excel(path="datasets.xlsx"))
-
-#data%>% kbl()
+data=as.data.frame(read_excel(path="microdata_info.xlsx"))
+info_col=length(names(data))
+data %>% kbl() %>% column_spec(info_col, width = "10cm")
 
 ```
-
-
 \textcolor{red}{[Remind the commitment of the institute on disseminating microdata and recall the need of the need of SDC to protect respondent's confidentiality]}
-
 
 # Disclosure scenario analysis
 
-Anonymization or Statistical Disclosure control is a process of treating data to reduce the risk of disclosure. In the AHS, the main unit that need to be protected regarding ethics and legislation in the Agriculral holding (family holding and entreprises). However, these holding can be indirectly disclosed throughout some linked units such as Parcels, Crops, Livestocks (when we disclose a percel in the microdata, we can know the holding it belongs to and thus disclose information of that holding). In this regards, beyond preventing the disclosure of holdings, we need to prevent the disclosure of parcels, crops and livestocks.
+Anonymization or Statistical Disclosure control is a process of treating data to reduce the risk of disclosure. In the context of agricultural surveys, the main unit that need to be protected regarding ethics and legislation in the Agriculral holding (family holding and entreprises). However, these holding can be indirectly disclosed throughout some linked units such as Parcels, Crops, Livestocks (when we disclose a percel in the microdata, we can know the holding it belongs to and thus disclose information of that holding). In this regards, beyond preventing the disclosure of holdings, we need to prevent the disclosure of parcels, crops and livestocks.
 
 The units in the microdata can be disclosed in two ways:
 
 * Identity disclosure: Identity disclosure can happen if an intruder succeeds in matching records in the released microdata with external datasets containing identifying information (region, age, sex, name, or any other variable in the released microdata that may exist in an external register).
 
-* Attribute disclosure: intruder can identify a record without doing a linkage. This is known as attribute disclosure. One special situation is the Nosy neighbor scenarios. These scenarios assume the intruder has enough information on a unit or units; this information stems from his/her personal knowledge. In other words, the intruder belongs to the circle of acquaintances of a statistical unit.
+* Attribute disclosure: intruder can lean new confidential information without doing a linkage. This is known as attribute disclosure. One special situation is the Nosy neighbor scenarios. These scenarios assume the intruder has enough information on a unit or units; this information stems from his/her personal knowledge. In other words, the intruder belongs to the circle of acquaintances of a statistical unit.
 
-The objective of the disclosure scenario is to identifying variables and sensitives variables that the intruder can used to disclose information. This, particularly, depends on  the environment where the microdata is released.
+The objective of the disclosure scenario is to identify quasi-identifiers variables and sensitives variables that the intruder can used to disclose information. This, particularly, depends on  the environment where the microdata is released.
 
-The disclosure scenario exercice have been done with colleagues from Geostat and all the variables in the differents datasets have been classified in on of the below categories:
+The disclosure scenario analysis exercise consists of classifying all the variables present in the different datasets into one of the following categories:
 
 * D: variables to delete (not useful for the user)
 * Q: quasi-indentifier (to be anonymized)

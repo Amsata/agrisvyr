@@ -22,11 +22,11 @@ suda_f=obj_f@risk$suda2$disScore
 ```
 
 `r glue::glue("
-# Disclosure risk assessment and anonymization of {unit}
+## Dataset {unit}
 
-## Disclosure risk assessment of {unit}
+### Disclosure risk assessment of {unit}
 
-### Disclosure risk assessment for categorical quasi-identifiers
+#### Disclosure risk assessment for categorical quasi-identifiers
 ")`
 
 `r if(obj@global ==TRUE ){ glue::glue("
@@ -122,14 +122,14 @@ HierRiskSummary(obj@intialObj,dfl=TRUE,time="initial",obj)
 "At {hierarchy}s level, the average hierarchical disclosure risk from {unit}s i  is **{round(mean(obj_i@risk$individual[,4])*100,2)}**%. On the other hand, the greatest hierarchical disclosure risk of {hierarchy} amounts to **{round(max(obj_i@risk$individual[,4])*100,2)}**% and half of the {hierarchy} have an hierarchical risk lower than **{round(quantile(obj_i@risk$individual[,4],0.5)*100,4)}**% and 10% of {hierarchy} have an hierarchical risk exceeding **{round(quantile(obj_i@risk$individual[,4],0.9)*100,2)}**%")
 }`
 
-### Risk measure for continous variables
+#### Risk measure for continous variables
 
-## Anonymization of the `r unit`
+### Anonymization of the `r unit`
 
 \textcolor{red}{[Describe the main anonymization of categorical variable applied]}
 
 
-### Anonymization of categorical quasi-identifers
+#### Anonymization of categorical quasi-identifers
 
 `r if(obj@global ==TRUE ){ glue::glue("
 After anonymization, the overall risk dropped by {round(obj_i@risk$global$risk_pct-obj_f@risk$global$risk_pct,4)} percentage points from {round(obj_i@risk$global$risk_pct,4)} to {round(obj_f@risk$global$risk_pct,4)}. As for the expected number of re-identification, it has decreased by {round((obj_i@risk$global$risk_ER-obj_f@risk$global$risk_ER)/obj_i@risk$global$risk_ER*100,4)} percent
@@ -189,11 +189,11 @@ knitr::kable(list(t1 , t2),caption = "Initial situation(left) vs. final situatio
 ```
 
 
-### Anonymization of continous quasi-identifers
+#### Anonymization of continous quasi-identifers
 
 \textcolor{red}{[Describe the anonymization measures taken for continous variables]}
 
-### others anonymization measures
+#### others anonymization measures
 
 \textcolor{red}{[Describe the other anonymization measures applied to the microdata of {unit} if any]}
 

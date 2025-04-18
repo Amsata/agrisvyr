@@ -19,15 +19,13 @@ library(haven)
 
 purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
-
 preprocMessage("{file_attributes$msg}")
 
 data={file_attributes$read_function}(file.path(data_path,"{file_attributes$path}"))
 
-variable_classification=read_excel(path="{file_attributes$xlsx_var_class}",
-                                   sheet ="{file_attributes$file_name}") %>% select(Name:Questions)
-
-
+variable_classification=read_excel(path="{file_attributes$xlsx_var_class}",sheet  = "{file_attributes$file_name}") %>% select(Name:Questions)
+variable_labels=read_excel(path="{file_attributes$xlsx_var_labels}",sheet ="{file_attributes$file_name}")
+data=data %>% agrisvyr::assignNewVarLabels(variable_labels) #putting label before eventual renaming of variables
 #******************************************************************
 # Data processing before removing variables classified as DI or D *
 #******************************************************************
@@ -53,10 +51,14 @@ data=data %>% dplyr::rename()
 
 
 #*****************************************************************
-# Labelling variables and values or correcting labels, if any    *
+# Labelling values or correcting value labels, if any    *
 #*****************************************************************
-data=data %>% set_variable_labels()
 data=data %>% set_value_labels()
+
+#*****************************************************************
+# Defining or Correction variable labels , if any    *
+#*****************************************************************
+data=data %>% agrisvyr::assignNewVarLabels(variable_labels) #putting back labels in case they have been removed during processing, like mutate etc.
 
 #*****************************************************************
 #         saving the processed data

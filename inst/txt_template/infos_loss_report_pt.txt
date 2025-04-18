@@ -58,12 +58,16 @@ To comprehensively evaluate and quantify this information loss, various assessme
 * Number of missing value introduced during anonymization
 * Khi-2 coefficient between categorical variables
 
+
+
 **Information loss assessment for numeric quasi-identifiers**
 
 * percentage change of average/total
 * Whethr or not the value lay withing the confidence interval
 * Correlation between continous variables
 
+
 The following sections contain the application of these information loss assessment on the anonymized datasets.
 
 # Other infoirmation loss assessment
+

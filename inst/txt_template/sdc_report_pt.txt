@@ -1,0 +1,109 @@
+---
+title: "{{agrisvy@svyName}}"
+subtitle: "Relatório de anonimização"
+author: '{{agrisvy@author}}'
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+classoption: portrait, a4paper
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(agrisvyr)
+library(sdcMicro)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(kableExtra)
+library(glue)
+library(rlang)
+options(scipen = 999)
+#source("format_table.R")
+options(knitr.duplicate.label = "allow")
+
+```
+
+# Introdução
+
+\textcolor{red}{[Descreva a pesquisa apresentando os principais objetivos, o número de séries e/ou estações, o plano amostral, bem como o período de coleta de dados para as diferentes séries e estações. Essas informações podem ser retiradas do relatório da pesquisa, caso este já tenha sido publicado.]}
+
+* Conjuntos de dados da pesquisa
+```{r dataset-f,echo=FALSE}
+data=as.data.frame(read_excel(path="microdata_info.xlsx"))
+info_col=length(names(data))
+data %>% kbl() %>% column_spec(info_col, width = "10cm")
+
+```
+\textcolor{red}{[Relembrar o compromisso do instituto em relação à divulgação dos microdados, bem como a necessidade de aplicar técnicas de controle da divulgação estatística (CDE) para proteger a confidencialidade dos respondentes.]}
+
+# Análise do cenário de divulgação
+
+A anonimização, ou o controle da divulgação estatística (CDE), é um processo de tratamento de dados que visa reduzir o risco de divulgação. No âmbito da Pesquisa Agrícola junto aos Domicílios, a principal unidade a ser protegida, considerando os aspectos éticos e legais, é a exploração agrícola (seja ela uma exploração familiar ou uma empresa agrícola).
+
+No entanto, essas explorações podem ser indiretamente identificáveis por meio de certas unidades, legais ou não, associadas, como parcelas, membros, culturas ou rebanhos. De fato, a divulgação de uma parcela nos microdados pode permitir a identificação da exploração à qual ela pertence e, assim, revelar informações confidenciais sobre a mesma.
+
+A esse respeito, além de prevenir a divulgação das explorações agrícolas, é também necessário garantir a confidencialidade das parcelas, das culturas e do rebanho.
+
+As unidades presentes nos microdados podem ser divulgadas de duas maneiras :
+
+*Divulgação de identidade* : A divulgação de identidade pode ocorrer se um intruso conseguir correlacionar registros dos microdados divulgados com bases de dados externas que contenham informações identificáveis (como a região, a idade, o sexo, ou qualquer outra variável presente nos microdados que também possa existir em um registro externo).
+
+*Divulgação de atributos* : O intruso pode aprender uma informação confidencial sem precisar fazer um pareamento com outra base de dados. Isso é o que chamamos de divulgação de atributos. Uma situação particular é a chamada 'vizinhança curiosa'. Esse cenário supõe que o intruso tenha informações suficientes sobre uma ou mais unidades, provenientes de seu conhecimento pessoal. Em outras palavras, o intruso faz parte do círculo de conhecimento de uma unidade estatística.
+
+O objetivo da análise dos cenários de divulgação é identificar as variáveis de identificação, assim como as variáveis sensíveis que o intruso poderia utilizar para revelar informações. Esse exercício depende especialmente do ambiente no qual os microdados são divulgados.
+
+O exercício de análise do cenário de divulgação consiste em classificar todas as variáveis presentes nos diferentes conjuntos de dados em uma das seguintes categorias :
+
+* D : variáveis a serem excluídas (não úteis para o usuário)
+* Q : quasi-identificadores (a serem anonimizados)
+* DI: Identificadores diretos, a serem excluídos (nome, endereço, número de telefone, etc.)
+* S : variáveis sensíveis
+* L : variáveis relacionadas a um quasi-identificador
+* ID: variáveis de identificação
+* – : variáveis que não necessitam de controle de divulgação estatística (CDE) e que podem ser divulgadas como estão
+
+# Tratamento dos dados antes da anonimização
+
+
+\textcolor{red}{[Descrever as principais tarefas realizadas durante o pré-processamento dos dados.]}
+
+# Métodos de avaliação do risco de divulgação
+
+A avaliação do risco de divulgação é uma das etapas-chave do processo de controle da divulgação estatística (CDE). Para avaliar esse risco de divulgação, geralmente recorremos aos seguintes métodos :
+
+## quasi-identificadores categóricos
+
+* **k-anonimato**(k-anonymity): Evidenciar a unicidade dos registros com base na combinação dos quasi-identificadores categóricos.
+
+* **Algoritmo de Detecção de Únicos Especiais (SUDA)**: Ir além da unicidade da combinação dos quasi-identificadores e examinar a unicidade dentro do subconjunto das combinações de quasi-identificadores (único especial)
+
+*  **Risco probabilístico**
+
+Avaliar o risco de divulgação em termos de probabilidade. As unidades com a mesma combinação de chaves terão o mesmo risco.
+
+* Número esperado (esperança matemática) de reidentificações: Uma medida global do risco
+
+## Para os quasi-identificadores contínuos
+
+Na literatura, o risco associado às variáveis contínuas é calculado a posteriori.
+
+Dada a estrutura dos dados, focaremos no extremismo das observações em relação às variáveis contínuas.
+
+* **Índice de Gini**:  Avaliar a magnitude da desigualdade em certas variáveis (Produção, Área, Valores de poupança, etc.)
+
+* **A curva de Lorenz**:  A curva de Lorenz exibe as diferenças entre a distribuição empírica e uma distribuição perfeitamente igual, mostrando a diferença entre os dois gráfico.
+
+* Uma métrica personalizada que desenvolvemos para detectar a assimetria à direita das variáveis contínuas: A função de assimetria foi descrita por Groeneveld, R. A. e Meeden ($right_skewedness=\lambda(\alpha)=\frac{Q(\alpha)+Q(1-\alpha)-2\times median}{Q(1-\alpha)-Q(\alpha)}$) calculado para valores que estão acima da moda estatística (M)
+
+$$RS=\lambda_{\{x_i>M\}}(\alpha)=\frac{Q_{\{x_i>M\}}(\alpha)+Q_{\{x_i>M\}}(1-\alpha)-2\times median_{\{x_i>M\}}}{Q_{\{x_i>M\}}(1-\alpha)-Q_{\{x_i>M\}}(\alpha)}  $$ with $\alpha=0.05$
+
+Este coeficiente de assimetria varia de -1 a +1. Valores próximos de +1 indicam a presença de uma cauda direita muito distorcida na distribuição da variável
+
+# Avaliação do risco e anonimização dos conjuntos de dados
+
+
+

@@ -1,0 +1,187 @@
+```{r lab-sdc, echo=FALSE,warning=FALSE}
+obj=readRDS("child_{{childName}}.rds")
+obj_i=obj@intialObj
+obj_f=obj@finalObj
+unit=obj@unit
+hierarchy=obj@hierarchy
+
+# condition for chunk activation
+suda_cond=obj@suda
+global_cond=obj@global
+individual_cond=obj@individual | suda_cond
+hierarchical=obj@hierarchical
+```
+
+```{r lab-suda, echo=FALSE,warning=FALSE,eval=suda_cond}
+obj_i=suda2(obj_i)
+suda_i=obj_i@risk$suda2$disScore
+obj_f=suda2(obj_f)
+suda_f=obj_f@risk$suda2$disScore
+
+```
+
+`r glue::glue("
+## Conjunto de datos: {unit}
+
+### Evaluación del riesgo de divulgación de {unit}
+
+#### Evaluación del riesgo de divulgación para los cuasi-identificadores categórico
+")`
+
+`r if(obj@global ==TRUE ){ glue::glue("
+
+* **Riesgo global**
+
+Teniendo en cuenta los pesos de la muestra, las frecuencias de población modeladas dan un riesgo individual medio de **{obj_i@originalRisk$global$risk_pct}**%. Esto puede interpretarse como la probabilidad media de que una(o) {unit} sea correctamente reidentificada(o).
+
+El umbral de un nivel de riesgo aceptable depende de varios factores, como el modo de difusión de las microdatos, y generalmente se encuentra en un rango de 1 a 5 %.
+
+Otro ángulo de percepción del riesgo global consiste en observar el número esperado de reidentificaciones, que es **{obj_i@originalRisk$global$risk_ER}** {unit}s.")}
+`
+
+```{r global-risk,echo=FALSE, eval=global_cond}
+agrisvyr::RenderGlobalRisk(obj = obj,time="initial")
+
+```
+
+`r glue::glue("
+
+* **K-anonimato**
+
+**{sum(obj_i@originalRisk$individual[,2]<2)} observaciones** (**{round(100*sum(obj_i@originalRisk$individual[,2]<2)/nrow(obj_i@originalRisk$individual), digits = 1)}% de las {unit}s**) violan el 2-anonimato / son únicas respecto a su clave. Esto significa que la combinación de valores para los cuasi-identificadores seleccionados es única en el conjunto de datos. Las {unit}s únicas se consideran como de alto riesgo de ser re-identificadas. **{sum(obj_i@originalRisk$individual[,2]<3)} observaciones** (**{round(100*sum(obj_i@originalRisk$individual[,2]<3)/nrow(obj_i@originalRisk$individual), digits = 1)}% de las {unit}s**) violan el 3-anonimato y **{sum(obj_i@originalRisk$individual[, 2]<5)} observaciones** (**{round(100*sum(obj_i@originalRisk$individual[,2]<5)/nrow(obj_i@originalRisk$individual), digits = 1)}% de las {unit}s**) violan el 5-anonimato.
+
+")`
+
+```{r kanonymity,echo=FALSE,warning=FALSE}
+agrisvyr::renderKanoTab(obj = obj,time="initial")
+```
+
+`r if(obj@individual ==TRUE ){ glue::glue("
+
+* **Riesgo individual probabilístico**
+
+El riesgo individual promedio de las {unit}s es **{round(mean(obj_i@risk$individual[,1])*100,2)}%**. Por otro lado, el riesgo individual más alto de las {unit}s es **{round(max(obj_i@risk$individual[,1])*100,2)}%** y la mitad de las {unit}s tienen un riesgo individual inferior a **{round(quantile(obj_i@risk$individual[,1],0.5)*100,4)}%** y 10% de las {unit}s tienen un riesgo individual superior a **{round(quantile(obj_i@risk$individual[,1],0.9)*100,2)}%**.
+")}
+`
+
+```{r, ind-prob-risk,echo=FALSE,warning=FALSE, eval=individual_cond}
+
+if(obj@individual==TRUE & obj@suda==TRUE){
+  renderRiskIndSUmmary(obj,time="initial")
+  if((max(suda_i,na.rm = TRUE)==0)){
+  hist(obj_i@risk$individual[,1],main=glue::glue("Distribución del riesgo individual de las {unit}s"),cex.main=0.7,
+     ylab="Frequency",xlab="risk")
+} else {
+
+  par(mfrow=c(1,2))
+hist(obj_i@risk$individual[,1],main=paste0("Distribución del riesgo individual de las ",unit),cex.main=0.7,
+     ylab="Frequency",xlab="risk")
+hist(suda_i[suda_i!=0],main=paste0("Distribución de las puntuaciones DIS distintas de cero de ",unit),cex.main=0.7,
+     ylab="Frecuencia",xlab="Puntuación SUDA")
+}
+}
+
+if(obj@individual==TRUE & obj@suda==FALSE){
+  renderRiskIndSUmmary(obj,time="initial")
+   hist(obj_i@risk$individual[,1],main=glue::glue("Distribución del riesgo individual de {unit}"),cex.main=0.7,
+     ylab="Frecuencia",xlab="Riesgo probabilístico")
+}
+
+if(obj@individual==FALSE & obj@suda==TRUE){
+
+  if((max(suda_i,na.rm = TRUE)!=0)){
+hist(suda_i[suda_i!=0],main=paste0("Distribución de las puntuaciones DIS no nulas de ",unit),cex.main=0.7,
+     ylab="Frecuencia",xlab="Puntuación SUDA")
+}
+}
+```
+
+`r if(obj@suda ==TRUE ){ glue::glue("
+
+* **Riesgo SUDA**
+
+Todas las {unit}s que no tienen una combinación única de claves tienen sistemáticamente un puntaje SUDA-DIS de 0. Este número asciende a {sum(suda_i==0)} {unit} en el conjunto de datos. El número de {unit} con un riesgo DIS distinto de cero es {length(suda_i[suda_i!=0])} ( {round(length(suda_i[suda_i!=0])/sum(suda_i==0)*100,2)} % de {unit}s). El puntaje promedio de estas {unit}s es de {round(mean(suda_i[suda_i!=0])*100,2)}% y el puntaje máximo del DIS es {round(max(suda_i[suda_i!=0])*100,2)}%.
+
+")}
+`
+
+`r if(hierarchical==TRUE){glue("* **Riesgo jerárquico de  {hierarchy} a partir de {unit}s**\n
+El riesgo global de divulgación jerárquica de los {hierarchy}s  a partir de los {unit}s es de {round(obj_i@risk$global$hier_risk_pct,4)} %. El número esperado de reidentificación de los {hierarchy}s a partir de la estructura jerárquica es {round(obj_i@risk$global$hier_risk_ER)}.")}`
+
+```{r hier-risk,echo=FALSE,eval=hierarchical}
+HierRiskSummary(obj@intialObj,dfl=FALSE,time="initial",obj)
+```
+
+`r if(hierarchical==TRUE){glue::glue(
+"A nivel de los {hierarchy}s, el riesgo de divulgación jerárquica medio a través de los {unit}s  es de **{round(mean(obj_i@risk$individual[,4])*100,2)}**%. Por otro lado, el mayor riesgo jerárquico de divulgación de la {hierarchy} es de **{round(max(obj_i@risk$individual[,4])*100,2)}**% y la mitad de los {hierarchy} tiene un riesgo de divulgación jerárquica inferior al **{round(quantile(obj_i@risk$individual[,4],0.5)*100,4)}**% y el 10% de los/las {hierarchy} tienen un riesgo de divulgación jerárquica superior al **{round(quantile(obj_i@risk$individual[,4],0.9)*100,2)}**%.")
+}`
+
+#### Medición del riesgo para las variables continuas
+
+### Anonimización de la `r unit`
+
+\textcolor{red}{[Describa las principales aplicaciones de la anonimización de las variables categóricas.]}
+
+
+#### Anonimización de los cuasi-identificadores categóricos
+
+`r if(obj@global ==TRUE ){ glue::glue("
+Después de la anonimización, el riesgo global disminuyó en {round(obj_i@risk$global$risk_pct-obj_f@risk$global$risk_pct,4)} puntos porcentuales, pasando del {round(obj_i@risk$global$risk_pct,4)} % al {round(obj_f@risk$global$risk_pct,4)} %. En cuanto al número esperado de reidentificaciones, disminuyó en un {round((obj_i@risk$global$risk_ER-obj_f@risk$global$risk_ER)/obj_f@risk$global$risk_ER,4)}%.
+")}
+`
+
+```{r  ano-global,echo=FALSE,warning=FALSE,eval=global_cond}
+
+t1 <- RiskIndSUmmary(obj@intialObj,df=TRUE,time="initial",obj)
+t2 <- RiskIndSUmmary(obj@finalObj,df=TRUE,time="final",obj)
+knitr::kable(list(t1 , t2),caption = "Situación inicial (izquierda) vs. situación final (derecha)") %>%  kable_styling(latex_options = "HOLD_position") %>% column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, background = "#F7DC6F")
+
+```
+
+`r glue::glue(
+"Después de la anonimización, {sum(obj_f@risk$individual[,\"fk\"]<2)} {unit}s ({round(100*sum(obj_f@risk$individual[,\"fk\"]<2)/nrow(obj_f@risk$individual), digits = 1)}% de {unit}s )violan el 2-anonimato, {sum(obj_f@risk$individual[,\"fk\"]<3)} {unit}s ({round(100*sum(obj_f@risk$individual[, \"fk\"]<3)/nrow(obj_f@risk$individual), digits = 1)}% de {unit}s) violan el 3-anonimato y {sum(obj_f@risk$individual[, \"fk\"]<5)} {unit}s ({round(100*sum(obj_f@risk$individual[,\"fk\"]<5)/nrow(obj_i@risk$individual), digits = 1)}% de {unit}s) violan el 5-anonimato.
+
+")`
+
+```{r ano-kano,echo=FALSE,warning=FALSE}
+
+t1=KanoTab(obj@intialObj,df=TRUE,levels=2:5,time="initial",obj)
+t2=KanoTab(obj@finalObj,df=TRUE,levels=2:5,time="final",obj)
+knitr::kable(list(t1 , t2),caption = "Situación inicial (izquierda) vs. situación final (derecha)")%>%  kable_styling(latex_options = "HOLD_position")%>% column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, background = "#F7DC6F")
+
+
+if (!is.null(obj_f@localSuppression)){
+  plot.localSuppression(obj_f@localSuppression)+theme_classic()+
+    theme(legend.position="none",
+          axis.text.x=element_text(angle=45))
+}
+
+```
+
+`r if(obj@individual ==TRUE ){ glue::glue("
+El mayor riesgo individual de las/los {unit}s ha disminuido en {round(max(obj_i@risk$individual[,1])*100-max(obj_f@risk$individual[,1])*100,4)} puntos porcentuales (pasando de {round(max(obj_i@risk$individual[,1])*100,4)}% a {round(max(obj_f@risk$individual[,1])*100,4)}%) . La mitad de las/los {unit}s ahora tienen un riesgo individual inferior al {round(quantile(obj_f@risk$individual[,1],0.5)*100,4)}% y el  10% de las/los {unit} tienen un riesgo individual superior al {round(quantile(obj_f@risk$individual[,1],0.9)*100,2)} %.
+")}`
+
+`r if(hierarchical==TRUE){glue::glue("
+Después de la anonimización, el riesgo jerárquico global de identificación de los/las {hierarchy} a partir de las/los {unit}s ha disminuido en {round(obj_i@risk$global$hier_risk_pct-obj_f@risk$global$hier_risk_pct,4)} puntos porcentuales, pasando de {round(obj_i@risk$global$hier_risk_pct,4)} a {round(obj_f@risk$global$hier_risk_pct,4)}. En cuanto al número esperado de reidentificaciones, ha disminuido en {round((obj_i@risk$global$hier_risk_ER-obj_f@risk$global$hier_risk_ER)/obj_i@risk$global$hier_risk_ER,4)} %.
+")}`
+
+```{r ano-hier-risk, echo=FALSE,eval=hierarchical}
+
+t1=HierRiskSummary(obj@intialObj,dfl=TRUE,time="initial",obj)
+t2=HierRiskSummary(obj@finalObj,dfl=TRUE,time="final",obj)
+knitr::kable(list(t1 , t2),caption = "Situación inicial (izquierda) vs. situación final (derecha)") %>%  kable_styling(latex_options = "HOLD_position") %>% column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, background = "#F7DC6F")
+
+```
+
+#### Anonimización de los cuasi-identificadores continuos
+
+\textcolor{red}{[Describa las medidas de anonimización tomadas para las variables continuas.]}
+
+#### Otras medidas de anonimización
+
+\textcolor{red}{[Describe, en su caso, las otras medidas de anonimización aplicadas a las microdatos de {unit}]}
+

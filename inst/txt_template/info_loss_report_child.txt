@@ -44,7 +44,6 @@ In the lower triangle of the matrix, the change in the `p-value` of the `Khi2` t
 
 This nuanced analysis provides a detailed assessment of how the `Khi2` test outcomes evolve during the anonymization process, contributing valuable insights into the statistical relationships among categorical quasi-identifiers.
 
-
 ```{r,echo=FALSE,message=FALSE,warning=FALSE}
 
 cat_relation(obj_i=raw_df,obj_f=ano_df,alpha = 0.05,vars = keyvars,df=TRUE) %>%
@@ -61,14 +60,11 @@ The tables below provide a comprehensive analysis of the effects of anonymizatio
 
 Each table presents an in-depth examination of whether the indicator computed in the anonymized data falls within the original confidence interval. Additionally, for total indicators, the percentage change is outlined, while for proportion indicators, the percentage point change is specified. These values are included to convey the magnitude of the alterations observed in the respective indicators post-anonymization. This comprehensive approach aims to provide a thorough understanding of the impact of anonymization on statistical metrics, aiding in the evaluation of the reliability and integrity of the data throughout the process.
 
-
-
 ```{r,echo=FALSE,eval=eval_cond}
 design=agrisvyr::surveyDesign(raw_df,ano_df,df=TRUE,
                               ids=~to_specify,
                             weights =~to_specify
                             )
-
 ```
 
 ### Univariate indicators
@@ -103,7 +99,6 @@ for (v in keyvars) {
 
 ```{r,echo=FALSE,eval=eval_cond}
 
-
 compare_ind_cats("var1","var2",design)
 
 ```
@@ -114,7 +109,6 @@ compare_ind_cats("var1","var2",design)
 compare_ind_cats_tot("var1","var2",design)
 
 ```
-
 
 ## Information loss assessment of continous quasi-identifiers
 

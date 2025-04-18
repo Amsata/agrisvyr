@@ -1,12 +1,13 @@
 ---
-title: "Anonymization of {{agrisvy@svyName}}"
+title: "{{agrisvy@svyName}}"
+subtitle: "Rapport d'anonymisation"
 author: '{{agrisvy@author}}'
 date: "`r Sys.Date()`"
 output:
   pdf_document:
     toc: true
     number_sections: true
-classoption: landscape, a4paper
+classoption: portrait, a4paper
 ---
 
 ```{r setup, include=FALSE}
@@ -28,85 +29,87 @@ options(knitr.duplicate.label = "allow")
 
 # Introduction
 
+\textcolor{red}{[Décrivez l’enquête en présentant les principaux objectifs, le nombre de séries et/ou de saisons, le plan d’échantillonnage ainsi que la période de collecte des données pour les différentes séries et saisons. Ces informations peuvent être tirées du rapport de l’enquête si celui-ci est déjà publié.]}
 
-\textcolor{red}{[Describe the survey by providing the main objectives, the number of round and/or seasons, the sampling design and the period of data collection for the different rounds and season. These information can be taken from the report of the survey if already published.]}
-
-* Datasets of the survey
+* Jeux de données de l’enquête
 ```{r dataset-f,echo=FALSE}
-#data=as.data.frame(read_excel(path="datasets.xlsx"))
-
-#data%>% kbl()
-
+data=as.data.frame(read_excel(path="microdata_info.xlsx"))
+info_col=length(names(data))
+data %>% kbl() %>% column_spec(info_col, width = "8cm")
 ```
 
+\textcolor{red}{[Rappeler l'engagement de l'institut en matière de diffusion des microdonnées, ainsi que la nécessité d'appliquer des techniques de contrôle de la divulgation statistique (CDS) afin de protéger la confidentialité des répondants]}
 
-\textcolor{red}{[Remind the commitment of the institute on disseminating microdata and recall the need of the need of SDC to protect respondent's confidentiality]}
+# Analyse du scénario de divulgation
+
+Anonymization, or Statistical Disclosure Control (SDC), is a data processing process aimed at reducing the risk of disclosure. In the context of the Agricultural Household Survey, the main unit to protect, considering ethical and legal considerations, is the agricultural operation (whether family-run farms or agricultural enterprises)
+
+However, these farms can be indirectly identifiable through certain related units, whether legal or not, such as plots of land, members, crops, or livestock. Indeed, the dissemination of a plot in the microdata may allow for the identification of the farm it belongs to, thus revealing confidential information about it.
+
+In this regard, beyond preventing the disclosure of agricultural operations, it is also necessary to ensure the confidentiality of the plots, crops, and livestock.
+
+Les unités présentes dans les microdonnées peuvent être divulguées de deux manières :
+
+*Divulgation d’identité* : La divulgation d’identité peut se produire si un intrus parvient à faire correspondre des enregistrements des microdonnées diffusées avec des bases de données externes contenant des informations identifiantes (telles que la région, l’âge, le sexe, ou toute autre variable présente dans les microdonnées qui pourrait également exister dans un registre externe).
+
+*Divulgation d’attributs* : L’intrus peut apprendre une information confidrntielle sans procéder à un appariement avec une autre base. C’est ce que l’on appelle la divulgation d’attributs. Une situation particulière est celle dite du « voisin curieux ». Ce scénario suppose que l’intrus dispose d’assez d’informations sur une ou plusieurs unités, issues de sa connaissance personnelle. Autrement dit, l’intrus fait partie du cercle de connaissances d’une unité statistique.
+
+L’objectif de l’analyse des scénarios de divulgation est d’identifier les variables quasi-identifiants ainsi que les variables sensibles que l’intrus pourrait utiliser pour révéler des informations. Cet exercice dépend notamment de l’environnement dans lequel les microdonnées sont diffusées.
+
+L’exercice d'analyse du scenario de divulgation consiste à classer toutes les variables présentes dans les différents jeux de données dans l’une des catégories suivantes :
+
+* D : variables à supprimer (non utiles pour l’utilisateur)
+* Q : quasi-identifiants (à anonymiser)
+* DI: Identifiants directs, à supprimer (nom, adresse, numéro de téléphone, etc.)
+* S : variables sensibles
+* L : variables liées à un quasi-identifiant
+* ID variables d’identification
+* – : variables ne nécessitant pas de contrôle de divulgation statistique (CDS) et pouvant être diffusées en l’état
+
+# Traitement des données avant l’anonymisation
 
 
-# Disclosure scenario analysis
+\textcolor{red}{[Décrire les principales tâches réalisées lors du prétraitement des données.]}
 
-Anonymization or Statistical Disclosure control is a process of treating data to reduce the risk of disclosure. In the AHS, the main unit that need to be protected regarding ethics and legislation in the Agriculral holding (family holding and entreprises). However, these holding can be indirectly disclosed throughout some linked units such as Parcels, Crops, Livestocks (when we disclose a percel in the microdata, we can know the holding it belongs to and thus disclose information of that holding). In this regards, beyond preventing the disclosure of holdings, we need to prevent the disclosure of parcels, crops and livestocks.
+```{r dandivars,echo=FALSE}
+data=as.data.frame(read_excel(path="DandDIvariables.xlsx"))
+info_col=length(names(data))
+data %>% kbl() %>% column_spec((info_col-1):info_col, width = "4cm")
+```
 
-The units in the microdata can be disclosed in two ways:
+# Méthodes d’évaluation du risque de divulgation
 
-* Identity disclosure: Identity disclosure can happen if an intruder succeeds in matching records in the released microdata with external datasets containing identifying information (region, age, sex, name, or any other variable in the released microdata that may exist in an external register).
+L’évaluation du risque de divulgation est l’une des étapes clés du processus de contrôle de la divulgation statistique (CDS). Pour évaluer ce risque de divulgation, nous recourons généralement aux méthodes suivantes :
 
-* Attribute disclosure: intruder can identify a record without doing a linkage. This is known as attribute disclosure. One special situation is the Nosy neighbor scenarios. These scenarios assume the intruder has enough information on a unit or units; this information stems from his/her personal knowledge. In other words, the intruder belongs to the circle of acquaintances of a statistical unit.
+## quasi-identifiants catégoriels
 
-The objective of the disclosure scenario is to identifying variables and sensitives variables that the intruder can used to disclose information. This, particularly, depends on  the environment where the microdata is released.
+* **k-anonymat**(k-anonymity): Mettre en évidence l'unicité des enregistrements en fonction de la combinaison des quasi-identifiants catégoriels.
 
-The disclosure scenario exercice have been done with colleagues from Geostat and all the variables in the differents datasets have been classified in on of the below categories:
+* **Special Uniques Detection Algorithm (SUDA)**: Aller au-delà de l’unicité de la combinaison des quasi-identifiants et examiner l’unicité au sein du sous-ensemble des combinaisons de quasi-identifiants (unique spécial).
 
-* D: variables to delete (not useful for the user)
-* Q: quasi-indentifier (to be anonymized)
-* direct identifier: to be deleted (name, adresse, Phone, etc.)
-* S: Sensitive variables
-* L: Variable that are linked to a quasi-identifier
-* ID variable: identification code
-* -: Variable that does not need SDC and should be disseminated as they are
+*  **Risque probabiliste**
 
-# Data processing before anonymization
+Évaluer le risque de divulgation en termes de probabilité. Les unités ayant la même combinaison de clés auront le même risque.
 
+* Nombre espéré (esperence mathématique) de réidentifications : Une mesure globale du risque
 
-\textcolor{red}{[Describe the main task of which the data pre-processing consisted]}
+## Pour les quasi-identifiants continus
 
-# Disclosure risk assessment methods
+Dans la littérature, le risque associé aux variables continues est calculé a posteriori.
 
-Assessing the disclosure risk is one of the key steps in SDC process. For assessing the Disclosure risk of the 2020 AHS, we resort to the follwing methods:
+Étant donné la structure des données, nous mettrons l'accent sur l'extrémisme des observations par rapport aux variables continues.
 
-## categorical quasi-identifers
+* **L'indice de Gini**:  Évaluer l'ampleur de l'inégalité dans certaines variables (Production, Surface, Valeurs d'épargne, etc.)
 
-* **k-anonymity**
+* **La courbe de Lorenz**:  La courbe de Lorenz affiche les écarts entre la distribution empirique et une distribution parfaitement égale, en montrant la différence entre les deux graphiques.
 
-to highlight uniqueness of records regarding the
-combination of categorical quasi-identifiers
-
-* **Special Uniques Detection Algorithm (SUDA)**
-
-to go beyond uniqueness of the combination of quasi-identifiers and look at the
-uniqueness in the subset of combination of quasi-identifer (Special Unique)
-
-*  **Probabilistic risk**
-
-Assess the disclosure risk as a probability. Units have the same
-combination of keys will have the same risk
-* extected number of re-identification: a global risk measure
-
-## for continous quasi-identifers
-
-In the literature, the risk of continous variable are calculated a posteriori. For
-
-Given the nature of the data structure, we will lay emphasis on the outlierliness of observation
-regarding the continous variables.
-
-* Gini index: to assess the magnitude of inequality in some variables (Production, Area, Save vlaues, etc.)
-* Lorenz-curveThe Lorenz curve displays the deviations of the empirical distribution from a perfectly equal distribution as the difference between two graphs
-* A customized metric we developped to detect the right-skewedness of continous variables:skewness function was described by Groeneveld, R. A. and Meeden ($right_skewedness=\lambda(\alpha)=\frac{Q(\alpha)+Q(1-\alpha)-2\times     median}{Q(1-\alpha)-Q(\alpha)}$) computed for values that are above the statistical mode (M)
+* Une métrique personnalisée que nous avons développée pour détecter l'asymétrie à droite des variables continues: La fonction d'asymétrie a été décrite par Groeneveld, R. A. et Meeden ($right_skewedness=\lambda(\alpha)=\frac{Q(\alpha)+Q(1-\alpha)-2\times median}{Q(1-\alpha)-Q(\alpha)}$) computed for values that are above the statistical mode (M)
 
 $$RS=\lambda_{\{x_i>M\}}(\alpha)=\frac{Q_{\{x_i>M\}}(\alpha)+Q_{\{x_i>M\}}(1-\alpha)-2\times median_{\{x_i>M\}}}{Q_{\{x_i>M\}}(1-\alpha)-Q_{\{x_i>M\}}(\alpha)}  $$ with $\alpha=0.05$
-This skewedness coefficient varies from -1 tp +1. Values close to +1 indicated the the presence of a very skewed right tail in the distribution of the variable.
+
+Ce coefficient d'asymétrie varie de -1 à +1. Des valeurs proches de +1 indiquent la présence d'une queue droite très déformée dans la distribution de la variable.
+
+# Évaluation du risque et anonymisation des jeux de données
 
 
-
-# Autres mesures d'anonymisation
 
