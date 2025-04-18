@@ -1,0 +1,90 @@
+
+#' Title
+#'
+#' @param agrisvy
+#'
+#' @return
+#' @export
+#'
+#' @examples
+generateLabelFiles=function(agrisvy) {
+
+  exelFilesInfos=.createExcelInfos(agrisvy)
+
+  # create the different unique wb
+
+  purrr::walk(exelFilesInfos$workbook, function(x) {
+    .createLabelsWB(agrisvy, exelFilesInfos$files_infos, x)
+  })
+
+}
+
+#' Title
+#'
+#' @param agrisvy
+#' @param data
+#' @param wb_file
+#'
+#' @return
+#'
+#' @examples
+.createLabelsWB <- function(agrisvy, data, wb_file) {
+
+  agrisMsg("VARIABLE LABELS EXTRACTION",paste0("Creating workbook ",wb_file))
+
+
+  df <- data %>% dplyr::filter(workbook %in% wb_file)
+  fileNames <- df$file_name
+  wb <- openxlsx::createWorkbook()
+
+  cli_progress_bar("Generating variable classification", total = length(fileNames))
+
+  for (i in 1:length(fileNames)) {
+    cli_progress_update()
+    openxlsx::addWorksheet(wb, fileNames[i])
+    curDat <- labels(df$path[i],type=agrisvy@type)
+    curDat$newLabels <- ""
+    names(curDat)=c("variable","label","newLabel")
+
+    openxlsx::writeData(wb,
+                        sheet = fileNames[i],
+                        x = curDat,
+    )
+
+  }
+
+  openxlsx::saveWorkbook(wb,
+                         file.path(fileDesDir(agrisvy),
+                                   glue::glue("{wb_file}_labels.xlsx")
+                         ),
+                         overwrite = TRUE
+  )
+}
+
+
+
+#' Assign new variable labels define in the Excel file of label in the file description folder
+#'
+#' @param df
+#' @param df_lab
+#'
+#' @return
+#' @export
+#'
+#' @examples
+assignNewVarLabels=function(df,df_lab) {
+  varsIndf=names(df)
+  varsInNewLabels=df_lab %>% dplyr::filter(newLabel!="" | !is.na(newLabel)) %>% dplyr::pull(variable)
+  commonVars= base::intersect(varsIndf,varsInNewLabels)
+
+  if (length(commonVars)>0) {
+    for (i in seq_along(commonVars)) {
+      var=df_lab$variable[i]
+      v=sym(var)
+      label=df_lab$newLabel[i]
+      df=df %>% labelled::set_variable_labels({{v}}:=label)
+    }
+  }
+
+  return(df)
+}
