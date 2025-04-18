@@ -54,11 +54,11 @@ create_ano_folders <- function(agrisvy, overwrite = FALSE) {
 labels <- function(fileName,type) {
 
   if(type %in% ".dta"){
-    curData <- haven::read_dta(fileName, encoding = "latin1")
+    curData <- haven::read_dta(fileName)
     }
 
   if(type %in% c(".SAV",".sav")){
-    curData <- haven::read_sav(fileName, encoding = "latin1")
+    curData <- haven::read_sav(fileName)
     }
   curLabels <- data.frame(
     "name"  = names(curData),
@@ -348,42 +348,10 @@ create_wb <- function(agrisvy, data, wb_file) {
 #' @importFrom  plyr rbind.fill
 
 generate_varclas <- function(agrisvy) {
-  # stopifnot(inherits(agrisvy,"agrisvy"))
-
-  data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
-  data_flder=data_flder[length(data_flder)]
-
-  data_files   <- list.files(file.path(DataPath(agrisvy)),
-                             pattern = glue::glue("{agrisvy@type}$"),
-                             recursive = TRUE)
-
-  x            <- lapply(strsplit(data_files, "/"), function(z) as.data.frame(t(z)))
-  x1           <- rbind.fill(x)
-
-  wb           <- lapply(x, function(z) {
-    res=paste(z[1:length(z) - 1], sep = "", collapse = "_")
-    if(res=="") res=data_flder
-    res=gsub(" ","_",res)
-
-    return(res)
-  })
-
-  unique_wb    <- unique(unlist(wb))
-
-  file_name = unlist(lapply(x, function(z) {
-    paste(gsub(agrisvy@type, "", z[length(z)]), sep = "", collapse = "_")
-  }))
-
-  data_summary <- data.frame(
-    file_name = file_name,
-    path      = file.path(DataPath(agrisvy), data_files),
-    workbook  = unlist(wb)
-  )
-
+  exelFilesInfos=.createExcelInfos(agrisvy)
   # create the different unique wb
-
-  purrr::walk(unique_wb, function(x) {
-    create_wb(agrisvy, data_summary, x)
+  purrr::walk(exelFilesInfos$workbook, function(x) {
+    create_wb(agrisvy, exelFilesInfos$files_infos, x)
   })
 }
 
@@ -421,19 +389,20 @@ msg=paste(unlist(strsplit(file, "/")), collapse = "=>")
 if(type=="proc"){
   r_file=file.path(preProcScriptDir(agrisvy), gsub(paste0(agrisvy@type, "$"), "_proc.R", file))
   save_path=file.path(preprocDataDir(agrisvy),paste0(paste(gsub(agrisvy@type,"",file[length(file)]),sep = "", collapse = "_"),paste0("_proc",agrisvy@type)))
-  template=system.file("txt_template","preprocessing.txt",package = "agrisvyr")
-
+  if (agrisvy@language=="en") template=system.file("txt_template","preprocessing_script_en.txt",package = "agrisvyr")
+  if (agrisvy@language=="fr") template=system.file("txt_template","preprocessing_script_fr.txt",package = "agrisvyr")
+  if (agrisvy@language=="es") template=system.file("txt_template","preprocessing_script_es.txt",package = "agrisvyr")
+  if (agrisvy@language=="pt") template=system.file("txt_template","preprocessing_script_pt.txt",package = "agrisvyr")
 }
 
 if(type=="ano"){
   r_file=file.path(anoScriptDir(agrisvy),gsub(paste0(agrisvy@type, "$"),"_ano.R", file))
   save_path=file.path(tempfileDir(agrisvy),"temp_ano",paste0(paste(gsub(agrisvy@type, "",file[length(file)]),sep = "", collapse = "_"),paste0("_tmp",agrisvy@type)))
-  template=system.file("txt_template","anonymization_script.txt",package = "agrisvyr")
-  file           = file.path(preprocDataDir(agrisvy),
-                             paste0(paste(gsub(agrisvy@type, "",
-                                               file[length(file)]),
-                                          sep = "",collapse = "_" ),
-                                    paste0("_proc",agrisvy@type)))
+  if (agrisvy@language=="en") template=system.file("txt_template","anonymization_script_en.txt",package = "agrisvyr")
+  if (agrisvy@language=="fr") template=system.file("txt_template","anonymization_script_fr.txt",package = "agrisvyr")
+  if (agrisvy@language=="es") template=system.file("txt_template","anonymization_script_es.txt",package = "agrisvyr")
+  if (agrisvy@language=="pt") template=system.file("txt_template","anonymization_script_pt.txt",package = "agrisvyr")
+  file = file.path(preprocDataDir(agrisvy),paste0(paste(gsub(agrisvy@type, "",file[length(file)]),sep = "",collapse = "_" ), paste0("_proc",agrisvy@type)))
  }
 
   if(type=="wksp_proc"){
@@ -467,7 +436,12 @@ if(type=="ano"){
             )
   )
 
-
+  varLabels=file.path(fileDesDir(agrisvy),
+                     paste0(gsub(" ","_",paste(z[1:length(z) - 1], sep = "",
+                                               collapse = "_")),
+                            "_labels.xlsx"
+                     )
+  )
 
   data_flder=unlist(strsplit(DataPath(agrisvy),split = "/"))
   data_flder=data_flder[length(data_flder)]
@@ -475,6 +449,8 @@ if(type=="ano"){
 
   if(!("" %in% dirs & length(dirs)>1)) {
     varclass=file.path(varClassDir(agrisvy),gsub(" ","_",paste0(data_flder,"_VarClas.xlsx")))
+    varLabels=file.path(fileDesDir(agrisvy),gsub(" ","_",paste0(data_flder,"_labels.xlsx")))
+
   }
 
   file_attributes <- list(
@@ -482,6 +458,7 @@ if(type=="ano"){
     path           = file.path(file),
     r_script       = r_file,
     xlsx_var_class = varclass,
+    xlsx_var_labels = varLabels,
     msg            =msg,
     to_save        = save_path,
     read_function=readDataFunc(agrisvy),
@@ -552,6 +529,11 @@ create_ano_r <- function(agrisvy, file,md) {
                                             sep = "", collapse = "_"),
                                       "_VarClas.xlsx")
                                ),
+    xlsx_var_labels = file.path(fileDesDir(agrisvy),
+                               paste0(paste(z[1:length(z) - 1],
+                                            sep = "", collapse = "_"),
+                                      "_labels.xlsx")
+    ),
     msg            = paste(unlist(strsplit(file, "/")),collapse = "=>"),
     to_save        = file.path(tempfileDir(agrisvy),
                                "temp_ano",
@@ -614,24 +596,19 @@ generate_report_template <- function(agrisvy,type) {
 
   if(type=="svy") {
 
+    if (agrisvy@language=="en") template_sdc=system.file("txt_template","sdc_report_en.txt",package = "agrisvyr")
+    if (agrisvy@language=="fr") template_sdc=system.file("txt_template","sdc_report_fr.txt",package = "agrisvyr")
+    if (agrisvy@language=="es") template_sdc=system.file("txt_template","sdc_report_es.txt",package = "agrisvyr")
+    if (agrisvy@language=="pt") template_sdc=system.file("txt_template","sdc_report_pt.txt",package = "agrisvyr")
 
-    if (agrisvy@language=="en"){
-      template_sdc=system.file("txt_template","sdc_report.txt",package = "agrisvyr")
-      template_info_loss=system.file("txt_template","infos_loss_report_en.txt",package = "agrisvyr")
-    }
-
-
-    if (agrisvy@language=="fr"){
-      template_sdc=system.file("txt_template","sdc_report_fr.txt",package = "agrisvyr")
-      template_info_loss=system.file("txt_template","infos_loss_report_fr.txt",package = "agrisvyr")
-    }
-
+    if (agrisvy@language=="en") template_info_loss=system.file("txt_template","infos_loss_report_en.txt",package = "agrisvyr")
+    if (agrisvy@language=="fr") template_info_loss=system.file("txt_template","infos_loss_report_fr.txt",package = "agrisvyr")
+    if (agrisvy@language=="es") template_info_loss=system.file("txt_template","infos_loss_report_es.txt",package = "agrisvyr")
+    if (agrisvy@language=="pt") template_info_loss=system.file("txt_template","infos_loss_report_pt.txt",package = "agrisvyr")
   }
 
   if(type=="wksp") {
-    template_sdc=system.file("txt_template",
-                         "sdc_report_wksp_fr.txt",
-                         package = "agrisvyr")
+    template_sdc=system.file("txt_template","sdc_report_wksp_fr.txt",package = "agrisvyr")
   }
 #SDC
   file_sdc <- file.path(anoreportDir(agrisvy), "sdc_report.rmd")
@@ -705,7 +682,7 @@ generate_report_template <- function(agrisvy,type) {
 #'
 #'
 #' }
-setup_anonymization <- function(agrisvy, overwrite) {
+setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE) {
 
   #verifify the limit of path lengh that exist and for files that will be
   check_path_limit(agrisvy)
@@ -722,7 +699,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
 
   #R.utils::copyDirectory(DataPath(agrisvy), "data")
   options(usethis.allow_nested_project = TRUE)
-  create_project(path = "SDC", open = TRUE, rstudio = TRUE)
+  create_project(path = "SDC", open = open, rstudio = TRUE)
   agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC")
   setwd(agrisvy@workingDir)
   unlink("R",recursive = TRUE)
@@ -730,6 +707,7 @@ setup_anonymization <- function(agrisvy, overwrite) {
   # stopifnot(inherits(agrisvy,"agrisvy"))
   create_ano_folders(agrisvy, overwrite = overwrite)
   generate_varclas(agrisvy)
+  generateLabelFiles(agrisvy)
   copyDirStr(from = DataPath(agrisvy), to = preProcScriptDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = preprocDataDir(agrisvy))
   generate_preproc_r(agrisvy,type="proc",obj_name=obj_name)
@@ -738,7 +716,32 @@ setup_anonymization <- function(agrisvy, overwrite) {
   copyDirStr(from = DataPath(agrisvy), to = file.path(tempfileDir(agrisvy), "temp_ano"))
   generate_preproc_r(agrisvy,type="ano",obj_name=obj_name)
   generate_report_template(agrisvy,"svy")
+  #putting excel data description in the anonymization report folder and the info loss report folder
+  microdata_infos=.createExcelInfos(agrisvy)
+  df_infos=microdata_infos$files_infos
+  df_infos=df_infos %>% dplyr::select(workbook,file_name)
+  df_infos$Infoirmation=""
+  number_wb=length(unique(microdata_infos$workbook))
+  if(number_wb==1) df_infos=df_infos %>% dplyr::select(-workbook)
 
+  if (number_wb==1){
+    if(agrisvy@language=="en") names(df_infos)=c("Data file","file information")
+    if(agrisvy@language=="fr") names(df_infos)=c("Data file","file information")
+    if(agrisvy@language=="es") names(df_infos)=c("Data file","file information")
+    if(agrisvy@language=="pt") names(df_infos)=c("Data file","file information")
+  } else {
+      if(agrisvy@language=="en") names(df_infos)=c("Data folder","Data file","file information")
+      if(agrisvy@language=="fr") names(df_infos)=c("Data folder","Data file","file information")
+      if(agrisvy@language=="es") names(df_infos)=c("Data folder","Data file","file information")
+      if(agrisvy@language=="pt") names(df_infos)=c("Data folder","Data file","file information")
+    }
+
+
+  openxlsx::write.xlsx(df_infos,file.path(anoreportDir(agrisvy),"microdata_info.xlsx"))
+  openxlsx::write.xlsx(df_infos,file.path(agrisvy@infoLossReport,"microdata_info.xlsx"))
+
+  #Exporting excel file containing D and DI classified variables
+  genDandDIVariables(agrisvy)
   saveRDS(agrisvy,file.path("_R",paste0(obj_name,".rds")))
 
   set_up=file.path("_R","_setup.R")
@@ -794,18 +797,13 @@ setup_anonymization <- function(agrisvy, overwrite) {
   save_files=glue::glue("{writeDataFunc(agrisvy)}(data,\"{anoDataDir(agrisvy)}/{ano_dataset}\")")
   ff=paste(read_files,save_files,sep = ",")
 
-  final=c("#--------------------------------------------------------------------------",
-          "#| ANonymization of the 2019 Anual Agricultural Survey of Uganda (AAS)    |",
-          "#| By Amsata NIANG, amsata.niang@fao.org                                  |",
-          "#| November 2022                                                          |",
-          "#--------------------------------------------------------------------------",
-          "#|FINALIZATION OF ANONYMIZATION",
+  final=c("#|FINALIZATION OF ANONYMIZATION",
           "#|-----------------------------|",
           "","","",
           "#|----------------------------------------|",
           "#| PREPROCESSING                          |",
           "#|----------------------------------------|","",
-          glue::glue("rm(list = setdiff(ls(),\"{obj_name}\"))"),
+          "rm(list = ls())",
           "library(agrisvyr)",
           "library(dplyr)",
           "library(tidyr)",

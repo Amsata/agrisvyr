@@ -1,6 +1,6 @@
 Package: agrisvyr
 Type: Package
-Title: A toolbox to facilitate the implementation of microdata anonymization
+Title: A toolbox to facilitate the implementation of microdata anonymization for statistical surveys
 Version: 0.2.0
 Author: Amsata Niang
 Maintainer: Amsata Niang <amsata.niang@fao.org>
@@ -15,7 +15,6 @@ Imports:
     crayon,
     data.tree,
     dplyr,
-    generator,
     glue,
     haven,
     kableExtra,
@@ -28,14 +27,11 @@ Imports:
     quarto,
     questionr,
     R.utils,
-    randomNames,
     readxl,
     rlang,
-    sf,
     stats,
     tidyr,
     usethis,
-    wakefield
 Remotes: github::sdcTools/sdcMicro
 RoxygenNote: 7.3.2
 Depends: 
@@ -43,3 +39,4 @@ Depends:
 VignetteBuilder: knitr
 Suggests: 
     rmarkdown
+    survey

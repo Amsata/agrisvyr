@@ -183,7 +183,7 @@ setMethod("show",signature="agrisvy",function(object){
     stop("The working directory should be different from the data folder!")
   }
 
-    if(!(language %in% c("en","fr","es"))){
+    if(!(language %in% c("en","fr","es","pt"))){
       stop("the option language should be \nen (for english),\nfr (for french) or \nes (for spanish)")
     }
 
@@ -225,13 +225,13 @@ setMethod("show",signature="agrisvy",function(object){
       obj@anoreportDir     <- "06.Raport anonymization"
       obj@anoDataDir       <- "05.Donnees anonymisees"
       obj@fileDesDir       <- "07.Description des fichiers"
-      obj@infoLossReport   <- "08.Raport sur la perte d_information"
+      obj@infoLossReport   <- "08.Raport sur la perte d-information"
       obj@tempfileDir      <- "09.Fichiers temporaires"
       obj@aobDir           <- "10.Divers fichiers"
     }
 
     if(obj@language=="es") {
-      obj@varClassDir      <- "01.Clasificacion de variables"
+      obj@varClassDir      <- "01.Classificacao de variaveis"
       obj@preProcScriptDir <- "02.Guiones de preprocesamiento"
       obj@preprocDataDir   <- "03.Datos preprocesados"
       obj@anoScriptDir     <- "04.Guiones de anonimizacion"
@@ -239,12 +239,25 @@ setMethod("show",signature="agrisvy",function(object){
       obj@anoDataDir       <- "05.Datos anonimizados"
       obj@fileDesDir       <- "07.Descripcion de archivos"
       obj@infoLossReport   <- "08.Informe de perdida de informacion"
-      obj@tempfileDir      <- "09.Archivos temporales"
+      obj@tempfileDir      <- "09.Arquivos temporarios"
       obj@aobDir           <- "10.varios archivos"
     }
 
+
+    if(obj@language=="pt") {
+      obj@varClassDir      <- "01.Clasificacion de variables"
+      obj@preProcScriptDir <- "02.Scripts de pre-processamento"
+      obj@preprocDataDir   <- "03.Dados pre-processados"
+      obj@anoScriptDir     <- "04.Scripts de anonimizacao"
+      obj@anoreportDir     <- "06.Relatorio de anonimizacao"
+      obj@anoDataDir       <- "05.Dados anonimizados"
+      obj@fileDesDir       <- "07.Descricao dos arquivos"
+      obj@infoLossReport   <- "08. Relatorio de perda de informacao"
+      obj@tempfileDir      <- "09.Archivos temporales"
+      obj@aobDir           <- "10.varios archivos"
+    }
     #check if the initial working directo
-    ano_dirs=c( "data","SDC_project")
+    ano_dirs=c( "data","SDC")
 
     files_in_wd=list.dirs(obj@workingDir,full.names = FALSE,recursive = FALSE)
 #
