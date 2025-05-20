@@ -8,7 +8,7 @@
 #' @importFrom dplyr pull
 #' @importFrom questionr freq
 
-genFileDes <- function(file, name, id_cols, wb,type) {
+genFileDes <- function(file, name, id_cols, wb,type,encoding) {
   hd1 <- openxlsx::createStyle(
     fontName = "Times New Roman",
     fontSize = 12,
@@ -54,8 +54,8 @@ genFileDes <- function(file, name, id_cols, wb,type) {
 
 
   counter <- 2
-  if(type %in% ".dta")   data <- haven::read_dta(file)
-  if(type %in% c(".SAV",".sav"))   data <- haven::read_sav(file)
+  if(type %in% ".dta")   data <- haven::read_dta(file,encoding=encoding)
+  if(type %in% c(".SAV",".sav"))   data <- haven::read_sav(file,encoding=encoding)
 
   label <- sapply(data, function(x) attr(x, "label")) %>% as.character()
   variable_names <- names(data)
@@ -122,6 +122,17 @@ genFileDes <- function(file, name, id_cols, wb,type) {
     ), cols = c(1, 2, 3),
     rows = 1:nrow(data_description) + 7, gridExpand = TRUE, stack = TRUE
   )
+
+  openxlsx::protectWorksheet(wb=wb,sheet = name, protect = TRUE,
+                             lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
+                             lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
+                             lockFormattingRows=FALSE,lockInsertingRows=TRUE,
+                             lockDeletingRows=TRUE
+  )
+
+  openxlsx::addStyle(wb, sheet = name, style = createStyle(locked = FALSE),rows = 1:nrow(data_description) + 7, cols = 4)
+  openxlsx::addStyle(wb, sheet = name, style = createStyle(locked = FALSE),rows = 5, cols = 3)
+
 }
 
 
@@ -132,7 +143,7 @@ genFileDes <- function(file, name, id_cols, wb,type) {
 #' @importFrom cli cli_progress_along
 #' @importFrom purrr pwalk
 
-genDataFolderDes=function(agrisvy,data,wb_name,id_cols){
+genDataFolderDes=function(agrisvy,data,wb_name,id_cols,encoding){
 
   agrisMsg("FILES DESCRIPTION",paste0("Creating workbook ",wb_name))
 
@@ -140,7 +151,7 @@ genDataFolderDes=function(agrisvy,data,wb_name,id_cols){
   df <- data[as.character(data[,3]) %in% wb_name,]
 
   purrr::walk(cli::cli_progress_along(df$path),~{
-    genFileDes(df$path[.x],df$file_name[.x],id_cols,wb,type=agrisvy@type)
+    genFileDes(df$path[.x],df$file_name[.x],id_cols,wb,type=agrisvy@type,encoding=encoding)
   })
   openxlsx::saveWorkbook(wb,file.path(fileDesDir(agrisvy),paste0(wb_name,".xlsx")),overwrite = TRUE)
 
@@ -159,7 +170,7 @@ genDataFolderDes=function(agrisvy,data,wb_name,id_cols){
 #' @export
 #'
 #' @examples
-genAllFileDes=function(agrisvy,id_cols=NULL){
+genAllFileDes=function(agrisvy,id_cols=NULL,encoding="UTF-8"){
 
   data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
   data_flder=data_flder[length(data_flder)]
@@ -189,7 +200,7 @@ genAllFileDes=function(agrisvy,id_cols=NULL){
   )
 
   purrr::walk(unique_wb, function(x) {
-    genDataFolderDes(agrisvy,data_summary,x,id_cols)
+    genDataFolderDes(agrisvy,data_summary,x,id_cols,encoding=encoding)
   })
 
 }

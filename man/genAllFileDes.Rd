@@ -4,7 +4,7 @@
 \alias{genAllFileDes}
 \title{Generate file description for the data}
 \usage{
-genAllFileDes(agrisvy, id_cols = NULL)
+genAllFileDes(agrisvy, id_cols = NULL, encoding = "UTF-8")
 }
 \arguments{
 \item{agrisvy}{an agris survey object}

@@ -4,13 +4,20 @@
 \alias{setup_anonymization}
 \title{set up the anonymization working directory by creating folders and files}
 \usage{
-setup_anonymization(agrisvy, overwrite = FALSE, open = FALSE)
+setup_anonymization(
+  agrisvy,
+  overwrite = FALSE,
+  open = FALSE,
+  encoding = "UTF-8"
+)
 }
 \arguments{
 \item{agrisvy}{an \code{agrisvy} object}
 
 \item{overwrite}{a \code{logical}. If \code{TRUE},overwrite the working folders
 if they already exists.}
+
+\item{encoding}{}
 }
 \description{
 This fucntion set up the anonymization working space by creating the folders,

@@ -51,14 +51,14 @@ create_ano_folders <- function(agrisvy, overwrite = FALSE) {
 #' @importFrom haven read_sav
 #' @export
 #' @examples
-labels <- function(fileName,type) {
+labels <- function(fileName,type,encoding=encoding) {
 
   if(type %in% ".dta"){
-    curData <- haven::read_dta(fileName)
+    curData <- haven::read_dta(fileName,encoding = encoding)
     }
 
   if(type %in% c(".SAV",".sav")){
-    curData <- haven::read_sav(fileName)
+    curData <- haven::read_sav(fileName,encoding = encoding)
     }
   curLabels <- data.frame(
     "name"  = names(curData),
@@ -68,11 +68,17 @@ labels <- function(fileName,type) {
 }
 
 
+#' @param agrisvy
+#'
+#' @param data
+#' @param wb_file
+#' @param encoding
+#'
 #' @import openxlsx
 #' @importFrom dplyr filter %>%
 #' @importFrom cli cli_progress_bar cli_progress_update
 
-create_wb <- function(agrisvy, data, wb_file) {
+create_wb <- function(agrisvy, data, wb_file,encoding) {
 
   agrisMsg("VARIABLE CLASSIFICATION",paste0("Creating workbook ",wb_file))
 
@@ -128,7 +134,7 @@ create_wb <- function(agrisvy, data, wb_file) {
   for (i in 1:length(fileNames)) {
     cli_progress_update()
     openxlsx::addWorksheet(wb, fileNames[i])
-    curDat <- labels(df$path[i],type=agrisvy@type)
+    curDat <- labels(df$path[i],type=agrisvy@type,encoding = encoding)
     curDat <-
       cbind(curDat, data.frame(
         a = "",
@@ -136,7 +142,7 @@ create_wb <- function(agrisvy, data, wb_file) {
         c = "",
         d = ""
       ))
-    # colnames(curDat) <- c("Variable name", "Variable label", "Anonymization", "Comments")
+
     colnames(curDat) <-
       c(
         "Name",
@@ -267,17 +273,6 @@ create_wb <- function(agrisvy, data, wb_file) {
       fontColour     = "#FF0000"
       )
     )
-
-    # # Color text in red if variable is classified ad D
-    # conditionalFormatting(wb,sheet=fileNames[i],
-    #                       cols = 3,
-    #                       rows = 1:nrow(curDat)+1,  type = "contains",
-    #                       rule = "DI",
-    #                       style = createStyle(fontSize = 12,fontName = "Arial", halign = "Center",
-    #                                           valign = "center", textDecoration = "bold",
-    #                                           fontColour = "#FF0000")
-    # )
-
     # Color text in green if variable is classified ad Q
     openxlsx::conditionalFormatting(
       wb             = wb,
@@ -331,8 +326,27 @@ create_wb <- function(agrisvy, data, wb_file) {
       fontColour     = "#008000"
       )
     )
+    #Locking cells
+    openxlsx::protectWorksheet(wb=wb,sheet = fileNames[i], protect = TRUE,
+                     lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
+                     lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
+                     lockFormattingRows=FALSE,lockInsertingRows=TRUE,
+                     lockDeletingRows=TRUE
+                     )
+    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 3)
+    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 4)
+    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 5)
+    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 6)
 
-  }
+    validate=c("\"-,D,DI,ID,Q,L,S,W\"")
+    dataValidation(wb, sheet = fileNames[i], col = 3, rows = 1:nrow(curDat)+1,
+                   type = 'list', value = validate,allowBlank = TRUE)
+
+    openxlsx::setColWidths(wb, sheet = fileNames[i], cols = 1, widths = "auto")
+
+
+
+    }
 
   openxlsx::saveWorkbook(wb,
     file.path(varClassDir(agrisvy),
@@ -344,14 +358,18 @@ create_wb <- function(agrisvy, data, wb_file) {
 
 
 
+#' @param agrisvy
+#'
+#' @param encoding
+#'
 #' @importFrom   purrr walk
 #' @importFrom  plyr rbind.fill
 
-generate_varclas <- function(agrisvy) {
+generate_varclas <- function(agrisvy,encoding="UTF-8") {
   exelFilesInfos=.createExcelInfos(agrisvy)
   # create the different unique wb
   purrr::walk(exelFilesInfos$workbook, function(x) {
-    create_wb(agrisvy, exelFilesInfos$files_infos, x)
+    create_wb(agrisvy, exelFilesInfos$files_infos, x,encoding=encoding)
   })
 }
 
@@ -485,13 +503,9 @@ generate_preproc_r <- function(agrisvy,type,obj_name) {
   stopifnot(dir.exists(preProcScriptDir(agrisvy)))
 
   if(type=="proc") agrisMsg("INITIAL SETUP","generating pre-processing R sripts")
-
   if(type=="ano") agrisMsg("INITIAL SETUP","generating anonymization R sripts")
-
   if(type=="wksp_proc") agrisMsg("INITIAL SETUP","generating pre-processing quarto files")
-
   if(type=="wksp_ano") agrisMsg("INITIAL SETUP","generating anonymization quarto files")
-
   if(type=="wksp_risk") agrisMsg("INITIAL SETUP","generating risk analysis quarto files")
 
 
@@ -664,6 +678,8 @@ generate_report_template <- function(agrisvy,type) {
 #' @param overwrite a \code{logical}. If \code{TRUE},overwrite the working folders
 #' if they already exists.
 #' @param agrisvy an \code{agrisvy} object
+#' @param open
+#' @param encoding
 #'
 #' @return
 #' @importFrom  haven read_dta write_dta
@@ -682,7 +698,7 @@ generate_report_template <- function(agrisvy,type) {
 #'
 #'
 #' }
-setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE) {
+setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UTF-8") {
 
   #verifify the limit of path lengh that exist and for files that will be
   check_path_limit(agrisvy)
@@ -706,8 +722,8 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE) {
 
   # stopifnot(inherits(agrisvy,"agrisvy"))
   create_ano_folders(agrisvy, overwrite = overwrite)
-  generate_varclas(agrisvy)
-  generateLabelFiles(agrisvy)
+  generate_varclas(agrisvy,encoding=encoding)
+  generateLabelFiles(agrisvy,encoding=encoding)
   copyDirStr(from = DataPath(agrisvy), to = preProcScriptDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = preprocDataDir(agrisvy))
   generate_preproc_r(agrisvy,type="proc",obj_name=obj_name)
@@ -840,7 +856,7 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE) {
   source(file.path(anoScriptDir(agrisvy),"final.R"))
 
  #generate files description
-  genAllFileDes(agrisvy,id_cols=50)
+  genAllFileDes(agrisvy,id_cols=50,encoding=encoding)
   #archive data
   # ArchiveAnoData(agrisvy)
   # ArchiveCleanData(agrisvy)
@@ -882,8 +898,6 @@ runPreproc <- function(agrisvy){
 
 }
 
-
-
 #' Run all anonymization scripts
 #'
 #' @param agrisvy
@@ -909,16 +923,12 @@ runAnon <- function(agrisvy){
     purrr::walk(path_script,source)
   }
 
-
   #clear data
   path_list_data=file.path(anoDataDir(agrisvy),list.files(anoDataDir(agrisvy),recursive = TRUE))
-
 
   if (length(path_list_data)!=0) {
     purrr::walk(path_list_data,file.remove)
   }
-
   source(file.path(anoScriptDir(agrisvy),"final.R"))
-
 }
 

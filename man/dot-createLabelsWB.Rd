@@ -4,10 +4,10 @@
 \alias{.createLabelsWB}
 \title{Title}
 \usage{
-.createLabelsWB(agrisvy, data, wb_file)
+.createLabelsWB(agrisvy, data, wb_file, encoding)
 }
 \arguments{
-\item{wb_file}{}
+\item{encoding}{}
 }
 \description{
 Title

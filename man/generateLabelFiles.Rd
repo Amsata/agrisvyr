@@ -4,10 +4,10 @@
 \alias{generateLabelFiles}
 \title{Title}
 \usage{
-generateLabelFiles(agrisvy)
+generateLabelFiles(agrisvy, encoding = encoding)
 }
 \arguments{
-\item{agrisvy}{}
+\item{encoding}{}
 }
 \description{
 Title

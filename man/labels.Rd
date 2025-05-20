@@ -4,7 +4,7 @@
 \alias{labels}
 \title{Extract label of all variable of a dataset}
 \usage{
-labels(fileName, type)
+labels(fileName, type, encoding = encoding)
 }
 \arguments{
 \item{fileName}{dataset name}
