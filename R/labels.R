@@ -100,9 +100,9 @@ assignNewVarLabels=function(df,df_lab) {
 
   if (length(commonVars)>0) {
     for (i in seq_along(commonVars)) {
-      var=df_lab$variable[i]
-      v=sym(var)
-      label=df_lab$newLabel[i]
+      var = commonVars[i]
+      v = sym(var)
+      label = df_lab[df_lab$variable==commonVars[i],]$newLabel[1]
       df=df %>% labelled::set_variable_labels({{v}}:=label)
     }
   }
