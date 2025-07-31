@@ -146,7 +146,7 @@ if(is.null(obj@intialObj@hhId)) obj@hierarchical <- FALSE
 saveRDS(obj,file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
 
 file_sdc <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rmd"))
-if (isFALSE(file.exists(file_sdc))) {
+if (file.exists(file_sdc)==FALSE) {
   file.create(file_sdc)
   fileConn_sdc<-file(file_sdc)
   if(agrisvy@language=="en") template_rpt_child=system.file("txt_template","sdc_report_child_en.txt",package = "agrisvyr")
@@ -181,7 +181,7 @@ if (isFALSE(file.exists(file_sdc))) {
 saveRDS(obj,file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rds")))
 
 file_infol <- file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rmd"))
-if (isFALSE(file.exists(file_infol))) {
+if (file.exists(file_infol)==FALSE) {
   file.create(file_infol)
   fileConn_infol<-file(file_infol)
 
@@ -486,6 +486,52 @@ genDandDIVariables=function(agrisvy,overwrite=TRUE) {
   for (i in seq_along(1:nrow(f$files_infos))) {
     df=readxl::read_excel(path=file.path(agrisvyr:::varClassDir(agrisvy),paste0(f$files_infos$workbook[i],"_VarClas.xlsx")),sheet = ,f$files_infos$file_name[i])
     Dvars=df %>% dplyr::filter(Classification=="D") %>% dplyr::pull(Name) %>% paste(collapse = ";")
+    DIVars=df %>% dplyr::filter(Classification=="DI") %>% dplyr::pull(Name) %>% paste(collapse = ";")
+
+    if (numberOfWOrkbook==1) results=data.frame(file=f$files_infos$file_name[i],Dvars=Dvars,DIVars=DIVars)
+    if (numberOfWOrkbook>1) results=data.frame(wb=f$files_infos$workbook[i],file=f$files_infos$file_name[i],DIVars=DIVars,Dvars=Dvars)
+
+    res_list[[i]]=results
+
+  }
+
+  df_final=do.call("rbind",res_list)
+
+  if (numberOfWOrkbook==1){
+    if(agrisvy@language=="en") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+    if(agrisvy@language=="fr") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+    if(agrisvy@language=="es") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+    if(agrisvy@language=="pt") names(df_final)=c("File","Variable not useful","Direct identifiers variables")
+  } else {
+    if (numberOfWOrkbook>1){
+      if(agrisvy@language=="en") names(df_final)=c("Data folder","File","Variable not useful","Direct identifiers variables")
+      if(agrisvy@language=="fr") names(df_final)=c("Dossier de données","Fichier de données","Identifiant direct","Variables pas utiles à diffuser")
+      if(agrisvy@language=="es") names(df_final)=c("Data folder","File","Variable not useful","Direct identifiers variables")
+      if(agrisvy@language=="pt") names(df_final)=c("Data folder","File","Variable not useful","Direct identifiers variables")
+    }
+  }
+
+  openxlsx::write.xlsx(df_final,file.path(anoreportDir(agrisvy),"DandDIvariables.xlsx"),overwrite=overwrite)
+
+}
+
+
+#' Title
+#'
+#' @param agrisvy
+#' @param overwrite
+#'
+#' @return
+#' @export
+#'
+#' @examples
+genAnoVariables=function(agrisvy,overwrite=TRUE) {
+  f=agrisvyr:::.createExcelInfos(agrisvy)
+  numberOfWOrkbook=length(unique(f$files_infos$workbook))
+  res_list=list()
+  for (i in seq_along(1:nrow(f$files_infos))) {
+    df=readxl::read_excel(path=file.path(agrisvyr:::varClassDir(agrisvy),paste0(f$files_infos$workbook[i],"_VarClas.xlsx")),sheet = ,f$files_infos$file_name[i])
+    Dvar.s=df %>% dplyr::filter(Classification=="D") %>% dplyr::pull(Name) %>% paste(collapse = ";")
     DIVars=df %>% dplyr::filter(Classification=="DI") %>% dplyr::pull(Name) %>% paste(collapse = ";")
 
     if (numberOfWOrkbook==1) results=data.frame(file=f$files_infos$file_name[i],Dvars=Dvars,DIVars=DIVars)
