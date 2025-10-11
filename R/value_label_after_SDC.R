@@ -195,7 +195,7 @@ add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "v
 
 if (FALSE) {
 
-  perm = haven::read_dta(r"(D:\FAO DRIVE\Food and Agriculture Organization\Statistics Division Workspace - Cleaning\Validation and cleaning\03 Data\01 RawData\permanent_crop.dta)") #|> as.data.frame()
+  perm = haven::read_dta("permanent_crop.dta")
 
   # extract labels
   vll = extract_labels(perm)
