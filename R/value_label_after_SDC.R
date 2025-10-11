@@ -115,7 +115,7 @@ to_vlabelX = function(x,
 
 ############ function for extracting value labels
 
-extract_labels = function(dat, cols=names(dat), source=c("Excel", "data.frame")) {
+extract_labels = function(dat, cols=names(dat)) {
 
   if(!is.data.frame(dat)) stopf("'dat' should be a data.frame.")
 
