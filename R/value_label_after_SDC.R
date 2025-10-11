@@ -193,7 +193,7 @@ add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "v
 # 1- extract_labels
 # 2- add_labels
 
-if (FALSE) {
+if (interactive() && "haven" %in% rownames(installed.packages())) {
 
   perm = haven::read_dta("permanent_crop.dta")
 
