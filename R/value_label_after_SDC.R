@@ -156,7 +156,7 @@ add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "v
   vallabels = list_labels$vallabels
   datalabel = list_labels$datalabel
   vrnames = names(varlabels)
-  vlnames = names(varlabels)
+  vlnames = names(vallabels)
   dfnames = names(dat)
 
   if(skip_absent) {
