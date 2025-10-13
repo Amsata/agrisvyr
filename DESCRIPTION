@@ -2,7 +2,10 @@ Package: agrisvyr
 Type: Package
 Title: A toolbox to facilitate the implementation of microdata anonymization for statistical surveys
 Version: 0.2.0
-Author: Amsata Niang
+Authors@R: c(
+    person("Niang", "Amsata", role=c("aut", "cre"), email="amsata.niang@fao.org"),
+    person("Boniface Christian", "Kamgang", role="ctb", email="kaboc7@gmail.com", comment="GitHub user")
+  )
 Maintainer: Amsata Niang <amsata.niang@fao.org>
 Description: The agrisvyr package is design to support files, folders and report generation
     and also R script generation and pre-population for Statistical disclosure controle activity on survey 
