@@ -8,7 +8,8 @@ setup_anonymization(
   agrisvy,
   overwrite = FALSE,
   open = FALSE,
-  encoding = "UTF-8"
+  encoding = "UTF-8",
+  renv = FALSE
 )
 }
 \arguments{
