@@ -109,3 +109,9 @@ assignNewVarLabels=function(df,df_lab) {
 
   return(df)
 }
+
+
+exportValLabels=function(agrisvy,encoding="UTF-8"){
+  microdata_infos=.createExcelInfos(agrsvy)
+
+}

@@ -34,7 +34,8 @@ create_ano_folders <- function(agrisvy, overwrite = FALSE) {
     infoLossReport(agrisvy),
     tempfileDir(agrisvy),
     aobDir(agrisvy),
-    file.path(tempfileDir(agrisvy), "temp_ano")
+    file.path(tempfileDir(agrisvy), "temp_ano"),
+    file.path(tempfileDir(agrisvy), "Labels")
   )
 
   purrr::walk(folders_path, create_folder, overwrite = overwrite)
@@ -348,8 +349,8 @@ create_wb <- function(agrisvy, data, wb_file,encoding) {
 
     }
 
-  openxlsx::saveWorkbook(wb,
-    file.path(varClassDir(agrisvy),
+    openxlsx::saveWorkbook(wb,
+      file.path(varClassDir(agrisvy),
       glue::glue("{wb_file}_VarClas.xlsx")
     ),
     overwrite = TRUE
@@ -683,6 +684,8 @@ generate_report_template <- function(agrisvy,type) {
 #'
 #' @return
 #' @importFrom  haven read_dta write_dta
+#' @importFrom renv init
+#' @importFrom renv install
 #' @export
 #'
 #' @examples
@@ -698,7 +701,7 @@ generate_report_template <- function(agrisvy,type) {
 #'
 #'
 #' }
-setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UTF-8") {
+setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UTF-8",renv=FALSE) {
 
   #verifify the limit of path lengh that exist and for files that will be
   check_path_limit(agrisvy)
@@ -718,8 +721,9 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UT
   create_project(path = "SDC", open = open, rstudio = TRUE)
   agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC")
   setwd(agrisvy@workingDir)
-  unlink("R",recursive = TRUE)
 
+
+  unlink("R",recursive = TRUE)
   # stopifnot(inherits(agrisvy,"agrisvy"))
   create_ano_folders(agrisvy, overwrite = overwrite)
   generate_varclas(agrisvy,encoding=encoding)
@@ -730,6 +734,7 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UT
   copyDirStr(from = DataPath(agrisvy), to = anoScriptDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = anoDataDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = file.path(tempfileDir(agrisvy), "temp_ano"))
+  copyDirStr(from = DataPath(agrisvy), to = file.path(tempfileDir(agrisvy), "Labels"))
   generate_preproc_r(agrisvy,type="ano",obj_name=obj_name)
   generate_report_template(agrisvy,"svy")
   #putting excel data description in the anonymization report folder and the info loss report folder
@@ -854,6 +859,7 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UT
 #-------------------------------------
 
   source(file.path(anoScriptDir(agrisvy),"final.R"))
+  export_labels(agrisvy,encoding,overwrite)
 
  #generate files description
   genAllFileDes(agrisvy,id_cols=50,encoding=encoding)
@@ -861,6 +867,12 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UT
   # ArchiveAnoData(agrisvy)
   # ArchiveCleanData(agrisvy)
   # ArchiveProcData(agrisvy)
+
+
+  if(renv==TRUE) {
+    renv::init(project =agrisvy@workingDir )
+  }
+
 setwd(old_wd)
 }
 
