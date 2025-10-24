@@ -110,8 +110,99 @@ assignNewVarLabels=function(df,df_lab) {
   return(df)
 }
 
+#' Title
+#'
+#' @param agrisvy
+#' @param encoding
+#' @param overwrite
+#' @importFrom tibble tibble
+#' @return
+#' @export
+#'
+#' @examples
 
-exportValLabels=function(agrisvy,encoding="UTF-8"){
-  microdata_infos=.createExcelInfos(agrsvy)
+export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
+  df_list=.createExcelInfos(agrisvy)
+  df=df_list$files_infos
+  fileNames <- df$file_name
 
+  for (i in 1:length(fileNames)) {
+    wb <- openxlsx::createWorkbook()
+    openxlsx::addWorksheet(wb, "mapping")
+
+    if(agrisvy@type %in% ".dta"){
+      df2 <- haven::read_dta(df$path[i],encoding = encoding)
+    }
+
+    if(agrisvy@type %in% c(".SAV",".sav")){
+      df2 <- haven::read_sav(df$path[i],encoding = encoding)
+    }
+    curDat <- data.frame(
+      "name"  = names(df2),
+      "label" = sapply(df2, function(x) attr(x, "label")) %>% as.character(),
+      "new_label"=""
+    )
+
+    curDat$value_labels_id <- paste0("value_labels_",1:nrow(curDat))
+    curDat$has_value_labels <- sapply(names(df2),function(x) {
+      res=ifelse(labelled::is.labelled(df2[[x]]),"Y","N")
+
+
+    })
+
+    openxlsx::writeData(wb,sheet = "mapping",x = curDat)
+
+    extract_labels2 <- function(var, var_name,df) {
+      if (is.labelled(df[[var]])) {
+        labs <- val_labels(df[[var]])
+        res=tibble(
+          value = unname(labs),
+          label = names(labs),
+          new_label=""
+        )
+
+      } else {
+        res=tibble(value = numeric(), label = character(),new_label=character())
+      }
+      openxlsx::addWorksheet(wb, var_name)
+      openxlsx::writeData(wb, sheet = var_name,x = res)
+    }
+
+    # Apply to all variables
+    purrr::walk2(curDat$name, curDat$value_labels_id, extract_labels2,df2)
+
+    for (j in seq_len(nrow(curDat))) {
+      sheet_name <- curDat$value_labels_id[j]
+      # create hyperlink formula: reference cell A1 of the target sheet
+      #link <- paste0("#'", sheet_name, "'!A1")
+
+      # Write hyperlink into the cell in column "C" (3rd column)
+      writeFormula(
+        wb,
+        sheet = "mapping",
+        x = makeHyperlinkString(sheet = sheet_name, row = 1, col = 4, text=sheet_name),
+        startCol = 4,
+        startRow = j + 1 # +1 because of header ro
+
+      )
+
+      writeFormula(
+        wb,
+        sheet = sheet_name,
+        x = makeHyperlinkString(sheet = "mapping",j + 1, row = , col = 4, text="back to mapping"),
+        startCol = 4,
+        startRow = 1 # +1 because of header ro
+
+      )
+    }
+    nb_wb=length(unique(df$workbook))
+    #openxlsx::openXL(wb)
+    if(nb_wb==1) {
+      path_to_save=file.path(agrisvyr:::tempfileDir(agrisvy), "Labels",paste0(fileNames[i],".xlsx"))
+    }
+    if(nb_wb>1) {
+      path_to_save=file.path(agrisvyr:::tempfileDir(agrisvy), "Labels",df$workbook[i],paste0(fileNames[i],".xlsx"))
+    }
+    openxlsx::saveWorkbook(wb,path_to_save,overwrite = overwrite)
+  }
 }

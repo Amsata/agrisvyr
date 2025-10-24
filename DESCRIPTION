@@ -27,11 +27,15 @@ Imports:
     quarto,
     questionr,
     R.utils,
+    renv,
     readxl,
     rlang,
     stats,
     tidyr,
     usethis,
+    sf,
+    terra,
+    exactextractr
 Remotes: github::sdcTools/sdcMicro
 RoxygenNote: 7.3.2
 Depends: 

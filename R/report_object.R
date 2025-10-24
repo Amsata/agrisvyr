@@ -165,11 +165,12 @@ if (file.exists(file_sdc)==FALSE) {
   appended=grep(glue::glue("child_{childName}.rmd"),sdc_rpt)
   if (length(appended)==0) {
     new_sdc_rpt=c(sdc_rpt, "",glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```")
+    fileConn_sdc<-file(rpt_file_sdc)
+    writeLines(new_sdc_rpt,fileConn_sdc)
+    close(fileConn_sdc)
   }
 
-  fileConn_sdc<-file(rpt_file_sdc)
-  writeLines(new_sdc_rpt,fileConn_sdc)
-  close(fileConn_sdc)
+
 }
 
 # End sdc report------------------------------------------------------
@@ -184,7 +185,6 @@ file_infol <- file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rm
 if (file.exists(file_infol)==FALSE) {
   file.create(file_infol)
   fileConn_infol<-file(file_infol)
-
   if(agrisvy@language=="en") template_rpt_child_infol=system.file("txt_template","info_loss_report_child.txt",package = "agrisvyr")
   if(agrisvy@language=="fr") template_rpt_child_infol=system.file("txt_template","info_loss_report_child_fr.txt",package = "agrisvyr")
   if(agrisvy@language=="es") template_rpt_child_infol=system.file("txt_template","info_loss_report_child_es.txt",package = "agrisvyr")
@@ -202,11 +202,12 @@ if (file.exists(file_infol)==FALSE) {
 
   if (length(appended_infol)==0) {
     new_sdc_rpt=c(info_loss_rpt, "",glue::glue("```{r,child='child_{{childName}}.rmd'}",.open = "{{",.close = "}}"),"```")
+    fileConn_infol<-file(rpt_file_infol)
+    writeLines(new_infol_rpt,fileConn_infol)
+    close(fileConn_infol)
   }
 
-  fileConn_infol<-file(rpt_file_infol)
-  writeLines(new_infol_rpt,fileConn_infol)
-  close(fileConn_infol)
+
 }
 }
 
