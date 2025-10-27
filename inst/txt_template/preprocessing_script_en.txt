@@ -24,8 +24,10 @@ preprocMessage("{file_attributes$msg}")
 data={file_attributes$read_function}(file.path(data_path,"{file_attributes$path}"))
 
 variable_classification=read_excel(path="{file_attributes$xlsx_var_class}",sheet  = "{file_attributes$file_name}") %>% select(Name:Questions)
-variable_labels=read_excel(path="{file_attributes$xlsx_var_labels}",sheet ="{file_attributes$file_name}")
-data=data %>% agrisvyr::assignNewVarLabels(variable_labels) #putting label before eventual renaming of variables
+
+labels=extract_labels_xl(eca2023,dataset_name="{gsub(agrisvy@type,"",rev(unlist(strsplit(cc, "=>")))[1])}",subfolder="{subfolder}")
+
+data=add_labels(data,res,skip_absent = TRUE,levels = "values",target="labelled") #putting label before eventual renaming of variables
 #******************************************************************
 # Data processing before removing variables classified as DI or D *
 #******************************************************************
@@ -58,7 +60,7 @@ data=data %>% set_value_labels()
 #*****************************************************************
 # Defining or Correction variable labels , if any    *
 #*****************************************************************
-data=data %>% agrisvyr::assignNewVarLabels(variable_labels) #putting back labels in case they have been removed during processing, like mutate etc.
+data=add_labels(data,res,skip_absent = TRUE,levels = "values",target="labelled") #putting back labels in case they have been removed during processing, like mutate etc.
 
 #*****************************************************************
 #         saving the processed data

@@ -125,10 +125,13 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
   df_list=.createExcelInfos(agrisvy)
   df=df_list$files_infos
   fileNames <- df$file_name
-
+  i=1
   for (i in 1:length(fileNames)) {
     wb <- openxlsx::createWorkbook()
-    openxlsx::addWorksheet(wb, "mapping")
+    openxlsx::addWorksheet(wb, "datalabel")
+    openxlsx::addWorksheet(wb, "varlabels")
+    openxlsx::addWorksheet(wb, "vallabels")
+
 
     if(agrisvy@type %in% ".dta"){
       df2 <- haven::read_dta(df$path[i],encoding = encoding)
@@ -137,64 +140,47 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
     if(agrisvy@type %in% c(".SAV",".sav")){
       df2 <- haven::read_sav(df$path[i],encoding = encoding)
     }
+
+    datalabel_df=data.frame(
+      label=as.character(attr(df2, "label")),
+      new_label=character()
+    )
+    openxlsx::writeData(wb,sheet = "datalabel",x = datalabel_df)
+
     curDat <- data.frame(
       "name"  = names(df2),
       "label" = sapply(df2, function(x) attr(x, "label")) %>% as.character(),
       "new_label"=""
     )
 
-    curDat$value_labels_id <- paste0("value_labels_",1:nrow(curDat))
-    curDat$has_value_labels <- sapply(names(df2),function(x) {
-      res=ifelse(labelled::is.labelled(df2[[x]]),"Y","N")
+    #curDat$value_labels_id <- paste0("value_labels_",1:nrow(curDat))
+    # curDat$has_value_labels <- sapply(names(df2),function(x) {
+    #   res=ifelse(labelled::is.labelled(df2[[x]]),"Y","N")
+    # })
 
+    openxlsx::writeData(wb,sheet = "varlabels",x = curDat)
 
-    })
-
-    openxlsx::writeData(wb,sheet = "mapping",x = curDat)
-
-    extract_labels2 <- function(var, var_name,df) {
+    extract_labels2 <- function(var,df) {
       if (is.labelled(df[[var]])) {
         labs <- val_labels(df[[var]])
         res=tibble(
+          var_name=rep(x=var,times=length(labs)),
           value = unname(labs),
           label = names(labs),
           new_label=""
         )
 
       } else {
-        res=tibble(value = numeric(), label = character(),new_label=character())
+        res=tibble(var_name=var,value = numeric(), label = character(),new_label=character())
       }
-      openxlsx::addWorksheet(wb, var_name)
-      openxlsx::writeData(wb, sheet = var_name,x = res)
+      return(res)
     }
 
     # Apply to all variables
-    purrr::walk2(curDat$name, curDat$value_labels_id, extract_labels2,df2)
+    res_lst=lapply(curDat$name, function(x){extract_labels2(x,df2)})
+    res_df=do.call("rbind",res_lst)
+    openxlsx::writeData(wb,sheet = "vallabels",x = res_df)
 
-    for (j in seq_len(nrow(curDat))) {
-      sheet_name <- curDat$value_labels_id[j]
-      # create hyperlink formula: reference cell A1 of the target sheet
-      #link <- paste0("#'", sheet_name, "'!A1")
-
-      # Write hyperlink into the cell in column "C" (3rd column)
-      writeFormula(
-        wb,
-        sheet = "mapping",
-        x = makeHyperlinkString(sheet = sheet_name, row = 1, col = 4, text=sheet_name),
-        startCol = 4,
-        startRow = j + 1 # +1 because of header ro
-
-      )
-
-      writeFormula(
-        wb,
-        sheet = sheet_name,
-        x = makeHyperlinkString(sheet = "mapping",j + 1, row = , col = 4, text="back to mapping"),
-        startCol = 4,
-        startRow = 1 # +1 because of header ro
-
-      )
-    }
     nb_wb=length(unique(df$workbook))
     #openxlsx::openXL(wb)
     if(nb_wb==1) {
@@ -205,4 +191,59 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
     }
     openxlsx::saveWorkbook(wb,path_to_save,overwrite = overwrite)
   }
+}
+
+
+
+#' Extract data label, variable labels, value labels from excel file
+#'
+#' @param agrisvy
+#' @param dataset_name
+#' @param subfolder
+#' @importFrom readxl read_excel
+#' @importFrom dplyr filter
+#' @importFrom dplyr mutate
+#' @return
+#' @export
+#'
+#' @examples
+extract_labels_xl=function(agrisvy,dataset_name,subfolder=NULL){
+  df_list=.createExcelInfos(agrisvy)
+  df=df_list$files_infos
+  df=df %>% dplyr::filter(file_name==dataset_name)
+
+  if(!is.null(subfolder)) df=df %>% dplyr::filter(workbook==subfolder)
+
+  fileNames <- df$file_name
+
+  if(is.null(subfolder)) {
+    path_to_read=file.path(agrisvyr:::tempfileDir(agrisvy), "Labels",paste0(fileNames[1],".xlsx"))
+  }
+  if(!is.null(subfolder)) {
+    path_to_read=file.path(agrisvyr:::tempfileDir(agrisvy), "Labels",df$workbook[1],paste0(fileNames[1],".xlsx"))
+  }
+  #read adn assign new values
+  datalabel=readxl::read_excel(path=path_to_read,sheet = "datalabel")
+  datalabel=datalabel %>% dplyr::mutate(label=ifelse(!is.na(new_label),new_label,label)) %>% dplyr::pull(label) %>% as.character()
+  if (length(datalabel)==0) datalabel=NULL
+  varlabels=readxl::read_excel(path=path_to_read,sheet = "varlabels")
+  names_varlabels=varlabels$name
+  varlabels=varlabels %>% dplyr::mutate(label=ifelse(!is.na(new_label),new_label,label)) %>% dplyr::pull(label) %>% as.list()
+  names(varlabels)=names_varlabels
+
+  vallabels_df=readxl::read_excel(path=path_to_read,sheet = "vallabels")
+  vallabels_df=vallabels_df %>% dplyr::mutate(label=ifelse(!is.na(new_label),new_label,label))
+  names_vallabels=unique(vallabels_df$var_name)
+  vallabels=lapply(names_vallabels,function(x){
+    vallabX=vallabels_df %>% dplyr::filter(var_name==x)
+    setNames(vallabX$value, vallabX$label)
+  })
+  names(vallabels)=names_vallabels
+
+  out = list(varlabels=varlabels,
+             vallabels=vallabels,
+             datalabel=datalabel)
+
+  out
+
 }

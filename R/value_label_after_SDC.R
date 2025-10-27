@@ -115,6 +115,14 @@ to_vlabelX = function(x,
 
 ############ function for extracting value labels
 
+#' Extracting data label, variables label and value labels of a dataframe
+#'
+#' @param dat
+#' @param cols
+#' @return
+#' @export
+#'
+#' @examples
 extract_labels = function(dat, cols=names(dat)) {
 
   if(!is.data.frame(dat)) stopf("'dat' should be a data.frame.")
@@ -144,7 +152,22 @@ extract_labels = function(dat, cols=names(dat)) {
 
 ############ function for adding labels to factors in a data.frame
 
-add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "values"), droplevels=c("none", "unused")) {
+#' Add data label, variable labels and value labels to a datafame
+#'
+#' @param dat
+#' @param list_labels
+#' @param skip_absent
+#' @param levels
+#' @param droplevels
+#' @param target
+#' @importFrom labelled is.labelled
+#' @importFrom labelled labelled
+#'
+#' @return
+#' @export
+#'
+#' @examples
+add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "values"), droplevels=c("none", "unused"), target) {
 
   if(!is.data.frame(dat)) stopf("'dat' should be a data.frame.")
 
@@ -177,10 +200,17 @@ add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "v
     stopf("'list_labels$datalabel' should be a one-length character vector or NULL.")
   }
 
-  fctrs = dfnames[vapply(dat, is.factor, NA, USE.NAMES=FALSE)]
-  fctrs = fctrs[fctrs %in% vlnames]
+  if(target=="factor"){
+    fctrs = dfnames[vapply(dat, is.factor, NA, USE.NAMES=FALSE)]
+    fctrs = fctrs[fctrs %in% vlnames]
+    for(vn in fctrs) dat[[vn]] = to_vlabelX(dat[[vn]], vallabels=vallabels[[vn]], levels=match.arg(levels), droplevels=match.arg(droplevels))
+  }
 
-  for(vn in fctrs) dat[[vn]] = to_vlabelX(dat[[vn]], vallabels=vallabels[[vn]], levels=match.arg(levels), droplevels=match.arg(droplevels))
+  if(target=="labelled"){
+    fctrs = dfnames[vapply(dat, is.labelled, NA, USE.NAMES=FALSE)]
+    fctrs = fctrs[fctrs %in% vlnames]
+    for(vn in fctrs) dat[[vn]] = labelled::labelled(dat[[vn]],vallabels[[vn]])
+  }
 
   for(vn in vrnames) attr(dat[[vn]], "label") = varlabels[[vn]]
 

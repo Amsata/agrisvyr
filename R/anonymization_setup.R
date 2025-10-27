@@ -483,6 +483,9 @@ if(type=="ano"){
     read_function=readDataFunc(agrisvy),
     write_function=writeDataFunc(agrisvy)
   )
+
+  subfolder <- ifelse(grepl("=>", file_attributes$msg), sub("=>.*", "", file_attributes$msg), NA)
+  if(is.na(subfolder)) subfolder=NULL
   file.create(r_file,showWarnings = FALSE)
   fileConn <- file(r_file)
 
