@@ -8,7 +8,7 @@
 #' @importFrom dplyr pull
 #' @importFrom questionr freq
 
-genFileDes <- function(file, name, id_cols, wb,type,encoding) {
+genFileDes <- function(file, name, id_cols, wb,type,encoding,password,rounds,size) {
   hd1 <- openxlsx::createStyle(
     fontName = "Times New Roman",
     fontSize = 12,
@@ -56,6 +56,7 @@ genFileDes <- function(file, name, id_cols, wb,type,encoding) {
   counter <- 2
   if(type %in% ".dta")   data <- haven::read_dta(file,encoding=encoding)
   if(type %in% c(".SAV",".sav"))   data <- haven::read_sav(file,encoding=encoding)
+  if(type %in% ".enc")   data <- read_enc(file,password,rounds,size)
 
   label <- sapply(data, function(x) attr(x, "label")) %>% as.character()
   variable_names <- names(data)
@@ -143,7 +144,7 @@ genFileDes <- function(file, name, id_cols, wb,type,encoding) {
 #' @importFrom cli cli_progress_along
 #' @importFrom purrr pwalk
 
-genDataFolderDes=function(agrisvy,data,wb_name,id_cols,encoding){
+genDataFolderDes=function(agrisvy,data,wb_name,id_cols,encoding,password){
 
   agrisMsg("FILES DESCRIPTION",paste0("Creating workbook ",wb_name))
 
@@ -151,7 +152,7 @@ genDataFolderDes=function(agrisvy,data,wb_name,id_cols,encoding){
   df <- data[as.character(data[,3]) %in% wb_name,]
 
   purrr::walk(cli::cli_progress_along(df$path),~{
-    genFileDes(df$path[.x],df$file_name[.x],id_cols,wb,type=agrisvy@type,encoding=encoding)
+    genFileDes(df$path[.x],df$file_name[.x],id_cols,wb,type=agrisvy@type,encoding=encoding,password = password,rounds=agrisvy@enc_args[["rounds"]],size=agrisvy@enc_args[["size"]])
   })
   openxlsx::saveWorkbook(wb,file.path(fileDesDir(agrisvy),paste0(wb_name,".xlsx")),overwrite = TRUE)
 
@@ -170,7 +171,7 @@ genDataFolderDes=function(agrisvy,data,wb_name,id_cols,encoding){
 #' @export
 #'
 #' @examples
-genAllFileDes=function(agrisvy,id_cols=NULL,encoding="UTF-8"){
+genAllFileDes=function(agrisvy,id_cols=NULL,encoding="UTF-8",password){
 
   data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
   data_flder=data_flder[length(data_flder)]
@@ -200,7 +201,7 @@ genAllFileDes=function(agrisvy,id_cols=NULL,encoding="UTF-8"){
   )
 
   purrr::walk(unique_wb, function(x) {
-    genDataFolderDes(agrisvy,data_summary,x,id_cols,encoding=encoding)
+    genDataFolderDes(agrisvy,data_summary,x,id_cols,encoding=encoding,password=password)
   })
 
 }

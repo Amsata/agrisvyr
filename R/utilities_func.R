@@ -99,15 +99,38 @@ label_val_gen=function(labels,levels) {
 #' specify haven read function depending on the data type
 #'
 #' @param agrisvy an agrisvy object
+#' @param path
+#' @param enquote
 #'
 #' @return
 #' @export
 #'
 #' @examples
-readDataFunc <- function(agrisvy){
-  if (agrisvy@type==".dta"){res="read_dta"}
-  if (agrisvy@type %in% c(".SAV",".sav")){res="read_sav"}
-return(res)
+readDataFunc <- function(agrisvy,path,enquote=TRUE){
+  if (agrisvy@type==".dta"){
+    if(enquote){
+      res=paste0("read_dta('",path,"')")
+    } else{
+      res=paste0("read_dta(",path,")")
+    }
+  }
+
+  if (agrisvy@type %in% c(".SAV",".sav")){
+    if(enquote) {
+      res=paste0("read_sav('",path,"')")
+    } else{
+      res=paste0("read_sav(",path,")")
+    }
+  }
+  if (agrisvy@type %in% c(".enc")){
+    if(enquote) {
+      res=paste0("read_enc('",path,"', password=Sys.getenv('pw'))")
+    } else{
+      res=paste0("read_enc(",path,", password=Sys.getenv('pw'))")
+    }
+  }
+
+  return(res)
 }
 
 
@@ -115,14 +138,39 @@ return(res)
 #' Specify haven write function depending on the data type
 #'
 #' @param agrisvy an agrisvy object
+#' @param dat
+#' @param path
+#' @param enquote
+#' @param obj_name
 #'
 #' @return
 #' @export
 #'
 #' @examples
-writeDataFunc <- function(agrisvy){
-  if (agrisvy@type==".dta"){res="write_dta"}
-  if (agrisvy@type %in% c(".SAV",".sav")){res="write_sav"}
+writeDataFunc <- function(agrisvy,dat,path,enquote=TRUE,obj_name=NULL){
+
+  if (agrisvy@type==".dta"){
+    if(enquote) {
+      res=paste0("write_dta(",dat,", '",path,"')")
+    } else{
+      res=paste0("write_dta(",dat,", ",path,")")
+    }
+  }
+  if (agrisvy@type %in% c(".SAV",".sav")){
+    if(enquote){
+      res=paste0("write_sav(",dat,", '",path,"')")
+    } else{
+      res=paste0("write_sav(",dat,", ",path,")")
+    }
+  }
+  if (agrisvy@type==".enc"){
+    if(enquote) {
+      res=paste0("write_enc(",dat,", '",path,"',password=Sys.getenv('pw'), rounds=",obj_name,"@enc_args[['rounds']],size=",obj_name,"@enc_args[['size']])")
+    } else{
+      res=paste0("write_enc(",dat,", ",path,",password=Sys.getenv('pw'), rounds=",obj_name,"@enc_args[['rounds']],size=",obj_name,"@enc_args[['size']])")
+    }
+  }
+
   return(res)
 }
 

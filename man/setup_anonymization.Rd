@@ -9,7 +9,12 @@ setup_anonymization(
   overwrite = FALSE,
   open = FALSE,
   encoding = "UTF-8",
-  renv = FALSE
+  rpt_format = "rmd",
+  script_format = "R",
+  renv = FALSE,
+  encryption = FALSE,
+  rounds = 100L,
+  size = 32L
 )
 }
 \arguments{
@@ -18,7 +23,7 @@ setup_anonymization(
 \item{overwrite}{a \code{logical}. If \code{TRUE},overwrite the working folders
 if they already exists.}
 
-\item{encoding}{}
+\item{script_format}{}
 }
 \description{
 This fucntion set up the anonymization working space by creating the folders,

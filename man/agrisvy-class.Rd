@@ -38,17 +38,15 @@ Create an S4 object that store information about the survey
 
 \item{\code{aobDir}}{characterOrNULL.}
 
-\item{\code{rawData}}{dataframeOrNULL.}
-
-\item{\code{cleanData}}{dataframeOrNULL.}
-
-\item{\code{proData}}{dataframeOrNULL.}
-
-\item{\code{anoData}}{dataframeOrNULL.}
-
 \item{\code{workingDir}}{characterOrNULL}
 
-\item{\code{type}}{microdata extension
+\item{\code{enc_args}}{listOrNULL}
+
+\item{\code{rpt_format}}{characterOrNULL}
+
+\item{\code{script_format}}{characterOrNULL}
+
+\item{\code{type}}{characterOrNULL
 Class \code{"sdcMicroObj"}
 
 Class to save all information about the survey}

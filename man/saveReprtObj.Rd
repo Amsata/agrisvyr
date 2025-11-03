@@ -16,7 +16,8 @@ saveReprtObj(
   suda = FALSE,
   hierarchical = FALSE,
   childName = NULL,
-  inputdata_path = NULL
+  inputdata_path = NULL,
+  password = NULL
 )
 }
 \arguments{
@@ -63,6 +64,8 @@ specified.}
 
 \item{childName}{the object name used to save component of the resulting child report
 in the folder containing the anonymization report.}
+
+\item{password}{}
 }
 \description{
 This function help to automatically integrate the results from the current

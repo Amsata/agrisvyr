@@ -116,16 +116,20 @@ assignNewVarLabels=function(df,df_lab) {
 #' @param encoding
 #' @param overwrite
 #' @importFrom tibble tibble
+#' @importFrom labelled val_labels
+#' @importFrom labelled is.labelled
 #' @return
 #' @export
 #'
 #' @examples
 
-export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
+export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
+
+  agrisMsg("EXPORTING LABELS","exporting data, variable and value labels for eventual updates")
   df_list=.createExcelInfos(agrisvy)
   df=df_list$files_infos
   fileNames <- df$file_name
-  i=1
+
   for (i in 1:length(fileNames)) {
     wb <- openxlsx::createWorkbook()
     openxlsx::addWorksheet(wb, "datalabel")
@@ -141,6 +145,10 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
       df2 <- haven::read_sav(df$path[i],encoding = encoding)
     }
 
+
+    if(agrisvy@type %in% ".enc"){
+      df2 <- read_enc(df$path[i],password=password,rounds=agrisvy@enc_args[["rounds"]],size=agrisvy@enc_args[["size"]])
+    }
     datalabel_df=data.frame(
       label=as.character(attr(df2, "label")),
       new_label=character()
@@ -161,8 +169,8 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
     openxlsx::writeData(wb,sheet = "varlabels",x = curDat)
 
     extract_labels2 <- function(var,df) {
-      if (is.labelled(df[[var]])) {
-        labs <- val_labels(df[[var]])
+      if (labelled::is.labelled(df[[var]])) {
+        labs <- labelled::val_labels(df[[var]])
         res=tibble(
           var_name=rep(x=var,times=length(labs)),
           value = unname(labs),
@@ -201,49 +209,79 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE) {
 #' @param dataset_name
 #' @param subfolder
 #' @importFrom readxl read_excel
-#' @importFrom dplyr filter
-#' @importFrom dplyr mutate
 #' @return
 #' @export
 #'
 #' @examples
-extract_labels_xl=function(agrisvy,dataset_name,subfolder=NULL){
-  df_list=.createExcelInfos(agrisvy)
-  df=df_list$files_infos
-  df=df %>% dplyr::filter(file_name==dataset_name)
+  update_labels=function(dat,agrisvy,dataset_name,subfolder=NULL){
 
-  if(!is.null(subfolder)) df=df %>% dplyr::filter(workbook==subfolder)
+    df_list=.createExcelInfos(agrisvy)
 
-  fileNames <- df$file_name
+    df=df_list[["files_infos"]]
 
-  if(is.null(subfolder)) {
-    path_to_read=file.path(agrisvyr:::tempfileDir(agrisvy), "Labels",paste0(fileNames[1],".xlsx"))
+    df <- df[df[["file_name"]] == dataset_name, , drop = FALSE]
+
+    fileNames <- df[["file_name"]]
+
+    # --- Build the file path ---
+    label_dir <- file.path(agrisvy@workingDir,tempfileDir(agrisvy), "Labels")
+
+    if (!nzchar(subfolder)) {
+      path_to_read <- file.path(label_dir, paste0(dataset_name, ".xlsx"))
+    } else {
+      path_to_read <- file.path(label_dir, subfolder, paste0(dataset_name, ".xlsx"))
+    }
+
+    # --- Read Excel (base R cannot read .xlsx directly) ---
+    read_excel_base <- function(path, sheet) {
+      if (file.exists(path)) {
+        readxl::read_excel(path=path,sheet = sheet)
+      } else {
+        stop(paste("Expected CSV for sheet", sheet, "not found:", path))
+      }
+    }
+
+    # --- Read dataframes ---
+    datalabel   <- read_excel_base(path_to_read, "datalabel")
+    varlabels   <- read_excel_base(path_to_read, "varlabels")
+    vallabels_df <- read_excel_base(path_to_read, "vallabels")
+
+    # --- Update dataset label ---
+    if (!is.na(datalabel[["new_label"]][1])) attr(dat, "label") <- datalabel[["new_label"]][1]
+
+    # --- Update variable labels ---
+    names_varlabels <- varlabels[["name"]]
+    varlabel_updated <- !is.na(varlabels[["new_label"]])
+
+    # Replace labels if new_label is present
+    varlabels[["label"]][!is.na(varlabels[["new_label"]])] <- varlabels[["new_label"]][!is.na(varlabels[["new_label"]])]
+
+    # Convert to named list and filter only updated ones
+    varlabels_list <- as.list(varlabels[["label"]])
+    names(varlabels_list) <- names_varlabels
+    varlabels_list <- varlabels_list[varlabel_updated]
+
+    # Apply labels
+    for (vn in names(varlabels_list)) attr(dat[[vn]], "label") <- varlabels_list[[vn]]
+
+    # --- Update value labels ---
+    vallabels_df[["label"]][!is.na(vallabels_df[["new_label"]])] <- vallabels_df[["new_label"]][!is.na(vallabels_df[["new_label"]])]
+    vallabels_df[["update"]] <- !is.na(vallabels_df[["new_label"]])
+
+    names_vallabels <- unique(vallabels_df[["var_name"]][vallabels_df[["update"]]])
+
+    # Create value label lists
+    vallabels <- lapply(names_vallabels, function(x) {
+      subset_df <- vallabels_df[vallabels_df[["var_name"]] == x, , drop = FALSE]
+      vals <- subset_df[["value"]]
+      names(vals) <- subset_df[["label"]]
+      vals
+    })
+
+    names(vallabels) <- names_vallabels
+
+    # Attach value labels as attribute
+    for (vn in names_vallabels) attr(dat[[vn]], "labels") <- vallabels[[vn]]
+
+    return(dat)
   }
-  if(!is.null(subfolder)) {
-    path_to_read=file.path(agrisvyr:::tempfileDir(agrisvy), "Labels",df$workbook[1],paste0(fileNames[1],".xlsx"))
-  }
-  #read adn assign new values
-  datalabel=readxl::read_excel(path=path_to_read,sheet = "datalabel")
-  datalabel=datalabel %>% dplyr::mutate(label=ifelse(!is.na(new_label),new_label,label)) %>% dplyr::pull(label) %>% as.character()
-  if (length(datalabel)==0) datalabel=NULL
-  varlabels=readxl::read_excel(path=path_to_read,sheet = "varlabels")
-  names_varlabels=varlabels$name
-  varlabels=varlabels %>% dplyr::mutate(label=ifelse(!is.na(new_label),new_label,label)) %>% dplyr::pull(label) %>% as.list()
-  names(varlabels)=names_varlabels
-
-  vallabels_df=readxl::read_excel(path=path_to_read,sheet = "vallabels")
-  vallabels_df=vallabels_df %>% dplyr::mutate(label=ifelse(!is.na(new_label),new_label,label))
-  names_vallabels=unique(vallabels_df$var_name)
-  vallabels=lapply(names_vallabels,function(x){
-    vallabX=vallabels_df %>% dplyr::filter(var_name==x)
-    setNames(vallabX$value, vallabX$label)
-  })
-  names(vallabels)=names_vallabels
-
-  out = list(varlabels=varlabels,
-             vallabels=vallabels,
-             datalabel=datalabel)
-
-  out
-
-}

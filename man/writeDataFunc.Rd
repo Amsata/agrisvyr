@@ -4,10 +4,12 @@
 \alias{writeDataFunc}
 \title{Specify haven write function depending on the data type}
 \usage{
-writeDataFunc(agrisvy)
+writeDataFunc(agrisvy, dat, path, enquote = TRUE, obj_name = NULL)
 }
 \arguments{
 \item{agrisvy}{an agrisvy object}
+
+\item{obj_name}{}
 }
 \description{
 Specify haven write function depending on the data type

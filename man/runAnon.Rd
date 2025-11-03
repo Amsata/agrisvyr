@@ -4,10 +4,10 @@
 \alias{runAnon}
 \title{Run all anonymization scripts}
 \usage{
-runAnon(agrisvy)
+runAnon(agrisvy, with_final = TRUE)
 }
 \arguments{
-\item{agrisvy}{}
+\item{with_final}{}
 }
 \description{
 Run all anonymization scripts

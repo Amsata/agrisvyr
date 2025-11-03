@@ -4,10 +4,12 @@
 \alias{readDataFunc}
 \title{specify haven read function depending on the data type}
 \usage{
-readDataFunc(agrisvy)
+readDataFunc(agrisvy, path, enquote = TRUE)
 }
 \arguments{
 \item{agrisvy}{an agrisvy object}
+
+\item{enquote}{}
 }
 \description{
 specify haven read function depending on the data type
