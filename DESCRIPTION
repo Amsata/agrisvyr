@@ -27,7 +27,6 @@ Imports:
     openxlsx,
     plyr,
     purrr,
-    quarto,
     questionr,
     R.utils,
     renv,
@@ -35,10 +34,7 @@ Imports:
     rlang,
     stats,
     tidyr,
-    usethis,
-    sf,
-    terra,
-    exactextractr
+    usethis
 Remotes: github::sdcTools/sdcMicro
 RoxygenNote: 7.3.2
 Depends: 
@@ -46,4 +42,5 @@ Depends:
 VignetteBuilder: knitr
 Suggests: 
     rmarkdown,
+    quarto,
     survey
