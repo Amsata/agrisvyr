@@ -1,0 +1,110 @@
+---
+title: "{{agrisvy@svyName}}"
+subtitle: "Anonymization report"
+author: '{{agrisvy@author}}'
+date: "`r Sys.Date()`"
+format:
+  pdf:
+    toc: true
+    number_sections: true
+classoption: portrait, a4paper
+---
+
+
+# Dataset: {{file_attributes$msg}}
+
+
+
+
+```{r}
+#|  include: FALSE
+
+rm(list = ls())
+wd="{{agrisvy@workingDir}}"
+
+library(dplyr)
+library(agrisvyr)
+library(tidyr)
+library(questionr)
+library(labelled)
+library(readxl)
+library(tidyr)
+library(haven)
+
+
+options(scipen = 999)
+knitr::opts_chunk$set(echo = TRUE)
+options(knitr.duplicate.label = "allow")
+
+# Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
+purrr::walk(file.path(wd,"_R",list.files(path=file.path(wd,"_R"),pattern = ".R$")),source)
+preprocMessage("{{file_attributes$msg}}")
+
+```
+## Loading files
+
+```{r}
+#| include: FALSE
+
+data={{file_attributes$read_function}}
+
+variable_classification=read_excel(path=file.path(wd,"{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
+
+#data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+```
+
+# Data processing before removing variables classified as DI or D
+
+```{r}
+#| include: FALSE
+
+#check for duplicates
+# is_id(data,c())
+#COMMENT:
+```
+
+## Removing variable classified as DI of D
+
+```{r}
+#| include: FALSE
+
+variables_to_delete=variable_classification %>% filter(Classification %in% c("DI","D")) %>% pull(Name)
+variables_to_delete=variables_to_delete[!is.na(variables_to_delete)]
+variables_to_delete
+data=data %>% dplyr::select(-any_of(variables_to_delete))
+```
+
+## Renaming variables , if any
+
+```{r}
+#| include: FALSE
+
+data=data %>% dplyr::rename()
+```
+
+
+## Labelling values or correcting value labels, if any
+
+```{r}
+#| include: FALSE
+
+data=data %>% set_value_labels()
+```
+
+## Defining or Correction variable labels , if any
+
+```{r}
+#| include: FALSE
+
+#data=agrisvyr::update_labels(data,{obj_name},dataset_name="{dst_name}",subfolder="{subfolder}")
+```
+
+## saving the processed data
+
+```{r}
+#| include: FALSE
+
+labelled::look_for(data)
+{{file_attributes$write_function}}
+```
+

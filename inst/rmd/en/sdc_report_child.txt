@@ -1,0 +1,211 @@
+```{r lab-sdc, echo=FALSE,warning=FALSE}
+obj={{read_function}}
+obj_i=obj@intialObj
+obj_f=obj@finalObj
+unit=obj@unit
+hierarchy=obj@hierarchy
+
+# condition for chunk activation
+suda_cond=obj@suda
+global_cond=obj@global
+individual_cond=obj@individual | suda_cond
+hierarchical=obj@hierarchical
+```
+
+
+```{r lab-suda, echo=FALSE,warning=FALSE}
+if(suda_cond) {
+  obj_i=suda2(obj_i)
+  suda_i=obj_i@risk$suda2$disScore
+  obj_f=suda2(obj_f)
+  suda_f=obj_f@risk$suda2$disScore
+}
+
+```
+
+`r glue::glue("
+## Dataset {unit}
+
+### Disclosure risk assessment of {unit}
+
+#### Disclosure risk assessment for categorical quasi-identifiers
+")`
+
+`r if(obj@global){ glue::glue("
+* **global risk**
+
+Taking into account the sample weights, the modeled population frequencies yield an average individual risk of  **{obj_i@originalRisk$global$risk_pct}** percent. This can be interpreted as the average probability that a {unit} is correctly re-identified.
+
+The threshold for an acceptable level of risk depends on several factors, such as how the dataset is disseminated, and is generally in the range of 1-5%.
+
+Another angle of perceiving the global risk consists of looking the expected number of re-idetification (ER) which is  **{obj_i@originalRisk$global$risk_ER}** {unit}.")}`
+
+
+
+```{r global-risk,echo=FALSE, eval=global_cond}
+agrisvyr::RenderGlobalRisk(obj = obj,time="initial")
+
+```
+
+`r glue::glue("
+
+* **K-anonymity**
+
+**{sum(obj_i@originalRisk$individual[,2]<2)} observations** (**{round(100*sum(obj_i@originalRisk$individual[,2]<2)/nrow(obj_i@originalRisk$individual), digits = 1)}% of {unit}**)  violate the 2-anonymity/are unique with respect to their key. This means that the combination of values for the selected key variables is unique in the dataset. Unique {unit} are considered to have a high risk of being re-identified. **{sum(obj_i@originalRisk$individual[,2]<3)} observations** (**{round(100*sum(obj_i@originalRisk$individual[,2]<3)/nrow(obj_i@originalRisk$individual), digits = 1)}% of {unit}**) violate 3-anonymat and **{sum(obj_i@originalRisk$individual[,2]<5)} observations** (**{round(100*sum(obj_i@originalRisk$individual[,2]<5)/nrow(obj_i@originalRisk$individual), digits = 1)}% of {unit}**) violate 5-anonymity.
+
+")`
+
+```{r kanonymity,echo=FALSE,warning=FALSE}
+agrisvyr::renderKanoTab(obj = obj,time="initial")
+```
+
+`r if(obj@individual){ glue::glue("
+
+* **Probabilistic individual risk**
+
+The average individual risk of {unit}  is **{round(mean(obj_i@risk$individual[,1])*100,2)}%**. On the other hand, the greatest individual risk of {unit} amounts to **{round(max(obj_i@risk$individual[,1])*100,2)}%** and half of the {unit} have an individual risk lower than **{round(quantile(obj_i@risk$individual[,1],0.)*100,4)}%** and 10% of {unit} have an individual risk exceeding **{round(quantile(obj_i@risk$individual[,1],0.9)*100,2)}%**
+
+")}`
+
+```{r, ind-prob-risk,echo=FALSE,warning=FALSE}
+
+if(individual_cond) {
+
+if(obj@individual==TRUE & obj@suda==TRUE){
+  renderRiskIndSUmmary(obj,time="initial")
+  if((max(suda_i,na.rm = TRUE)==0)){
+  hist(obj_i@risk$individual[,1],main=glue::glue("Distribution of individual risk of {unit}"),cex.main=0.7,
+     ylab="Frequency",xlab="risk")
+} else {
+
+  par(mfrow=c(1,2))
+hist(obj_i@risk$individual[,1],main=paste0("Distribution of individual risk of ",unit),cex.main=0.7,
+     ylab="Frequency",xlab="risk")
+hist(suda_i[suda_i!=0],main=paste0("Distribution of non-zero DIS scores of ",unit),cex.main=0.7,
+     ylab="Frequency",xlab="score")
+}
+}
+
+if(obj@individual==TRUE & obj@suda==FALSE){
+  renderRiskIndSUmmary(obj,time="initial")
+   hist(obj_i@risk$individual[,1],main=glue::glue("Distribution of individual risk of {unit}"),cex.main=0.7,
+     ylab="Frequency",xlab="risk")
+}
+
+
+if(obj@individual==FALSE & obj@suda==TRUE){
+
+  if((max(suda_i,na.rm = TRUE)!=0)){
+hist(suda_i[suda_i!=0],main=paste0("Distribution of non-zero DIS scores of ",unit),cex.main=0.7,
+     ylab="Frequency",xlab="score")
+}
+}
+}
+
+```
+
+
+`r if(obj@suda){ glue::glue("
+
+* **SUDA Risk**
+
+All {unit} without a unique key combination, systematically, have a SUDA-DIS score of 0. This number amounts to {sum(suda_i==0)} in the microdata. The number of {unit} with a non-zero DIS risk is {length(suda_i[suda_i!=0])} ( {round(length(suda_i[suda_i!=0])/sum(suda_i==0)*100,2)} % of holdings). The average score for these holdings is {round(mean(suda_i[suda_i!=0])*100,2)}% and the maximum DIS score is {round(max(suda_i[suda_i!=0])*100,2)}%.
+
+")}
+`
+
+`r if(hierarchical==TRUE){glue("* **Hierarchical risk of {hierarchy} from {unit}s**\n
+The global hierarchical disclosure risk of {hierarchy} from {unit} is {round(obj_i@risk$global$hier_risk_pct,4)} %. The expected number of re-identification from the hierarchical structure is {round(obj_i@risk$global$hier_risk_ER)}.")}`
+
+
+```{r hier-risk,echo=FALSE}
+if (hierarchical) HierRiskSummary(obj@intialObj,dfl=TRUE,time="initial",obj)
+```
+
+
+`r if(hierarchical){glue::glue(
+"At {hierarchy}s level, the average hierarchical disclosure risk from {unit}s i  is **{round(mean(obj_i@risk$individual[,4])*100,2)}**%. On the other hand, the greatest hierarchical disclosure risk of {hierarchy} amounts to **{round(max(obj_i@risk$individual[,4])*100,2)}**% and half of the {hierarchy} have an hierarchical risk lower than **{round(quantile(obj_i@risk$individual[,4],0.5)*100,4)}**% and 10% of {hierarchy} have an hierarchical risk exceeding **{round(quantile(obj_i@risk$individual[,4],0.9)*100,2)}**%")
+}`
+
+#### Risk measure for continous variables
+
+### Anonymization of the `r unit`
+
+\textcolor{red}{[Describe the main anonymization of categorical variable applied]}
+
+
+#### Anonymization of categorical quasi-identifers
+
+`r if(obj@global) { glue::glue("
+After anonymization, the overall risk dropped by {round(obj_i@risk$global$risk_pct-obj_f@risk$global$risk_pct,4)} percentage points from {round(obj_i@risk$global$risk_pct,4)} to {round(obj_f@risk$global$risk_pct,4)}. As for the expected number of re-identification, it has decreased by {round((obj_i@risk$global$risk_ER-obj_f@risk$global$risk_ER)/obj_i@risk$global$risk_ER*100,4)} percent
+")}
+`
+
+```{r  ano-global,echo=FALSE,warning=FALSE}
+
+if(global_cond) {
+  t1 <- RiskIndSUmmary(obj@intialObj,df=TRUE,time="initial",obj)
+t2 <- RiskIndSUmmary(obj@finalObj,df=TRUE,time="final",obj)
+knitr::kable(list(t1 , t2),caption = "Initial situation(left) vs. final situation(right)") %>%  kable_styling(latex_options = "HOLD_position") %>% column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, background = "#F7DC6F")
+}
+
+
+```
+
+
+`r glue::glue(
+"After  the anonymization, {sum(obj_f@risk$individual[,\"fk\"]<2)} of {unit}s ({round(100*sum(obj_f@risk$individual[,\"fk\"]<2)/nrow(obj_f@risk$individual), digits = 1)}% of {unit}s )  violate the 2-anonymity,  {sum(obj_f@risk$individual[,\"fk\"]<3)} {unit}s ({round(100*sum(obj_f@risk$individual[,\"fk\"]<3)/nrow(obj_f@risk$individual), digits = 1)}% of {unit}s) violate 3-anonymat and {sum(obj_f@risk$individual[,\"fk\"]<5)} {unit}s ({round(100*sum(obj_f@risk$individual[,\"fk\"]<5)/nrow(obj_f@risk$individual), digits = 1)}%  of {unit}s) violate 5-anonymity.
+
+")`
+
+
+```{r ano-kano,echo=FALSE,warning=FALSE}
+
+t1=KanoTab(obj@intialObj,df=TRUE,levels=2:5,time="initial",obj)
+t2=KanoTab(obj@finalObj,df=TRUE,levels=2:5,time="final",obj)
+knitr::kable(list(t1 , t2),caption = "Initial situation(left) vs. final situation(right)")%>%  kable_styling(latex_options = "HOLD_position")%>% column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, background = "#F7DC6F")
+
+
+if (!is.null(obj_f@localSuppression)){
+  plot.localSuppression(obj_f@localSuppression)+theme_classic()+
+    theme(legend.position="none",
+          axis.text.x=element_text(angle=45))
+}
+
+```
+
+
+`r if(obj@individual){ glue::glue("
+the greatest individual risk of {unit}s has dropped of {round(max(obj_i@risk$individual[,1])*100-max(obj_f@risk$individual[,1])*100,4)} (from {round(max(obj_i@risk$individual[,1]),4)}% to {round(max(obj_f@risk$individual[,1]),4)}%) . Half of the {unit}s have  now an individual risk lower than  {round(quantile(obj_f@risk$individual[,1],0.5)*100,4)}% and 10% of {unit} have an individual risk exceeding {round(quantile(obj_f@risk$individual[,1],0.9)*100,2)} %
+")}`
+
+
+
+`r if(obj@hierarchical==TRUE){glue::glue("
+After anonymization, the overall hierarchical risk of identification of {hierarchy}s from {unit}s dropped by {round(obj_i@risk$global$hier_risk_pct-obj_f@risk$global$hier_risk_pct,4)} percentage points from {round(obj_i@risk$global$hier_risk_pct,4)} to {round(obj_f@risk$global$hier_risk_pct,4)}. As for the expected number of re-identification, it has decreased by {round((obj_i@risk$global$hier_risk_ER-obj_f@risk$global$hier_risk_ER)/obj_i@risk$global$hier_risk_ER*100,4)} %.
+")}`
+
+```{r ano-hier-risk, echo=FALSE}
+
+if(hierarchical) {
+  t1=HierRiskSummary(obj@intialObj,dfl=TRUE,time="initial",obj)
+  t2=HierRiskSummary(obj@finalObj,dfl=TRUE,time="final",obj)
+  knitr::kable(list(t1 , t2),caption = "Initial situation(left) vs. final situation(right)") %>%  kable_styling(latex_options = "HOLD_position") %>% column_spec(1, bold = T, border_right = T) %>%
+    column_spec(2, background = "#F7DC6F")
+}
+
+
+```
+
+
+#### Anonymization of continous quasi-identifers
+
+\textcolor{red}{[Describe the anonymization measures taken for continous variables]}
+
+#### others anonymization measures
+
+\textcolor{red}{[Describe the other anonymization measures applied to the microdata of {unit} if any]}
+
+

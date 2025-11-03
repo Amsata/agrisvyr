@@ -1,0 +1,71 @@
+---
+title: "Information loss analysis"
+subtitle: "Information loss assessment of the anonymization of {{agrisvy@svyName}}"
+author: '{{agrisvy@author}}'
+date: "`r Sys.Date()`"
+format:
+  pdf:
+    toc: true
+    number_sections: true
+classoption: landscape, a4paper
+---
+
+```{r}
+#| label: setup
+#| include: FALSE
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(sdcMicro)
+library(agrisvyr)
+library(survey)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(kableExtra)
+library(glue)
+library(rlang)
+options(scipen = 999)
+#source("format_table.R")
+options(knitr.duplicate.label = "allow")
+
+```
+
+# Introduction
+
+
+\textcolor{red}{[Décrivez l’enquête en présentant les principaux objectifs, le nombre de passages et/ou de saisons, le plan de sondage ainsi que la période de collecte des données pour les différents passages et saisons. Ces informations peuvent être extraites du rapport de l’enquête si celui-ci est déjà publié]}
+
+* Jeux de données de l’enquête
+```{r}
+#| label: dataset-f
+#| echo: FALSE
+data=as.data.frame(read_excel(path="microdata_info.xlsx"))
+info_col=length(names(data))
+data %>% kbl() %>% column_spec(info_col, width = "8cm")
+
+```
+
+\textcolor{red}{[Rappel de l’engagement de l’institut à diffuser les microdonnées et de la nécessité du contrôle de la divulgation statistique (CDS) pour protéger la confidentialité des répondants]}
+
+# Analyse de la perte d'information
+
+L’anonymisation, également appelée contrôle de la divulgation statistique (CDS), est une procédure essentielle de traitement des données visant à minimiser le risque de divulgation non autorisée d’informations sensibles. Ce processus implique l’application de différentes techniques statistiques destinées à protéger l’identité des individus et d’autres attributs sensibles contenus dans le jeu de données. Il convient toutefois de souligner que l’application de ces méthodes de CDS entraîne généralement une diminution de l’utilité globale des microdonnées, un phénomène connu sous le nom de « perte d’information ».
+
+Pour évaluer et quantifier de manière exhaustive cette perte d’information, diverses méthodes d’évaluation sont utilisées. Le choix de la méthode d’évaluation dépend de la nature des quasi-identifiants présents dans le jeu de données, ceux-ci pouvant être de nature catégorielle ou numérique.
+
+**Évaluation de la perte d'information pour les quasi-identifiants catégoriels**
+
+* Nombre de valeurs manquantes introduites lors de l'anonymisation
+* Le coefficient Khi-2 (ou chi-deux) entre les variables categoriels
+
+**Évaluation de la perte d'information pour les quasi-identifiants numériques**
+
+* The percentage change of average or total can be calculated using the following formula:
+    $$\text{Percentage change}=\frac{\text{New Value}-\text{Old value}}{\text{Old value}}\times 100$$
+
+* Si la valeur se trouve ou non dans l'intervalle de confiance.
+* Pourcentage de chevauchement entre l'intervalle de confiance original et final des estimations
+* Corrélation entre variables continues
+
+es sections suivantes contiennent l'application de ces évaluations de la perte d'information sur les ensembles de données anonymisés.
+

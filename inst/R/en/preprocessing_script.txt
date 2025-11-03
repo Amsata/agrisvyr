@@ -1,0 +1,67 @@
+#'*|----------------------------------------------------------------------------|*
+#'*|--| Anonymization of {{addSpace(agrisvy@svyName,26)}}
+#'*|--| Author: {{addSpace(agrisvy@author,17)}}
+#'*|--| Date: {{addSpace(Sys.Date(),20)}}
+#'*|----------------------------------------------------------------------------|*
+#'*|--| Dataset: {{addSpace(file_attributes$msg,18)}}
+#'*|----------------------------------------------------------------------------|*
+
+rm(list = setdiff(ls(),"{{obj_name}}"))
+
+library(dplyr)
+library(agrisvyr)
+library(tidyr)
+library(questionr)
+library(labelled)
+library(readxl)
+library(tidyr)
+library(haven)
+
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
+
+preprocMessage("{{file_attributes$msg}}")
+
+data={{file_attributes$read_function}}
+
+variable_classification=read_excel(path="{{file_attributes$xlsx_var_class}}",sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
+
+data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+
+#******************************************************************
+# Data processing before removing variables classified as DI or D *
+#******************************************************************
+#check for duplicates
+# is_id(data,c())
+#COMMENT:
+
+
+
+#*****************************************************************
+# Removing variable classified as DI of D         *
+#*****************************************************************
+variables_to_delete=variable_classification %>% filter(Classification %in% c("DI","D")) %>% pull(Name)
+variables_to_delete=variables_to_delete[!is.na(variables_to_delete)]
+variables_to_delete
+data=data %>% dplyr::select(-any_of(variables_to_delete))
+
+
+#*****************************************************************
+#                 Renaming variables , if any                    *
+#*****************************************************************
+data=data %>% dplyr::rename()
+
+#*****************************************************************
+# Labelling values or correcting value labels, if any    *
+#*****************************************************************
+data=data %>% set_value_labels()
+
+#*****************************************************************
+# Defining or Correction variable labels , if any    *
+#*****************************************************************
+data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+
+#*****************************************************************
+#         saving the processed data
+#*****************************************************************
+labelled::look_for(data)
+{{file_attributes$write_function}}

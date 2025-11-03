@@ -1,0 +1,116 @@
+---
+title: "{{agrisvy@svyName}}"
+subtitle: "Informe de anonimización"
+author: '{{agrisvy@author}}'
+date: "`r Sys.Date()`"
+format:
+  pdf:
+    toc: true
+    number_sections: true
+classoption: portrait, a4paper
+---
+
+```{r}
+#| label: setup
+#| include: FALSE
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(agrisvyr)
+library(sdcMicro)
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(kableExtra)
+library(glue)
+library(rlang)
+options(scipen = 999)
+options(knitr.duplicate.label = "allow")
+
+```
+
+# Introducción
+
+\textcolor{red}{[Describa la encuesta presentando los principales objetivos, el número de series y/o temporadas, el plan de muestreo y el período de recolección de datos para las diferentes series y temporadas. Esta información puede extraerse del informe de la encuesta si ya ha sido publicado.]}
+
+* Conjuntos de datos de la encuesta
+
+```{r}
+#| label: dataset-f
+#| echo: FALSE
+data=as.data.frame(read_excel(path="microdata_info.xlsx"))
+info_col=length(names(data))
+data %>% kbl() %>% column_spec(info_col, width = "10cm")
+```
+
+
+\textcolor{red}{[ Recordar el compromiso del instituto en cuanto a la difusión de los microdatos, así como la necesidad de aplicar técnicas de control de la divulgación estadística (CDE) para proteger la confidencialidad de los encuestados.]}
+
+
+# Análisis del escenario de divulgación
+
+La anonimización, o el control de la divulgación estadística (CDE), es un proceso de tratamiento de los datos destinado a reducir el riesgo de divulgación. En el marco de la Encuesta Agrícola a los Hogares, la unidad principal a proteger, desde el punto de vista ético y legal, es la explotación agrícola (ya sea explotaciones familiares o empresas agrícolas).
+
+Sin embargo, estas explotaciones pueden ser indirectamente identificables a través de ciertas unidades, legales o no, relacionadas, como las parcelas, los miembros, los cultivos o el ganado. De hecho, la difusión de una parcela en los microdatos puede permitir identificar la explotación a la que pertenece, y así revelar información confidencial sobre la misma.
+
+En este sentido, más allá de la prevención de la divulgación de las explotaciones agrícolas, también es necesario garantizar la confidencialidad de las parcelas, los cultivos y el ganado.
+
+Las unidades presentes en los microdatos pueden ser divulgadas de dos maneras :
+
+*Divulgación de identidad* : La divulgación de identidad puede ocurrir si un intruso logra hacer coincidir registros de los microdatos divulgados con bases de datos externas que contengan información identificativa (como la región, la edad, el sexo, o cualquier otra variable presente en los microdatos que también podría existir en un registro externo).
+
+*Divulgación de atributos* : El intruso puede aprender información confidencial sin necesidad de hacer una correspondencia con otra base de datos. Esto se llama divulgación de atributos. Una situación particular es la denominada del 'vecino curioso'. Este escenario supone que el intruso tiene suficiente información sobre una o varias unidades, proveniente de su conocimiento personal. En otras palabras, el intruso forma parte del círculo de conocimiento de una unidad estadística.
+
+El objetivo del análisis de los escenarios de divulgación es identificar las variables de identificación así como las variables sensibles que el intruso podría utilizar para revelar información. Este ejercicio depende, en particular, del entorno en el que se difunden los microdatos.
+
+
+El ejercicio de análisis del escenario de divulgación consiste en clasificar todas las variables presentes en los diferentes conjuntos de datos en una de las siguientes categorías :
+
+* D : variables a eliminar (no útiles para el usuario)
+* Q : cuasi-identificadores (a anonimizar)
+* DI: Identificadores directos, a eliminar (nombre, dirección, número de teléfono, etc.)
+* S : variables sensibles
+* L : variables relacionadas con un cuasi-identificador
+* ID: variables de identificación
+* – : variables que no requieren control de divulgación estadística (CDE) y que pueden ser divulgadas tal como están
+
+# Tratamiento de los datos antes de la anonimización
+
+
+\textcolor{red}{[Describir las principales tareas realizadas durante el preprocesamiento de los datos.]}
+
+# Métodos de evaluación del riesgo de divulgación
+
+La evaluación del riesgo de divulgación es una de las etapas clave del proceso de control de la divulgación estadística (CDE). Para evaluar este riesgo de divulgación, generalmente recurrimos a los siguientes métodos :
+
+## cuasi-identificadores categóricos
+
+* **k-anonimato**(k-anonymity): Destacar la unicidad de los registros en función de la combinación de los cuasi-identificadores categóricos.
+
+* **Algoritmo de Detección de Únicos Especiales (SUDA)**: Ir más allá de la unicidad de la combinación de los cuasi-identificadores y examinar la unicidad dentro del subconjunto de combinaciones de cuasi-identificadores (único especial).
+
+*  **Riesgo probabilístico**
+
+Evaluar el riesgo de divulgación en términos de probabilidad. Las unidades que tengan la misma combinación de claves tendrán el mismo riesgo.
+
+* Número esperado (esperanza matemática) de reidentificaciones: Una medida global del riesgo
+
+## Para los cuasi-identificadores continuos
+
+En la literatura, el riesgo asociado a las variables continuas se calcula a posteriori.
+
+Dada la estructura de los datos, pondremos énfasis en el extremismo de las observaciones en relación con las variables continuas.
+
+* **El índice de Gini**:  Evaluar la magnitud de la desigualdad en ciertas variables (Producción, Superficie, Valores de ahorro, etc.)
+
+* **La curva de Lorenz**:  La curva de Lorenz muestra las diferencias entre la distribución empírica y una distribución perfectamente igual, mostrando la diferencia entre los dos gráficos.
+
+* Una métrica personalizada que hemos desarrollado para detectar la asimetría a la derecha de las variables continuas: La función de asimetría fue descrita por Groeneveld, R. A. y Meeden ($right_skewedness=\lambda(\alpha)=\frac{Q(\alpha)+Q(1-\alpha)-2\times median}{Q(1-\alpha)-Q(\alpha)}$) calculado para los valores que están por encima de la moda estadística (M)
+
+$$RS=\lambda_{\{x_i>M\}}(\alpha)=\frac{Q_{\{x_i>M\}}(\alpha)+Q_{\{x_i>M\}}(1-\alpha)-2\times median_{\{x_i>M\}}}{Q_{\{x_i>M\}}(1-\alpha)-Q_{\{x_i>M\}}(\alpha)}  $$ with $\alpha=0.05$
+
+Este coeficiente de asimetría varía de -1 a +1. Los valores cercanos a +1 indican la presencia de una cola derecha muy deformada en la distribución de la variable
+
+# Evaluación del riesgo y anonimización de los conjuntos de datos
+
+
+

@@ -1,0 +1,149 @@
+```{r lab-sdc, echo=FALSE,warning=FALSE}
+
+raw_df={{read_function}}("{{inputdata_path}}")
+ano_df={{read_function}}("{{anodata_path}}")
+
+eval_cond=FALSE
+```
+
+# INFORMATION LOSS ASSESSMENT FOR THE DATASET: {{df_name}}
+
+## Missing value introduced by the anonymization process.
+
+### Missing value count by categorical quasi-identifers.
+
+This table shows the number of missing value introduced during the anonymization process for each categorical quasi-identifier. It also highlights the corresponding percentage of the number of missing value introduced during anonymization.
+
+
+```{r,results='asis',echo=FALSE}
+
+keyvars=c({{trimws(paste('"',names(intialObj@origData)[intialObj@keyVars],'"',sep="",collapse = ","))}})
+raw_df=raw_df %>% dplyr::mutate(across(all_of(keyvars),labelled::to_character))
+ano_df=ano_df %>% dplyr::mutate(across(all_of(keyvars),labelled::to_character))
+
+miss_values_sum(obj_i=raw_df,obj_f=ano_df,df=TRUE,vars = keyvars)
+
+```
+
+The following tables highlights the distribution of the missing values introduced during the anonymization across the different values of each quasi-identifier.
+
+
+```{r,results='asis',echo=FALSE}
+
+for (var in keyvars) { print(display_miss(obj_i=raw_df,obj_f=ano_df,var,df=TRUE))}
+
+```
+
+### Statistical dependancy assessment.
+
+The subsequent matrix delves into the analytical validity of the statistical dependency among various categorical quasi-identifiers.
+
+In the upper triangle of the matrix, logical values (`TRUE` or `FALSE`) are presented. A `TRUE` value indicates a shift in the dependency direction between the two quasi-identifiers. Specifically, if the quasi-identifiers were dependent in the raw data, the `Khi2` test in the anonymized data signifies their independence, and vice versa. Conversely, a `FALSE` value suggests that the `Khi2` test, both before and after anonymization, leads to the same conclusion regarding the dependency status of the two variables.
+
+In the lower triangle of the matrix, the change in the `p-value` of the `Khi2` test is expressed in percentage points. It is essential to recognize that alterations in the p-value do not necessarily correspond to changes in the dependency direction between the two variables.
+
+This nuanced analysis provides a detailed assessment of how the `Khi2` test outcomes evolve during the anonymization process, contributing valuable insights into the statistical relationships among categorical quasi-identifiers.
+
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+
+cat_relation(obj_i=raw_df,obj_f=ano_df,alpha = 0.05,vars = keyvars,df=TRUE) %>%
+  kableExtra::kbl(align='cc',caption=paste0("dependency change assessment "),booktabs = T) %>%
+    kableExtra::kable_classic_2(full_width = F) %>%
+    kableExtra::column_spec(1, bold = T, border_right = T) %>%
+    kableExtra::kable_styling(latex_options = "HOLD_position")
+
+```
+
+## Analysis of the change of statistical indicators from categorical quasi-identifiers.
+
+The tables below provide a comprehensive analysis of the effects of anonymization on statistical indicators derived from categorical quasi-identifiers. These indicators encompass both proportions and totals. The inclusion of the coefficient of variation and sample frequency in each table serves to gauge the reliability of the initial indicator calculated using raw data.
+
+Each table presents an in-depth examination of whether the indicator computed in the anonymized data falls within the original confidence interval. Additionally, for total indicators, the percentage change is outlined, while for proportion indicators, the percentage point change is specified. These values are included to convey the magnitude of the alterations observed in the respective indicators post-anonymization. This comprehensive approach aims to provide a thorough understanding of the impact of anonymization on statistical metrics, aiding in the evaluation of the reliability and integrity of the data throughout the process.
+
+
+
+```{r,echo=FALSE,eval=FALSE}
+design=agrisvyr::surveyDesign(raw_df,ano_df,df=TRUE,
+                              ids=~to_specify,
+                            weights =~to_specify
+                            )
+
+```
+
+### Univariate indicators
+
+**Comparison for proportion**
+
+```{r,results='asis',echo=FALSE,eval=FALSE}
+
+for (v in keyvars) {
+
+  print(compare_ind_cat_mean(v,design)
+)
+}
+
+```
+
+**Comparison for total**
+
+```{r,results='asis',echo=FALSE,eval=FALSE}
+
+for (v in keyvars) {
+
+  print(compare_ind_cat_tot(v,design)
+)
+}
+
+```
+
+### Bivariate indicators
+
+**Comparison for proportion**
+
+```{r,echo=FALSE,eval=FALSE}
+
+
+compare_ind_cats("var1","var2",design)
+
+```
+
+**Comparison for total**
+
+```{r,echo=FALSE,eval=FALSE}
+compare_ind_cats_tot("var1","var2",design)
+
+```
+
+
+## Information loss assessment of continous quasi-identifiers
+
+**Comparison af average**
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+
+numvars=c({{trimws(paste('"',names(intialObj@origData)[intialObj@numVars],'"',sep="",collapse = ","))}})
+
+confint_check_num(design,indicator="mean",numvars)
+
+```
+
+**Comparison of total**
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+
+numvars=c({{trimws(paste('"',names(intialObj@origData)[intialObj@numVars],'"',sep="",collapse = ","))}})
+
+confint_check_num(design,indicator="total",numvars)
+
+```
+
+**Comparison of median**
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+
+numvars=c({{trimws(paste('"',names(intialObj@origData)[intialObj@numVars],'"',sep="",collapse = ","))}})
+
+confint_check_num(design,indicator="median",numvars)
+
+```

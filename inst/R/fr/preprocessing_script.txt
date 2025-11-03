@@ -1,0 +1,86 @@
+#'*|----------------------------------------------------------------------------|*
+#'*|--| Anonymisation de: {{addSpace(agrisvy@svyName,26)}}
+#'*|--| Autheur: {{addSpace(agrisvy@author,17)}}
+#'*|--| Date: {{addSpace(Sys.Date(),20)}}
+#'*|----------------------------------------------------------------------------|*
+#'*|--| Jeu de données: {{addSpace(file_attributes$msg,18)}}
+#'*|----------------------------------------------------------------------------|*
+
+rm(list =ls()) # Nettoyer l'environement des variables
+
+library(dplyr)
+library(agrisvyr)
+library(tidyr)
+library(questionr)
+library(labelled)
+library(readxl)
+library(tidyr)
+library(haven)
+
+# Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
+
+preprocMessage("{{file_attributes$msg}}")
+
+# Lecture du jeu de données
+data={{file_attributes$read_function}}
+
+# Chargement du fichier classification des variables
+variable_classification=read_excel(path="{{file_attributes$xlsx_var_class}}",sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
+
+# Chargement du fichier contenant les labels des variables,anciens labels comme nouveaux labels
+
+data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+
+#********************************************************************************
+# Traitement/exploration des données avant la suppression des variables         *
+#                         classées comme ID ou D                                *
+#********************************************************************************
+
+# Vérification des doublons
+# is_id(data,c())
+# COMMENTAIRES:
+
+#*******************************************************************************
+#----------- SUPPRESSION DES VARIABLES CLASSEES COMME ID OU D ------------------
+#*******************************************************************************
+variables_to_delete=variable_classification %>% filter(Classification %in% c("DI","D")) %>% pull(Name)
+
+variables_to_delete=variables_to_delete[!is.na(variables_to_delete)]
+
+# Liste des variables à suprimmer
+variables_to_delete
+
+# Supression des variables
+data=data %>% dplyr::select(-any_of(variables_to_delete))
+
+#*******************************************************************************
+# --------------- Renommage des variables, le cas échéant ----------------------
+#*******************************************************************************
+
+data=data %>% dplyr::rename()
+
+#*******************************************************************************
+# Labelisation des valeurs ou correction des labels de valeurs, le cas échéant *
+#*******************************************************************************
+
+data=data %>% set_value_labels()
+
+#*******************************************************************************
+#---- Définition ou correction des étiquettes de variables, le cas échéant -----
+#*******************************************************************************
+
+# Réintégration des labels des variables si ils ont été supprimés durant
+# le traitement,notamment lors de l’utilisation de fonctions comme
+# dplyr::mutate, etc.
+
+data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+#*******************************************************************************
+#---------------   Enregistrement des données traitées -------------------------
+#*******************************************************************************
+
+# Scanner la base (labels des variables et des valeurs)
+labelled::look_for(data)
+
+# Sauvegarde des données traintées
+{{file_attributes$write_function}}
