@@ -483,9 +483,9 @@ if(type=="ano"){
     read_function=readDataFunc(agrisvy),
     write_function=writeDataFunc(agrisvy)
   )
+  dst_name=gsub(agrisvy@type,"",rev(unlist(strsplit(file_attributes$msg, "=>")))[1])
+  subfolder <- ifelse(grepl("=>", file_attributes$msg), sub("=>.*", "", file_attributes$msg), "")
 
-  subfolder <- ifelse(grepl("=>", file_attributes$msg), sub("=>.*", "", file_attributes$msg), NA)
-  if(is.na(subfolder)) subfolder=NULL
   file.create(r_file,showWarnings = FALSE)
   fileConn <- file(r_file)
 
@@ -731,6 +731,7 @@ setup_anonymization <- function(agrisvy, overwrite=FALSE,open=FALSE,encoding="UT
   create_ano_folders(agrisvy, overwrite = overwrite)
   generate_varclas(agrisvy,encoding=encoding)
   generateLabelFiles(agrisvy,encoding=encoding)
+  export_labels(agrisvy,encoding=encoding,overwrite=overwrite)
   copyDirStr(from = DataPath(agrisvy), to = preProcScriptDir(agrisvy))
   copyDirStr(from = DataPath(agrisvy), to = preprocDataDir(agrisvy))
   generate_preproc_r(agrisvy,type="proc",obj_name=obj_name)
