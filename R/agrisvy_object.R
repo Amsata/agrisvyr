@@ -24,12 +24,11 @@ setClassUnion("sdcmicroOrNULL", c("NULL"))
 #' @slot infoLossReport characterOrNULL.
 #' @slot tempfileDir characterOrNULL.
 #' @slot aobDir characterOrNULL.
-#' @slot rawData dataframeOrNULL.
-#' @slot cleanData dataframeOrNULL.
-#' @slot proData dataframeOrNULL.
-#' @slot anoData dataframeOrNULL.
 #' @slot workingDir characterOrNULL
-#' @slot type microdata extension
+#' @slot enc_args listOrNULL
+#' @slot rpt_format characterOrNULL
+#' @slot script_format characterOrNULL
+#' @slot type characterOrNULL
 #' Class \code{"sdcMicroObj"}
 #'
 #' Class to save all information about the survey
@@ -62,10 +61,9 @@ methods::setClass(
     infoLossReport   = "characterOrNULL",
     tempfileDir      = "characterOrNULL",
     aobDir           = "characterOrNULL",
-    rawData          = "dataframeOrNULL",
-    cleanData        = "dataframeOrNULL",
-    proData          = "dataframeOrNULL",
-    anoData          = "dataframeOrNULL"
+    rpt_format       = "characterOrNULL",
+    script_format    = "characterOrNULL",
+    enc_args         = "listOrNULL"
   ),
   prototype = prototype(
     svyName          = "[Survey name]",
@@ -84,10 +82,9 @@ methods::setClass(
     infoLossReport   = NULL,
     tempfileDir      = NULL,
     aobDir           = NULL,
-    rawData          = NULL,
-    cleanData        = NULL,
-    proData          = NULL,
-    anoData          = NULL
+    enc_args         = NULL,
+    rpt_format       = "rmd",
+    script_format    = "r"
   ),
   validity = function(object) {
     if (length(object@svyName) > 1) {
@@ -269,6 +266,18 @@ setMethod("show",signature="agrisvy",function(object){
     obj
   }
 
+  wd <- function(obj){
+    workingDirX(obj)
+  }
+
+  setGeneric("workingDirX", function(obj) standardGeneric("workingDirX"))
+
+  setMethod(f="workingDirX",
+            signature = "agrisvy", definition =
+              function(obj) {
+                file.path(obj@workingDir)
+              }
+  )
 
   varClassDir <- function(obj){
     varClassDirX(obj)
@@ -433,11 +442,8 @@ setMethod("DataPathX",
 
 
 #' @importFrom dplyr %>% filter
-#' @importFrom haven read_dta
-#' @importFrom haven read_sav
 
 genDataList <- function(path,type){
-
   # path=anoDataDir(agrisvy)
 
   d=unlist(strsplit(path[1],"/"))
@@ -469,8 +475,8 @@ genDataList <- function(path,type){
 
   data_list=lapply(unique_wb, function(x){
     df=data_summary %>% dplyr::filter(workbook==x)
-    if(type==".dta") res=lapply(df$path,read_dta)
-    if(type %in% c(".SAV",".sav")) res=lapply(df$path,read_sav)
+    if(type==".dta") res=lapply(df$path,haven::read_dta)
+    if(type %in% c(".SAV",".sav")) res=lapply(df$path,haven::read_sav)
     names(res)=df$file_name
     return(res)
   })
@@ -480,72 +486,3 @@ return(data_list)
 }
 
 
-
-#' Archive the anonymized data inside the AGRIS survey object
-#'
-#' @param agrisvy an \code{agrisvy} object
-#'
-#' @return
-#' @export
-#'
-#' @examples
-ArchiveAnoData=function(agrisvy){
-
-  agrisMsg("ARCHIVING","Anonymized data")
-
-  # https://stackoverflow.com/questions/58332390/r-save-within-a-function-preserve-the-original-inputs-name
-  originalName <- deparse(substitute(agrisvy))
-
-  data_list=genDataList(anoDataDir(agrisvy),agrisvy@type)
-  agrisvy@anoData=data_list
-  assign(originalName, agrisvy,envir = .GlobalEnv)
-  #TODO: add a message to mention that the agrisvy has been updated
-  saveRDS(agrisvy,as.character(file.path(agrisvy@workingDir,"_R",paste0(originalName,".rds"))))
-  source(file.path(agrisvy@workingDir,"_R","_setup.R"))
-}
-
-
-
-#' Archive the clean data inside an \code{agrisvy} object
-#'
-#' @param agrisvy an \code{agrisvy} object
-#'
-#' @return
-#' @export
-#'
-#' @examples
-ArchiveCleanData=function(agrisvy){
-
-  agrisMsg("ARCHIVING","Cleaned data")
-
-  originalName <- deparse(substitute(agrisvy))
-  data_list=genDataList(DataPath(agrisvy),agrisvy@type)
-  agrisvy@cleanData=data_list
-  assign(originalName, agrisvy)
-
-  saveRDS(agrisvy,as.character(file.path(agrisvy@workingDir,"_R",paste0(originalName,".rds"))))
-  source(file.path(agrisvy@workingDir,"_R","_setup.R"))
-}
-
-
-#' Archive the preprocessed data inside an \code{agrisvy} object
-#'
-#' @param agrisvy an \code{agrisvy} object
-#'
-#' @return
-#' @export
-#'
-#' @examples
-ArchiveProcData=function(agrisvy){
-
-  agrisMsg("ARCHIVING","pre-processed data")
-
-  originalName <- deparse(substitute(agrisvy))
-
-  data_list=genDataList(preprocDataDir(agrisvy),agrisvy@type)
-  agrisvy@proData=data_list
-  assign(originalName, agrisvy)
-
-  saveRDS(agrisvy,file.path(agrisvy@workingDir,"_R",paste0(originalName,".rds")))
-  source(file.path(agrisvy@workingDir,"_R","_setup.R"))
-}
