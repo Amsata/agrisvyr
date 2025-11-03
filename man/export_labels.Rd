@@ -4,7 +4,7 @@
 \alias{export_labels}
 \title{Title}
 \usage{
-export_labels(agrisvy, encoding = "UTF-8", overwrite = TRUE)
+export_labels(agrisvy, encoding = "UTF-8", overwrite = TRUE, password)
 }
 \description{
 Title

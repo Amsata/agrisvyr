@@ -115,10 +115,11 @@ to_vlabelX = function(x,
 
 ############ function for extracting value labels
 
-#' Extracting data label, variables label and value labels of a dataframe
+#' Title
 #'
 #' @param dat
 #' @param cols
+#'
 #' @return
 #' @export
 #'
@@ -151,23 +152,19 @@ extract_labels = function(dat, cols=names(dat)) {
 
 
 ############ function for adding labels to factors in a data.frame
-
-#' Add data label, variable labels and value labels to a datafame
+#' Title
 #'
 #' @param dat
 #' @param list_labels
 #' @param skip_absent
 #' @param levels
 #' @param droplevels
-#' @param target
-#' @importFrom labelled is.labelled
-#' @importFrom labelled labelled
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "values"), droplevels=c("none", "unused"), target) {
+add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "values"), droplevels=c("none", "unused")) {
 
   if(!is.data.frame(dat)) stopf("'dat' should be a data.frame.")
 
@@ -200,17 +197,9 @@ add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "v
     stopf("'list_labels$datalabel' should be a one-length character vector or NULL.")
   }
 
-  if(target=="factor"){
     fctrs = dfnames[vapply(dat, is.factor, NA, USE.NAMES=FALSE)]
     fctrs = fctrs[fctrs %in% vlnames]
     for(vn in fctrs) dat[[vn]] = to_vlabelX(dat[[vn]], vallabels=vallabels[[vn]], levels=match.arg(levels), droplevels=match.arg(droplevels))
-  }
-
-  if(target=="labelled"){
-    fctrs = dfnames[vapply(dat, is.labelled, NA, USE.NAMES=FALSE)]
-    fctrs = fctrs[fctrs %in% vlnames]
-    for(vn in fctrs) dat[[vn]] = labelled::labelled(dat[[vn]],vallabels[[vn]])
-  }
 
   for(vn in vrnames) attr(dat[[vn]], "label") = varlabels[[vn]]
 
@@ -223,31 +212,31 @@ add_labels = function(dat, list_labels, skip_absent=FALSE, levels=c("labels", "v
 # 1- extract_labels
 # 2- add_labels
 
-if (interactive() && "haven" %in% rownames(installed.packages())) {
-
-  perm = haven::read_dta("permanent_crop.dta")
-
-  # extract labels
-  vll = extract_labels(perm)
-
-  # haven_labelled columns
-  cols = which(vapply(perm, haven::is.labelled, NA))
-
-  # levels=labels
-  perm[cols] = lapply(perm[cols], haven::as_factor)
-  lapply(perm[cols], head)
-  perm = add_labels(perm, vll)
-
-  # lavels=values
-  perm[cols] = lapply(perm[cols], as.factor)
-  lapply(perm[cols], head)
-  perm = add_labels(perm, vll, levels="values")
-
-  #
-  # if a variable has no label, should we keep the older label?
-  # is it supposed to be called by script or on all scripts?
-  # what if we provide allow list_labels to be also a data.frame (Excel labels)
-
-  vll = extract_labels(perm, cols=c("crop_id", "region__id2"))
-  add_labels(perm, vll, levels="values")
-}
+# if (interactive() && "haven" %in% rownames(installed.packages())) {
+#
+#   perm = haven::read_dta("permanent_crop.dta")
+#
+#   # extract labels
+#   vll = extract_labels(perm)
+#
+#   # haven_labelled columns
+#   cols = which(vapply(perm, haven::is.labelled, NA))
+#
+#   # levels=labels
+#   perm[cols] = lapply(perm[cols], haven::as_factor)
+#   lapply(perm[cols], head)
+#   perm = add_labels(perm, vll)
+#
+#   # lavels=values
+#   perm[cols] = lapply(perm[cols], as.factor)
+#   lapply(perm[cols], head)
+#   perm = add_labels(perm, vll, levels="values")
+#
+#   #
+#   # if a variable has no label, should we keep the older label?
+#   # is it supposed to be called by script or on all scripts?
+#   # what if we provide allow list_labels to be also a data.frame (Excel labels)
+#
+#   vll = extract_labels(perm, cols=c("crop_id", "region__id2"))
+#   add_labels(perm, vll, levels="values")
+# }
