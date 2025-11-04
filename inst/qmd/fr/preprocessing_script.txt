@@ -101,7 +101,7 @@ data=data %>% set_value_labels()
 ```{r}
 #| include: FALSE
 
-#data=agrisvyr::update_labels(data,{obj_name},dataset_name="{dst_name}",subfolder="{subfolder}")
+#data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
 
 ```
 
