@@ -985,7 +985,7 @@ runAnon <- function(agrisvy,with_final=TRUE){
       purrr::walk(path_list_data,file.remove)
     }
 
-    if(agrisvy@script_format=="R") source(file.path(anoScriptDir(agrisvy),"final.R"))
+  source(file.path(anoScriptDir(agrisvy),"final.R"))
   }
 
 }
