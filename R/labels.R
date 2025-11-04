@@ -260,9 +260,14 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     varlabels_list <- as.list(varlabels[["label"]])
     names(varlabels_list) <- names_varlabels
     varlabels_list <- varlabels_list[varlabel_updated]
+    #considrer only variables in the dataset
+    varlabels_list=var
 
     # Apply labels
-    for (vn in names(varlabels_list)) attr(dat[[vn]], "label") <- varlabels_list[[vn]]
+    for (vn in names(varlabels_list)) {
+
+      if (vn %in% names(dat)) attr(dat[[vn]], "label") <- varlabels_list[[vn]]
+    }
 
     # --- Update value labels ---
     vallabels_df[["label"]][!is.na(vallabels_df[["new_label"]])] <- vallabels_df[["new_label"]][!is.na(vallabels_df[["new_label"]])]
@@ -281,7 +286,10 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     names(vallabels) <- names_vallabels
 
     # Attach value labels as attribute
-    for (vn in names_vallabels) attr(dat[[vn]], "labels") <- vallabels[[vn]]
+    for (vn in names_vallabels) {
+
+      if(vn %in% names(dat)) attr(dat[[vn]], "labels") <- vallabels[[vn]]
+    }
 
     return(dat)
   }
