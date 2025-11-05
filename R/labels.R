@@ -235,7 +235,7 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     # --- Read Excel (base R cannot read .xlsx directly) ---
     read_excel_base <- function(path, sheet) {
       if (file.exists(path)) {
-        readxl::read_excel(path=path,sheet = sheet)
+        openxlsx ::read.xlsx(xlsxFile=path,sheet = sheet)
       } else {
         stop(paste("Expected CSV for sheet", sheet, "not found:", path))
       }
@@ -260,12 +260,10 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     varlabels_list <- as.list(varlabels[["label"]])
     names(varlabels_list) <- names_varlabels
     varlabels_list <- varlabels_list[varlabel_updated]
-    #considrer only variables in the dataset
-    varlabels_list=var
-
     # Apply labels
     for (vn in names(varlabels_list)) {
 
+      #considrer only variables in the dataset
       if (vn %in% names(dat)) attr(dat[[vn]], "label") <- varlabels_list[[vn]]
     }
 
@@ -278,7 +276,7 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     # Create value label lists
     vallabels <- lapply(names_vallabels, function(x) {
       subset_df <- vallabels_df[vallabels_df[["var_name"]] == x, , drop = FALSE]
-      vals <- subset_df[["value"]]
+      vals <- as.numeric(subset_df[["value"]])
       names(vals) <- subset_df[["label"]]
       vals
     })
