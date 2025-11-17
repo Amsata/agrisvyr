@@ -145,14 +145,14 @@ if(is.null(obj@intialObj@hhId)) obj@hierarchical <- FALSE
 #---------------------------------SDC report -----------------------------------
 #-------------------------------------------------------------------------------
 if(agrisvy@type==".enc") {
-  write_enc(obj,file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.enc")),
+  write_enc(obj,file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.enc")),
             password=password, rounds=agrisvy@enc_args[["rounds"]],size=agrisvy@enc_args[["size"]]
             )
 } else {
-  saveRDS(obj,file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
+  saveRDS(obj,file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.rds")))
 }
 
-file_sdc <- file.path(anoreportDir(agrisvy),glue::glue("child_{childName}.{agrisvy@rpt_format}"))
+file_sdc <- file.path(agrisvy@workingDir,anoreportDir(agrisvy),glue::glue("child_{childName}.{agrisvy@rpt_format}"))
 if (file.exists(file_sdc)==FALSE) {
   file.create(file_sdc)
   fileConn_sdc<-file(file_sdc)
@@ -171,7 +171,7 @@ if (file.exists(file_sdc)==FALSE) {
   writeLines(c(glue::glue(paste(readLines(template_rpt_child),collapse = "\n"),.open = "{{",.close = "}}")),fileConn_sdc)
   close(fileConn_sdc)
 
-  rpt_file_sdc=file.path(anoreportDir(agrisvy),paste0("sdc_report.",agrisvy@rpt_format))
+  rpt_file_sdc=file.path(agrisvy@workingDir,anoreportDir(agrisvy),paste0("sdc_report.",agrisvy@rpt_format))
   # TODO: update by removing the if, else if it works
 
   sdc_rpt=readLines(rpt_file_sdc)
@@ -198,14 +198,14 @@ if(!is.null(inputdata_path)) {
   #Put the full path to avoir error with the workshop object when running quarto
 
   if(agrisvy@type==".enc") {
-    write_enc(obj,file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.enc")),
+    write_enc(obj,file.path(agrisvy@workingDir,infoLossReport(agrisvy),glue::glue("child_{childName}.enc")),
               password=password,rounds=agrisvy@enc_args[["rounds"]],size=agrisvy@enc_args[["size"]]
     )
   } else {
-    saveRDS(obj,file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.rds")))
+    saveRDS(obj,file.path(agrisvy@workingDir,infoLossReport(agrisvy),glue::glue("child_{childName}.rds")))
   }
 
-  file_infol <- file.path(infoLossReport(agrisvy),glue::glue("child_{childName}.{agrisvy@rpt_format}"))
+  file_infol <- file.path(agrisvy@workingDir,infoLossReport(agrisvy),glue::glue("child_{childName}.{agrisvy@rpt_format}"))
   if (file.exists(file_infol)==FALSE) {
     file.create(file_infol)
     fileConn_infol<-file(file_infol)
@@ -224,7 +224,7 @@ if(!is.null(inputdata_path)) {
     writeLines(c(glue::glue(paste(readLines(template_rpt_child_infol), collapse = "\n"),.open = "{{",.close = "}}")),fileConn_infol)
     close(fileConn_infol)
 
-    rpt_file_infol=file.path(infoLossReport(agrisvy),paste0("information_loss_report.",agrisvy@rpt_format))
+    rpt_file_infol=file.path(agrisvy@workingDir,infoLossReport(agrisvy),paste0("information_loss_report.",agrisvy@rpt_format))
 
     # Update information loss report
     info_loss_rpt=readLines(rpt_file_infol)
@@ -518,8 +518,8 @@ genDandDIVariables=function(agrisvy,overwrite=TRUE) {
   res_list=list()
   for (i in seq_along(1:nrow(f$files_infos))) {
     df=readxl::read_excel(path=file.path(agrisvyr:::varClassDir(agrisvy),paste0(f$files_infos$workbook[i],"_VarClas.xlsx")),sheet = ,f$files_infos$file_name[i])
-    Dvars=df %>% dplyr::filter(Classification=="D") %>% dplyr::pull(Name) %>% paste(collapse = ";")
-    DIVars=df %>% dplyr::filter(Classification=="DI") %>% dplyr::pull(Name) %>% paste(collapse = ";")
+    Dvars=df %>% dplyr::filter(Classification=="D") %>% dplyr::pull(Name) %>% paste(collapse = " ; ")
+    DIVars=df %>% dplyr::filter(Classification=="DI") %>% dplyr::pull(Name) %>% paste(collapse = " ; ")
 
     if (numberOfWOrkbook==1) results=data.frame(file=f$files_infos$file_name[i],Dvars=Dvars,DIVars=DIVars)
     if (numberOfWOrkbook>1) results=data.frame(wb=f$files_infos$workbook[i],file=f$files_infos$file_name[i],DIVars=DIVars,Dvars=Dvars)

@@ -63,6 +63,9 @@ genFileDes <- function(file, name, id_cols, wb,type,encoding,password,rounds,siz
 
   suma <- function(data, var) {
     if (class(data %>% dplyr::pull(rlang::sym(var)))[1] %in% c("factor", "character", "haven_labelled") & length(unique(data %>% dplyr::pull(rlang::sym(var)))) < id_cols) {
+      if("haven_labelled" %in% class(data %>% dplyr::pull(rlang::sym(var))) & "character" %in% class(data %>% dplyr::pull(rlang::sym(var))) ) {
+        data[[var]]=as.character(data[[var]])
+      }
       result <- paste(row.names(as.data.frame(questionr::freq(data[, var]))),
         as.data.frame(questionr::freq(data[, var]))[, "n"],
         sep = ": N=", collapse = "\n"

@@ -6,7 +6,7 @@
 #| echo: FALSE
 #| warning: FALSE
 
-obj=readRDS("child_{{childName}}.rds")
+obj={{read_function}}
 obj_i=obj@intialObj
 obj_f=obj@finalObj
 unit=obj@unit

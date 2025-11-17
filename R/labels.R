@@ -271,7 +271,9 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     vallabels_df[["label"]][!is.na(vallabels_df[["new_label"]])] <- vallabels_df[["new_label"]][!is.na(vallabels_df[["new_label"]])]
     vallabels_df[["update"]] <- !is.na(vallabels_df[["new_label"]])
 
+    #TO DO: add the option only_update
     names_vallabels <- unique(vallabels_df[["var_name"]][vallabels_df[["update"]]])
+    #names_vallabels <- unique(vallabels_df[["var_name"]])
 
     # Create value label lists
     vallabels <- lapply(names_vallabels, function(x) {
