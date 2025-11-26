@@ -151,7 +151,7 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     }
     datalabel_df=data.frame(
       label=as.character(attr(df2, "label")),
-      new_label=character()
+      new_label=""
     )
     openxlsx::writeData(wb,sheet = "datalabel",x = datalabel_df)
 
@@ -179,7 +179,7 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
         )
 
       } else {
-        res=tibble(var_name=var,value = numeric(), label = character(),new_label="")
+        res=tibble(var_name=var,value = numeric(), label = character(),new_label=character())
       }
       return(res)
     }
