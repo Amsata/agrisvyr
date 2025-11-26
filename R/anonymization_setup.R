@@ -785,9 +785,9 @@ setup_anonymization <- function(agrisvy,
         ),fileConn)
 
      close(fileConn)
+     Sys.setenv(pw = password) #allow to run the first
   }
   #Run first prerocessing
-  Sys.setenv(pw = password) #allow to run the first
   runPreproc(agrisvy)
   runAnon(agrisvy,with_final=FALSE)
   #run ano-----------
