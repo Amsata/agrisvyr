@@ -149,10 +149,14 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     if(agrisvy@type %in% ".enc"){
       df2 <- read_enc(df$path[i],password=password,rounds=agrisvy@enc_args[["rounds"]],size=agrisvy@enc_args[["size"]])
     }
-    datalabel_df=data.frame(
-     cbind( label=as.character(attr(df2, "label")),
-            new_label=character())
-    )
+    data_label=as.character(attr(df2, "label"))
+    if(length(data_label)==0) {
+      datalabel_df=data.frame(cbind( label=as.character(attr(df2, "label")),new_label=character()))
+    } else {
+      datalabel_df=data.frame(cbind( label=as.character(attr(df2, "label")),new_label=NA_character_))
+
+    }
+
     openxlsx::writeData(wb,sheet = "datalabel",x = datalabel_df)
 
     curDat <- data.frame(
