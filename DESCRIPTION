@@ -32,10 +32,10 @@ Imports:
     renv,
     readxl,
     rlang,
+    sdcMicro,
     stats,
     tidyr,
     usethis
-Remotes: github::sdcTools/sdcMicro
 RoxygenNote: 7.3.2
 Depends: 
     R (>= 2.10)

@@ -74,7 +74,7 @@ genFileDes <- function(file, name, id_cols, wb,type,encoding,password,rounds,siz
       if (class(data %>% dplyr::pull(rlang::sym(var)))[1] %in% c("numeric", "integer", "double")) {
         result <- paste(names(summary(data[, var])), summary(data[, var]), collapse = "\n")
       } else {
-        result <- "-"
+        result <- paste(sample(data[[var]],10,replace = FALSE),collapse = "; ")
       }
     }
 

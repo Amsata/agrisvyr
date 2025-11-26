@@ -179,7 +179,7 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
         )
 
       } else {
-        res=tibble(var_name=var,value = numeric(), label = character(),new_label=character())
+        res=tibble(var_name=var,value = numeric(), label = character(),new_label="")
       }
       return(res)
     }
