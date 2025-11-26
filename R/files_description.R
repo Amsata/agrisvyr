@@ -174,7 +174,7 @@ genDataFolderDes=function(agrisvy,data,wb_name,id_cols,encoding,password){
 #' @export
 #'
 #' @examples
-genAllFileDes=function(agrisvy,id_cols=NULL,encoding="UTF-8",password){
+genAllFileDes=function(agrisvy,id_cols=NULL,encoding="UTF-8",password=NULL){
 
   data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
   data_flder=data_flder[length(data_flder)]

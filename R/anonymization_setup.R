@@ -873,7 +873,11 @@ setup_anonymization <- function(agrisvy,
   source(file.path(anoScriptDir(agrisvy),"final.R"))
 
  #generate files description
-  genAllFileDes(agrisvy,id_cols=50,encoding=encoding,password=password)
+  if(encryption) {
+    genAllFileDes(agrisvy,id_cols=50,encoding=encoding,password=password)
+  } else {
+    genAllFileDes(agrisvy,id_cols=50,encoding=encoding)
+  }
   #archive data
   # ArchiveAnoData(agrisvy)
   # ArchiveCleanData(agrisvy)
