@@ -27,6 +27,14 @@ variable_classification=read_excel(path="{{file_attributes$xlsx_var_class}}",she
 
 data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
 
+#correction specific to spss
+for(var in names(data)){
+  if("haven_labelled" %in% class(data %>% dplyr::pull(rlang::sym(var))) & "character" %in% class(data %>% dplyr::pull(rlang::sym(var))) ) {
+    data[[var]]=as.character(data[[var]])
+  }
+}
+
+
 #******************************************************************
 # Data processing before removing variables classified as DI or D *
 #******************************************************************
@@ -64,4 +72,6 @@ data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfo
 #         saving the processed data
 #*****************************************************************
 labelled::look_for(data)
+
+
 {{file_attributes$write_function}}
