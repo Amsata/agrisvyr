@@ -150,8 +150,8 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
       df2 <- read_enc(df$path[i],password=password,rounds=agrisvy@enc_args[["rounds"]],size=agrisvy@enc_args[["size"]])
     }
     datalabel_df=data.frame(
-      label=as.character(attr(df2, "label")),
-      new_label=""
+     cbind( label=as.character(attr(df2, "label")),
+            new_label=character())
     )
     openxlsx::writeData(wb,sheet = "datalabel",x = datalabel_df)
 
