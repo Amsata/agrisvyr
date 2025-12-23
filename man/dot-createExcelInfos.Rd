@@ -4,7 +4,7 @@
 \alias{.createExcelInfos}
 \title{Information on Excel files and workbook to be created}
 \usage{
-.createExcelInfos(agrisvy)
+.createExcelInfos(agrisvy, collapse_space = TRUE)
 }
 \arguments{
 \item{agrisvy}{agrisurvey object

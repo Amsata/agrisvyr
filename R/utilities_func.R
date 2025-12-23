@@ -431,7 +431,7 @@ loadRscripts=function(){
 #' @return
 #'
 #' @examples
-.createExcelInfos=function(agrisvy) {
+.createExcelInfos=function(agrisvy,collapse_space=TRUE) {
   data_flder=unlist(strsplit(DataPath(agrisvy), "/"))
   data_flder=data_flder[length(data_flder)]
 
@@ -445,7 +445,7 @@ loadRscripts=function(){
   wb           <- lapply(x, function(z) {
     res=paste(z[1:length(z) - 1], sep = "", collapse = "_")
     if(res=="") res=data_flder
-    res=gsub(" ","_",res)
+    if (collapse_space) res=gsub(" ","_",res)
 
     return(res)
   })

@@ -126,7 +126,7 @@ assignNewVarLabels=function(df,df_lab) {
 export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
 
   agrisMsg("EXPORTING LABELS","exporting data, variable and value labels for eventual updates")
-  df_list=.createExcelInfos(agrisvy)
+  df_list=.createExcelInfos(agrisvy,collapse_space=FALSE)
   df=df_list$files_infos
   fileNames <- df$file_name
 
@@ -219,7 +219,7 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
 #' @examples
   update_labels=function(dat,agrisvy,dataset_name,subfolder=NULL){
 
-    df_list=.createExcelInfos(agrisvy)
+    df_list=.createExcelInfos(agrisvy,collapse_space=FALSE)
 
     df=df_list[["files_infos"]]
 
