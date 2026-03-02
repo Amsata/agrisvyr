@@ -249,6 +249,10 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     datalabel   <- read_excel_base(path_to_read, "datalabel")
     varlabels   <- read_excel_base(path_to_read, "varlabels")
     vallabels_df <- read_excel_base(path_to_read, "vallabels")
+# Convert empty "" to NA if empty in excel appear as character in R
+    datalabel[["new_label"]]= ifelse(datalabel[["new_label"]]=="",NA_character_,datalabel[["new_label"]])
+    varlabels[["new_label"]]= ifelse(varlabels[["new_label"]]=="",NA_character_,varlabels[["new_label"]])
+    vallabels_df[["new_label"]]= ifelse(vallabels_df[["new_label"]]=="",NA_character_,vallabels_df[["new_label"]])
 
     # --- Update dataset label ---
     if (!is.na(datalabel[["new_label"]][1])) attr(dat, "label") <- datalabel[["new_label"]][1]
