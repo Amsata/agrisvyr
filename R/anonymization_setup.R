@@ -455,23 +455,12 @@ if(type=="ano"){
   if(type=="proc") {
 
     file_attributes$read_function=readDataFunc(agrisvy,paste0("file.path(data_path,'",file.path(file),"')"),enquote=FALSE)
-
-    if(agrisvy@script_format=="R") {
-      file_attributes$write_function=writeDataFunc(agrisvy,"data",file_attributes$to_save,obj_name=obj_name)
-    } else if(agrisvy@script_format %in% c("rmd","qmd")) {
-      file_attributes$write_function=writeDataFunc(agrisvy,"data",paste0("file.path(wd,'",file_attributes$to_save,"')"),obj_name=obj_name,enquote=FALSE)
-    }
-
+    file_attributes$write_function=writeDataFunc(agrisvy,"data",file_attributes$to_save,obj_name=obj_name)
   }
 
   if(type=="ano") {
-    if(agrisvy@script_format=="R") {
-      file_attributes$read_function=readDataFunc(agrisvy,file.path(file),enquote=TRUE)
+      file_attributes$read_function=readDataFunc(agrisvy,file.path(file))
       file_attributes$write_function=writeDataFunc(agrisvy,"ano_data",file_attributes$to_save,obj_name=obj_name)
-    } else if (agrisvy@script_format %in% c("rmd","qmd")) {
-      file_attributes$read_function=readDataFunc(agrisvy,paste0("file.path(wd,'",file.path(file),"')"),enquote=FALSE)
-      file_attributes$write_function=writeDataFunc(agrisvy,"ano_data",paste0("file.path(wd,'",file_attributes$to_save,"')"),obj_name=obj_name,enquote=FALSE)
-    }
   }
 
   dst_name=gsub(agrisvy@type,"",rev(unlist(strsplit(file_attributes$msg, "=>")))[1])

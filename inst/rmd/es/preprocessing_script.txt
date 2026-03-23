@@ -1,12 +1,36 @@
-#'*|----------------------------------------------------------------------------|*
-#'*|--|Anonimización de: {addSpace(agrisvy@svyName,26)}
-#'*|--| Autheur: {addSpace(agrisvy@author,17)}
-#'*|--| Date: {addSpace(Sys.Date(),20)}
-#'*|----------------------------------------------------------------------------|*
-#'*|--| Conjunto de datos: {addSpace(file_attributes$msg,18)}
-#'*|----------------------------------------------------------------------------|*
+---
+title: "{{agrisvy@svyName}}"
+subtitle: "Anonymization report"
+author: '{{agrisvy@author}}'
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+classoption: portrait, a4paper
+---
 
-rm(list =ls()) # Limpiar el entorno de las variables
+
+# Dataset: {{file_attributes$msg}}
+
+
+```{r setup,include=FALSE}
+
+root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
+knitr::opts_knit$set(root.dir =root(), echo = TRUE)
+```
+
+```{r options, include=FALSE}
+
+options(scipen = 999)
+options(knitr.duplicate.label = "allow")
+```
+
+
+```{r include=FALSE}
+
+
+rm(list = ls())
 
 library(dplyr)
 library(agrisvyr)
@@ -17,71 +41,82 @@ library(readxl)
 library(tidyr)
 library(haven)
 
-# Cargar el objeto agrisvy y los demás archivos (funciones) que pueda haber en la carpeta "_R"
+preprocMessage("{{file_attributes$msg}}")
+
+# Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
 purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
-preprocMessage("{file_attributes$msg}")
+```
 
-# Lectura del conjunto de datos
-data={file_attributes$read_function}
+# Lecture du jeu de données
 
-# Carga del archivo de clasificación de variables
-variable_classification=read_excel(path="{file_attributes$xlsx_var_class}",sheet  = "{file_attributes$file_name}") %>% select(Name:Questions)
+```{r include=FALSE}
 
-#Carga del archivo que contiene las etiquetas de las variables, tanto las antiguas como las nuevas
+data={{file_attributes$read_function}}
 
-data=agrisvyr::update_labels(data,{obj_name},dataset_name="{dst_name}",subfolder="{subfolder}")
+variable_classification=read_excel(path=file.path("{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
 
-#********************************************************************************
-# Tratamiento/exploración de los datos antes de la eliminación de las variables *
-#                        clasificadas como ID o D                               *
-#********************************************************************************
+#data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
 
-#  Verificación de duplicados
+```
+
+## Traitement/exploration des données avant la suppression des variables classées comme ID ou D
+
+
+```{r include=FALSE}
+
+#check for duplicates
 # is_id(data,c())
-# COMENTARIOS:
+#COMMENT:
 
-#*******************************************************************************
-#----------- ELIMINACIÓN DE LAS VARIABLES CLASIFICADAS COMO ID O D -------------
-#*******************************************************************************
+```
+
+
+## SUPPRESSION DES VARIABLES CLASSEES COMME ID OU D
+
+```{r include=FALSE}
+
 variables_to_delete=variable_classification %>% filter(Classification %in% c("DI","D")) %>% pull(Name)
-
 variables_to_delete=variables_to_delete[!is.na(variables_to_delete)]
-
-# Lista de las variables a eliminar
 variables_to_delete
-
-# Eliminación de las variables
 data=data %>% dplyr::select(-any_of(variables_to_delete))
 
-#*******************************************************************************
-# --------------- Cambio de nombre de las variables, en su caso ----------------
-#*******************************************************************************
+```
+
+
+## Renommage des variables, le cas échéant
+
+```{r include=FALSE}
 
 data=data %>% dplyr::rename()
 
-#*******************************************************************************
-# Etiquetado de los valores o corrección de las etiquetas de valores, en su caso *
-#*******************************************************************************
+```
+
+
+## Labelisation des valeurs ou correction des labels de valeurs, le cas échéant
+
+```{r include=FALSE}
 
 data=data %>% set_value_labels()
 
-#*******************************************************************************
-#---- Definición o corrección de las etiquetas de las variables, en su caso ----
-#*******************************************************************************
+```
 
-# Reintegración de las etiquetas de las variables si han sido eliminadas
-# durante el tratamiento, especialmente al utilizar funciones como
-# dplyr::mutate, etc.
+## Définition ou correction des étiquettes de variables, le cas échéant
 
-data=agrisvyr::update_labels(data,{obj_name},dataset_name="{dst_name}",subfolder="{subfolder}")
 
-#*******************************************************************************
-#---------------    Registro de los datos procesados   -------------------------
-#*******************************************************************************
+```{r include=FALSE}
 
-# Escanear la base de datos (etiquetas de las variables y de los valores)
+#data=agrisvyr::update_labels(data,{obj_name},dataset_name="{dst_name}",subfolder="{subfolder}")
+
+```
+
+
+## Enregistrement des données traitées
+
+```{r include=FALSE}
+
 labelled::look_for(data)
 
-# Guardado de los datos procesados
-{file_attributes$write_function}
+{{file_attributes$write_function}}
+
+```

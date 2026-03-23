@@ -6,8 +6,12 @@
 #| echo: FALSE
 #| warning: FALSE
 
-raw_df={{read_function}}("{{inputdata_path}}")
-ano_df={{read_function}}("{{anodata_path}}")
+wd=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()()
+
+raw_df={{read_function_proc}}
+
+ano_df={{read_function_ano}}
+
 eval_cond=FALSE
 ```
 

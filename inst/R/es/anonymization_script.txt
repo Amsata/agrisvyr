@@ -129,7 +129,7 @@ ano_data=inputdata # just for the template
 #  suda = FALSE,
 #  hierarchical = FALSE,
 #  childName = "child_hh",
-# inputdata="{{agrisvy@workingDir}}/{{file_attributes$path}}"
+# inputdata="{{file_attributes$path}}"
 #)
 
 #*******************************************************************************

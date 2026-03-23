@@ -25,8 +25,10 @@ library(kableExtra)
 library(glue)
 library(rlang)
 options(scipen = 999)
-#source("format_table.R")
+
 options(knitr.duplicate.label = "allow")
+
+purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
 
 ```
 
@@ -41,8 +43,7 @@ options(knitr.duplicate.label = "allow")
 
 data=as.data.frame(read_excel(path="microdata_info.xlsx"))
 info_col=length(names(data))
-data %>% kbl() %>% column_spec(info_col, width = "8cm")
-```
+data %>% kbl() %>% kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")```
 
 \textcolor{red}{[Rappeler l'engagement de l'institut en matière de diffusion des microdonnées, ainsi que la nécessité d'appliquer des techniques de contrôle de la divulgation statistique (CDS) afin de protéger la confidentialité des répondants]}
 
@@ -83,8 +84,7 @@ L’exercice d'analyse du scenario de divulgation consiste à classer toutes les
 
 data=as.data.frame(read_excel(path="DandDIvariables.xlsx"))
 info_col=length(names(data))
-data %>% kbl() %>% column_spec((info_col-1):info_col, width = "4cm")
-```
+data %>% kbl() %>% kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")```
 
 # Méthodes d’évaluation du risque de divulgation
 

@@ -11,16 +11,32 @@ classoption: portrait, a4paper
 ---
 
 
+
 # Dataset: {{file_attributes$msg}}
 
+```{r}
+#| label: setup
+#| include: FALSE
 
+root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
+knitr::opts_knit$set(root.dir =root(), echo = TRUE)
 
+```
+
+```{r}
+#| label: options
+#| include: FALSE
+
+options(scipen = 999)
+options(knitr.duplicate.label = "allow")
+
+```
 
 ```{r}
 #|  include: FALSE
 
+
 rm(list = ls())
-wd="{{agrisvy@workingDir}}"
 
 library(dplyr)
 library(agrisvyr)
@@ -31,14 +47,10 @@ library(readxl)
 library(tidyr)
 library(haven)
 
-
-options(scipen = 999)
-knitr::opts_chunk$set(echo = TRUE)
-options(knitr.duplicate.label = "allow")
+preprocMessage("{{file_attributes$msg}}")
 
 # Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
-purrr::walk(file.path(wd,"_R",list.files(path=file.path(wd,"_R"),pattern = ".R$")),source)
-preprocMessage("{{file_attributes$msg}}")
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
 ```
 ## Loading files
@@ -48,9 +60,9 @@ preprocMessage("{{file_attributes$msg}}")
 
 data={{file_attributes$read_function}}
 
-variable_classification=read_excel(path=file.path(wd,"{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
+variable_classification=read_excel(path=file.path("{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
 
-#data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
 ```
 
 # Data processing before removing variables classified as DI or D
@@ -58,9 +70,7 @@ variable_classification=read_excel(path=file.path(wd,"{{file_attributes$xlsx_var
 ```{r}
 #| include: FALSE
 
-#check for duplicates
-# is_id(data,c())
-#COMMENT:
+
 ```
 
 ## Removing variable classified as DI of D
@@ -83,7 +93,7 @@ data=data %>% dplyr::rename()
 ```
 
 
-## Labelling values or correcting value labels, if any
+## Labelling variables and values
 
 ```{r}
 #| include: FALSE
@@ -91,12 +101,10 @@ data=data %>% dplyr::rename()
 data=data %>% set_value_labels()
 ```
 
-## Defining or Correction variable labels , if any
-
 ```{r}
 #| include: FALSE
 
-#data=agrisvyr::update_labels(data,{obj_name},dataset_name="{dst_name}",subfolder="{subfolder}")
+data=agrisvyr::update_labels(data,{obj_name},dataset_name="{dst_name}",subfolder="{subfolder}")
 ```
 
 ## saving the processed data

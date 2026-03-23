@@ -11,13 +11,34 @@ classoption: portrait, a4paper
 ---
 
 
-# Dataset: {{file_attributes$msg}}
+# Dataset: `{{file_attributes$msg}}`
+
+Le code ci-dessous définit le répertoire racine du projet afin que les chemins de fichiers soient correctement interprétés lors de l’exécution du document `Quarto`.
+
+```{r}
+#| label: setup
+#| include: FALSE
+
+root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
+knitr::opts_knit$set(root.dir =root(), echo = TRUE)
+
+```
+Le code ci-dessous ajuste des options `R` pour améliorer l’affichage des nombres et permettre la répétition des labels de chunks dans `Quarto/knitr`.
+
+```{r}
+#| label: options
+#| include: FALSE
+
+options(scipen = 999)
+options(knitr.duplicate.label = "allow")
+```
+Le code ci-dessous nettoie l’espace de travail, charge les packages requis et exécute tous les scripts `R` du dossier `_R` pour préparer le pré-traitement du fichier `{{file_attributes$msg}}`.
 
 ```{r}
 #| include: FALSE
 
-rm(list = setdiff(ls(),"{obj_name}"))
-wd="{{agrisvy@workingDir}}"
+
+rm(list = ls())
 
 library(dplyr)
 library(agrisvyr)
@@ -28,27 +49,28 @@ library(readxl)
 library(tidyr)
 library(haven)
 
-
-options(scipen = 999)
-knitr::opts_chunk$set(echo = TRUE)
-options(knitr.duplicate.label = "allow")
-
-# Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
-purrr::walk(file.path(wd,"_R",list.files(path=file.path(wd,"_R"),pattern = ".R$")),source)
 preprocMessage("{{file_attributes$msg}}")
+
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
 ```
 
 # Lecture du jeu de données
+
+-   Chargement du fichier de microdonnées `{{file_attributes$msg}}`.
+
+-   Chargement du fichier de classification des variables Le fichier Excel contenant la documentation des variables est lu, puis seules les colonnes allant de `Name` à `Questions` sont conservées.
+
+-   Mise à jour des labels des variables. La fonction `agrisvyr::update_labels()` est utilisée pour appliquer les labels mis à jour dans le fichier `{{file.path(agrisvy@tempfileDir,"Label",gsub(agrisvy@type,".xlsx",file_attributes$msg))}}`
 
 ```{r}
 #| include: FALSE
 
 data={{file_attributes$read_function}}
 
-variable_classification=read_excel(path=file.path(wd,"{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
+variable_classification=read_excel(path=file.path("{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
 
-#data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
 
 ```
 
@@ -58,13 +80,26 @@ variable_classification=read_excel(path=file.path(wd,"{{file_attributes$xlsx_var
 ```{r}
 #| include: FALSE
 
-#check for duplicates
-# is_id(data,c())
-#COMMENT:
 
 ```
 
 ## SUPPRESSION DES VARIABLES CLASSEES COMME ID OU D
+
+> Le code ci-dessous identifie les variables à supprimer selon leur classification et les retire du jeu de données.
+
+**Explication étape par étape**
+
+-   **Identifier les variables à supprimer**\
+    Dans le fichier de classification des variables, les variables dont la classification est **"DI"** (Identifiant direct) ou **"D"** (à suprimmer pour d'autres raison) sont sélectionnées.
+
+    **Extraire leurs noms**\
+    Les noms de ces variables sont récupérés à l’aide de `pull(Name)` afin de créer une liste de variables à supprimer.
+
+    **Supprimer les valeurs manquantes dans la liste**\
+    Les éventuelles valeurs `NA` sont retirées de cette liste.
+
+    **Supprimer les variables du jeu de données**\
+    La fonction `select(-any_of(...))` est utilisée pour **retirer ces variables du dataset** `data`.
 
 ```{r}
 #| include: FALSE
@@ -78,6 +113,14 @@ data=data %>% dplyr::select(-any_of(variables_to_delete))
 
 ## Renommage des variables, le cas échéant
 
+> Ce code renomme certaines variables du jeu de données afin d’obtenir des noms plus simples et harmonisés.
+
+**Explication étape par étape**
+
+-   La fonction `rename()` de **dplyr** est utilisée pour **changer les noms de certaines variables** dans le dataset.
+
+-   syntaxe: `data=data %>% dplyr::rename(NOUVEAU_NON=ANCIEN_NOM)`
+
 ```{r}
 #| include: FALSE
 
@@ -86,7 +129,27 @@ data=data %>% dplyr::rename()
 ```
 
 
-## Labelisation des valeurs ou correction des labels de valeurs, le cas échéant
+## Labelisation des variables et des valeurs
+
+
+> Ce code ajoute des labels descriptifs à certaines variables afin de mieux documenter leur contenu.
+
+**Labelisation des variable**
+
+-   La fonction `set_variable_labels()` est utilisée pour **attribuer des labels (descriptions)** à certaines variables du jeu de données.
+-   syntaxe: data=data %>% labelled::set_variable_labels(VAR="label de la variable")
+
+
+```{r}
+#| include: FALSE
+
+data=data %>% set_value_labels()
+
+```
+**Labelisation des valeurs**
+
+-   La fonction `set_value_labels()` est utilisée pour **attribuer des labels (descriptions)** à certaines variables du jeu de données.
+-   syntaxe: data=data %>% labelled::set_value_labels(VAR=vecteur_du_label_des_valeur)
 
 ```{r}
 #| include: FALSE
@@ -95,23 +158,24 @@ data=data %>% set_value_labels()
 
 ```
 
-## Définition ou correction des étiquettes de variables, le cas échéant
-
+Le code ci-dessous applique les labels provenant du fichier `{{file.path(agrisvy@tempfileDir,"Label",gsub(agrisvy@type,".xlsx",file_attributes$msg))}}` au jeu de données `{{file_attributes$msg}}`.
 
 ```{r}
 #| include: FALSE
 
-#data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
+data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
 
 ```
 
 
 ## Enregistrement des données traitées
 
+-   **Sauvegarder les données pré-traitées**
+
+Le jeu de données traité est enregistré dans sous le nom `{{gsub(agrisvy@type,paste0("_proc",agrisvy@type),file_attributes$msg)}}` dans le dossier `{{agrisvy@preprocDataDir}}`
+
 ```{r}
 #| include: FALSE
-
-labelled::look_for(data)
 
 {{file_attributes$write_function}}
 

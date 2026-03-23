@@ -14,9 +14,24 @@ classoption: portrait, a4paper
 # Dataset: {{file_attributes$msg}}
 
 
+```{r config,include=FALSE }
+knitr::opts_knit$set(
+  root.dir =rprojroot::is_rstudio_project$find_file(),
+  echo = TRUE
+  )
+
+
+```
+
+```{r options,include=FALSE}
+options(scipen = 999)
+options(knitr.duplicate.label = "allow")
+```
+
 ```{r include=FALSE}
-rm(list = setdiff(ls(),"{obj_name}"))
-wd="{{agrisvy@workingDir}}"
+preprocMessage("{{file_attributes$msg}}")
+
+rm(list ls())
 
 library(dplyr)
 library(agrisvyr)
@@ -27,14 +42,8 @@ library(readxl)
 library(tidyr)
 library(haven)
 
-
-options(scipen = 999)
-knitr::opts_chunk$set(echo = TRUE)
-options(knitr.duplicate.label = "allow")
-
 # Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
-purrr::walk(file.path(wd,"_R",list.files(path=file.path(wd,"_R"),pattern = ".R$")),source)
-preprocMessage("{{file_attributes$msg}}")
+purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
 
 ```
 ## Loading files
@@ -42,7 +51,7 @@ preprocMessage("{{file_attributes$msg}}")
 ```{r include=FALSE}
 data={{file_attributes$read_function}}
 
-variable_classification=read_excel(path=file.path(wd,"{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
+variable_classification=read_excel(path=file.path("{{file_attributes$xlsx_var_class}}"),sheet  = "{{file_attributes$file_name}}") %>% select(Name:Questions)
 
 #data=agrisvyr::update_labels(data,{{obj_name}},dataset_name="{{dst_name}}",subfolder="{{subfolder}}")
 ```

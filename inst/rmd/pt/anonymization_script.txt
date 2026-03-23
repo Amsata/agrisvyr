@@ -1,12 +1,38 @@
-#'*|----------------------------------------------------------------------------|*
-#'*|--| Anonimização de: {addSpace(agrisvy@svyName,26)}
-#'*|--| Author: {addSpace(agrisvy@author,17)}
-#'*|--| Date: {addSpace(Sys.Date(),20)}
-#'*|----------------------------------------------------------------------------|*
-#'*|--| Dataset: {addSpace(file_attributes$msg,18)}
-#'*|----------------------------------------------------------------------------|*
+---
+title: "{{agrisvy@svyName}}"
+subtitle: "Anonymization report"
+author: '{{agrisvy@author}}'
+date: "`r Sys.Date()`"
+format:
+  pdf:
+    toc: true
+    number_sections: true
+classoption: portrait, a4paper
+---
 
-rm(list = ls()) # Limpar o ambiente de variáveis
+# Dataset: {{file_attributes$msg}}
+
+```{r}
+#| label: setup
+#| include: FALSE
+
+root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
+knitr::opts_knit$set(root.dir =root(), echo = TRUE)
+
+```
+
+```{r}
+#| label: options
+#| include: FALSE
+
+options(scipen = 999)
+options(knitr.duplicate.label = "allow")
+```
+
+```{r}
+#| include: FALSE
+
+rm(list = ls()) # Clear the variables environment
 
 library(sdcMicro)
 library(agrisvyr)
@@ -17,34 +43,57 @@ library(haven)
 library(questionr)
 library(labelled)
 
-# Carregar o objeto agrisvy e todos os outros arquivos/funções na pasta "_R"
-purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
+sdcMessage("{{file_attributes$msg}}")
 
-sdcMessage("{file_attributes$msg}")
+# Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
+purrr::walk(file.path(wd,"_R",list.files(path=file.path(wd,"_R"),pattern = ".R$")),source)
 
-#*************** Carregar os microdados a serem anonimizados *******************
-inputdata={file_attributes$read_function}
+```
 
-# **************** Load variable classification Excel file *********************
-variable_classification=read_excel(path="{file_attributes$xlsx_var_class}", sheet ="{file_attributes$file_name}") %>% select(Name:Questions)
 
-# ******** Carregar o arquivo Excel de classificação das variáveis *************
+
+## Load microdata to be anonymized
+
+```{r}
+#| include: FALSE
+
+inputdata={{file_attributes$read_function}}
+
+variable_classification=read_excel(path=file.path("{{file_attributes$xlsx_var_class}}"), sheet ="{{file_attributes$file_name}}") %>% select(Name:Questions)
+
 labels=agrisvyr::extract_labels(inputdata)
+```
 
 
-# Extração de quasi-identificadores (Q), variáveis vinculadas (L) e variáveis sensíveis (S)
+## Extracting quasi-identifiers (Q), linked (L) and sensitive (S) variables
+
+
+```{r}
+#| include: FALSE
+
 ano_variable=variable_classification %>% filter(Classification %in% c("Q","L","S")) %>% pull(Name)
 ano_variable=ano_variable[!is.na(ano_variable)]
+#print(ano_variable)
 
-# Exibindo quasi-identificadores (Q), variáveis vinculadas (L) e variáveis sensíveis (S)
-print(ano_variable)
+```
 
-#A FAZER: a parte seguinte deve ser personalizada de acordo com o conjunto de dados a ser anonimizado
+## Preprocessing
 
-# pouco pré-processamento, se necessário
+```{r}
+#| include: FALSE
+
+#TO DO: the following part must be customize according to the dataset to be anonymized
+# few preprocessing if needed
 #keyvars=c("keyvar1","keyvar2","etc.")
 #inputdata=inputdata %>% dplyr::mutate(across(all_of(keyvars),to_factor))
 #inputdata=inputdata %>% dplyr::mutate(HHID=to_factor(HHID))
+
+```
+
+## defining the SDC problem
+
+```{r}
+#| include:FALSE
 
 sdc_obj=createSdcObj(
   dat=testdata2,
@@ -63,61 +112,104 @@ sdc_obj=createSdcObj(
   alpha = 0
 )
 
-# Salvando o objeto SDC inicial. Ele pode ser usado no relatório SDC
-sdc_initial=sdc_obj
+# Saving the initial SDC object. It may be used in the sdc report
+#sdc_initial=sdc_obj
+```
 
-#*******************************************************************************
-#**************** Análise de risco de divulgação estatística *******************
-#*******************************************************************************
 
-# Risco global
-print(sdc_obj,"risk")
+### Statistical Disclosure  risk analysis
 
-# K-anonimato
-print(sdc_obj)
 
-# Risco probabilístico
+#### Global risk
+
+```{r}
+#| include: FALSE
+
+#print(sdc_obj,"risk")
+```
+
+#### K-anonymity
+
+```{r}
+#| include: FALSE
+
+#print(sdc_obj)
+```
+
+#### risk probabilist
+
+```{r}
+#| include: FALSE
+
 #hist(sdc_obj@risk$individual)
 #summary(sdc_obj@risk$individual)
+```
 
-# Calculando o risco SUDA
+
+# Computing risk SUDA
+
+```{r}
+#| include: FALSE
+
 #sdc_obj=suda2(sdc_obj)
 #print(sdc_obj,"suda2")
+```
 
-#*******************************************************************************
-#****************** Controle de Divulgação Estatística**************************
-#*******************************************************************************
 
-# Quasi-identificadores categóricos
+### Statistical Disclosure  Control
+
+
+#### Categorical quais-identifiers
+
+```{r}
+#| include: FALSE
 
 # sdc_obj=groupAndRename(sdc_obj, var="keyvars", before=c(), after=c(), addNA = FALSE)
 # sdc_obj=localSuppression(sdc_obj, k = 2, importance = NULL, combs = NULL)
 # sdc_obj=localSupp(sdc_obj, threshold = 0.15, keyVar)
+```
 
-# Quasi-identificadores contínuos
+#### Continous quasi-identifiers
+
+```{r}
+#| include: FALSE
 
 #sdc_obj=topBotCoding(sdc_obj, value, replacement, kind = "top", column = NULL)
 #sdc_obj=microaggregation(sdc_obj,variables = NULL,aggr = 3,strata_variables = NULL,method = "mdav",weights = NULL,nc = 8,clustermethod = "clara",measure = "mean",trim = 0,varsort = 1,transf = "log")
 #sdc_obj=addNoise(sdc_obj, variables = NULL, noise = 150, method = "additive", ...)
 #sdc_obj=rankSwap(sdc_obj,variables = NULL,TopPercent = 5,BottomPercent = 5,K0 = NULL,R0 = NULL,P = NULL,missing = NA,seed = NULL)
+```
 
-#*******************************************************************************
-#*********************** Extrair dados anonimizados ****************************
-#*******************************************************************************
+
+## Extract anonymized data and post-processing
+
+```{r}
+#| include: FALSE
+
 ano_data=inputdata # just for the template
 #ano_data=extractManipData(sdc_obj)
+```
 
-#Recolocando os rótulos caso tenham sido removidos durante o processamento, como em operações de mutação, etc.
+putting back labels in case they have been removed during processing, like mutate etc.
+
+
+```{r}
+#| include: FALSE
+
 ano_data=agrisvyr::add_labels(ano_data,list_labels=labels, skip_absent=TRUE, levels=c("labels"), droplevels=c("none"))
-#*******************************************************************************
-#************************* Atualizar o relatório SDC ***************************
-#*******************************************************************************
+```
 
-# Salvando o relatório final do SDC. Ele pode ser utilizado no relatório SDC e no relatório de perda de informações
+
+## Update the SDC report
+Saving the final s
+dc report. It might be used in the sdc report and the information loss report
+
 sdc_final=sdc_obj
+```{r}
+#| include: FALSE
 
 #saveReprtObj(
-#  agrisvy={obj_name},
+#  agrisvy={{obj_name}},
 #  intialObj = sdc_initial,
 #  finalObj = sdc_final,
 #  unit = "household",
@@ -127,11 +219,16 @@ sdc_final=sdc_obj
 #  suda = FALSE,
 #  hierarchical = FALSE,
 #  childName = "child_hh",
-# inputdata="{agrisvy@workingDir}/{file_attributes$path}"
+# inputdata="{{file_attributes$path}}"
 #)
+```
 
-#*******************************************************************************
-#************************* Salvando dados anonimizados *************************
-#*******************************************************************************
 
-{file_attributes$write_function}
+## saving anonymized data
+
+```{r}
+#| include: FALSE
+
+{{file_attributes$write_function}}
+
+```

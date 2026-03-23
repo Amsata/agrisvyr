@@ -24,9 +24,11 @@ library(dplyr)
 library(kableExtra)
 library(glue)
 library(rlang)
+
 options(scipen = 999)
-#source("format_table.R")
 options(knitr.duplicate.label = "allow")
+
+purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
 
 ```
 

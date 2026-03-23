@@ -217,9 +217,8 @@ if(!is.null(inputdata_path)) {
 
     #TODO: create the french version
 
-    read_function_proc=readDataFunc(agrisvy,inputdata_path)
-    read_function_ano=readDataFunc(agrisvy,anodata_path)
-
+    read_function_proc=readDataFunc(agrisvy,paste0("file.path(wd,'",inputdata_path,"')"),enquote=FALSE)
+    read_function_ano=readDataFunc(agrisvy,paste0("file.path(wd,'",anodata_path,"')"),enquote=FALSE)
 
     writeLines(c(glue::glue(paste(readLines(template_rpt_child_infol), collapse = "\n"),.open = "{{",.close = "}}")),fileConn_infol)
     close(fileConn_infol)
