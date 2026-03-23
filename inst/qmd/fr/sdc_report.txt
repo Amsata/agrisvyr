@@ -37,13 +37,15 @@ purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
 \textcolor{red}{[Décrivez l’enquête en présentant les principaux objectifs, le nombre de séries et/ou de saisons, le plan d’échantillonnage ainsi que la période de collecte des données pour les différentes séries et saisons. Ces informations peuvent être tirées du rapport de l’enquête si celui-ci est déjà publié.]}
 
 * Jeux de données de l’enquête
+
 ```{r}
 #| label: dataset-f
 #| echo: FALSE
 
 data=as.data.frame(read_excel(path="microdata_info.xlsx"))
 info_col=length(names(data))
-data %>% kbl() %>% kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")```
+data %>% kbl() %>% kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")
+```
 
 \textcolor{red}{[Rappeler l'engagement de l'institut en matière de diffusion des microdonnées, ainsi que la nécessité d'appliquer des techniques de contrôle de la divulgation statistique (CDS) afin de protéger la confidentialité des répondants]}
 
@@ -84,7 +86,8 @@ L’exercice d'analyse du scenario de divulgation consiste à classer toutes les
 
 data=as.data.frame(read_excel(path="DandDIvariables.xlsx"))
 info_col=length(names(data))
-data %>% kbl() %>% kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")```
+data %>% kbl() %>% kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")
+```
 
 # Méthodes d’évaluation du risque de divulgation
 
