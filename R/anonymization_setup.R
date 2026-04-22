@@ -332,16 +332,16 @@ create_wb <- function(agrisvy, data, wb_file,encoding,password) {
       )
     )
     #Locking cellsF
-    openxlsx::protectWorksheet(wb=wb,sheet = fileNames[i], protect = TRUE,
-                     lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
-                     lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
-                     lockFormattingRows=FALSE,lockInsertingRows=TRUE,
-                     lockDeletingRows=TRUE
-                     )
-    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 3)
-    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 4)
-    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 5)
-    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 6)
+    # openxlsx::protectWorksheet(wb=wb,sheet = fileNames[i], protect = TRUE,
+    #                  lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
+    #                  lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
+    #                  lockFormattingRows=FALSE,lockInsertingRows=TRUE,
+    #                  lockDeletingRows=TRUE
+    #                  )
+    # openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 3)
+    # openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 4)
+    # openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 5)
+    # openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 6)
 
     validate=c("\"-,D,DI,ID,Q,L,S,W\"")
     dataValidation(wb, sheet = fileNames[i], col = 3, rows = 1:nrow(curDat)+1,

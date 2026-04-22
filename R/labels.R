@@ -63,14 +63,14 @@ generateLabelFiles=function(agrisvy,encoding=encoding) {
                        rows = 1:nrow(curDat)+1, gridExpand = TRUE, stack = TRUE
     )
 
-    openxlsx::protectWorksheet(wb=wb,sheet = fileNames[i], protect = TRUE,
-                               lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
-                               lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
-                               lockFormattingRows=FALSE,lockInsertingRows=TRUE,
-                               lockDeletingRows=TRUE
-    )
-    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 3)
-    openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 4)
+    # openxlsx::protectWorksheet(wb=wb,sheet = fileNames[i], protect = TRUE,
+    #                            lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
+    #                            lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
+    #                            lockFormattingRows=FALSE,lockInsertingRows=TRUE,
+    #                            lockDeletingRows=TRUE
+    # )
+    # openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 3)
+    # openxlsx::addStyle(wb, sheet = fileNames[i], style = createStyle(locked = FALSE),rows = 1:nrow(curDat)+1, cols = 4)
 
   }
 
@@ -286,7 +286,8 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     # Create value label lists
     vallabels <- lapply(names_vallabels, function(x) {
       subset_df <- vallabels_df[vallabels_df[["var_name"]] == x, , drop = FALSE]
-      vals <- as.numeric(subset_df[["value"]])
+      vals <- subset_df[["value"]]
+      if(sum(!grepl("^-?\\d+(\\.\\d+)?$", vals))==0) vals=as.numeric(vals) # if numeric stored in string
       names(vals) <- subset_df[["label"]]
       vals
     })
@@ -296,7 +297,10 @@ export_labels=function(agrisvy,encoding="UTF-8",overwrite=TRUE,password) {
     # Attach value labels as attribute
     for (vn in names_vallabels) {
 
-      if(vn %in% names(dat)) attr(dat[[vn]], "labels") <- vallabels[[vn]]
+      if(vn %in% names(dat)) {
+        
+        if(sum(!dat[[vn]]%in%c(NA,vallabels[[vn]]))==0)attr(dat[[vn]], "labels") <- vallabels[[vn]]
+      }
     }
 
     return(dat)

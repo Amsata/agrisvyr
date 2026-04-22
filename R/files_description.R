@@ -63,6 +63,8 @@ genFileDes <- function(file, name, id_cols, wb,type,encoding,password,rounds,siz
   variable_names <- names(data)
 
   suma <- function(data, var) {
+    #cat(paste0(file," : ",name,"--",var,"\n\n"))
+    
     if (class(data %>% dplyr::pull(rlang::sym(var)))[1] %in% c("factor", "character", "haven_labelled") & length(unique(data %>% dplyr::pull(rlang::sym(var)))) < id_cols) {
       if("haven_labelled" %in% class(data %>% dplyr::pull(rlang::sym(var))) & "character" %in% class(data %>% dplyr::pull(rlang::sym(var))) ) {
         data[[var]]=as.character(data[[var]])
@@ -128,15 +130,15 @@ genFileDes <- function(file, name, id_cols, wb,type,encoding,password,rounds,siz
     rows = 1:nrow(data_description) + 7, gridExpand = TRUE, stack = TRUE
   )
 
-  openxlsx::protectWorksheet(wb=wb,sheet = name, protect = TRUE,
-                             lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
-                             lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
-                             lockFormattingRows=FALSE,lockInsertingRows=TRUE,
-                             lockDeletingRows=TRUE
-  )
-
-  openxlsx::addStyle(wb, sheet = name, style = createStyle(locked = FALSE),rows = 1:nrow(data_description) + 7, cols = 4)
-  openxlsx::addStyle(wb, sheet = name, style = createStyle(locked = FALSE),rows = 5, cols = 3)
+  # openxlsx::protectWorksheet(wb=wb,sheet = name, protect = TRUE,
+  #                            lockFormattingCells = FALSE, lockFormattingColumns = FALSE,
+  #                            lockInsertingColumns = TRUE, lockDeletingColumns = TRUE,
+  #                            lockFormattingRows=FALSE,lockInsertingRows=TRUE,
+  #                            lockDeletingRows=TRUE
+  # )
+  # 
+  # openxlsx::addStyle(wb, sheet = name, style = createStyle(locked = FALSE),rows = 1:nrow(data_description) + 7, cols = 4)
+  # openxlsx::addStyle(wb, sheet = name, style = createStyle(locked = FALSE),rows = 5, cols = 3)
 
 }
 
