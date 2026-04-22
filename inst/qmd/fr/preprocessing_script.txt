@@ -19,6 +19,8 @@ Le code ci-dessous définit le répertoire racine du projet afin que les chemins
 #| label: setup
 #| include: FALSE
 
+rm(list = ls())
+
 root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
 knitr::opts_knit$set(root.dir =root(), echo = TRUE)
 
@@ -37,9 +39,6 @@ Le code ci-dessous nettoie l’espace de travail, charge les packages requis et 
 ```{r}
 #| include: FALSE
 
-
-rm(list = ls())
-
 library(dplyr)
 library(agrisvyr)
 library(tidyr)
@@ -51,8 +50,7 @@ library(haven)
 
 preprocMessage("{{file_attributes$msg}}")
 
-purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
-
+purrr::walk(file.path(file.path(root(),"_R"),list.files(file.path(root(),"_R"),pattern = ".R$")),source)
 ```
 
 # Lecture du jeu de données

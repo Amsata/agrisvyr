@@ -17,6 +17,8 @@ classoption: portrait, a4paper
 #| label: setup
 #| include: FALSE
 
+rm(list = ls())
+
 root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
 knitr::opts_knit$set(root.dir =root(), echo = TRUE)
 
@@ -33,8 +35,6 @@ options(knitr.duplicate.label = "allow")
 ```{r}
 #| include: FALSE
 
-rm(list = ls())
-
 library(sdcMicro)
 library(agrisvyr)
 library(dplyr)
@@ -46,9 +46,7 @@ library(labelled)
 
 sdcMessage("{{file_attributes$msg}}")
 
-# Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
-purrr::walk(file.path("_R",list.files(path="_R",pattern = ".R$")),source)
-
+purrr::walk(file.path(file.path(root(),"_R"),list.files(file.path(root(),"_R"),pattern = ".R$")),source)
 ```
 
 ## Charger les microdonnées à anonymiser
