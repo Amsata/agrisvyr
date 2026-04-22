@@ -14,7 +14,6 @@ classoption: ["portrait", "a4paper"]
 #| label: setup
 #| include: FALSE
 
-knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(agrisvyr)
 library(sdcMicro)
@@ -24,12 +23,12 @@ library(dplyr)
 library(kableExtra)
 library(glue)
 library(rlang)
-options(scipen = 999)
-#source("format_table.R")
-options(knitr.duplicate.label = "allow")
 
-# Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
-purrr::walk(file.path("../_R",list.files(path="../_R",pattern = ".R$")),source)
+root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
+options(knitr.duplicate.label = "allow")
+purrr::walk(file.path(file.path(root(),"_R"),list.files(file.path(root(),"_R"),pattern = ".R$")),source)
 
 ```
 
