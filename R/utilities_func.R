@@ -260,14 +260,15 @@ label_binary_at=function(data,vars,bin="01", lang) {
 #'
 #' @examples
 label_binary_pattern=function(data,pattern,bin="01",lang) {
-
-  vars=grep(pattern,names(data),value = TRUE)
-
-  for (v in vars) {
-    vv=sym(v)
-    data=data %>% label_binary({{vv}},bin=bin, lang=lang)
-#
+  
+  for (pat in pattern) {
+    vars=grep(pat,names(data),value = TRUE)
+    for (v in vars) {
+      vv=sym(v)
+      data=data %>% label_binary({{vv}},bin=bin, lang=lang)
+    }
   }
+
 
   return(data)
 

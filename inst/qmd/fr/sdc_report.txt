@@ -43,8 +43,11 @@ purrr::walk(file.path(file.path(root(),"_R"),list.files(file.path(root(),"_R"),p
 #| echo: FALSE
 
 data=as.data.frame(read_excel(path="microdata_info.xlsx"))
+data[,3]=ifelse(is.na(data[,3]),"",data[,3])
+
 info_col=length(names(data))
-data %>% kbl() %>% kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")
+data %>% kbl(caption="Liste des variables suprimmées dans chaque jeux de données") %>% 
+kable_styling(full_width = FALSE) %>% column_spec(1:info_col, width_min = "2cm")
 ```
 
 \textcolor{red}{[Rappeler l'engagement de l'institut en matière de diffusion des microdonnées, ainsi que la nécessité d'appliquer des techniques de contrôle de la divulgation statistique (CDS) afin de protéger la confidentialité des répondants]}
