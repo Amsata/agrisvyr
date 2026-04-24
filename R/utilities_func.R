@@ -203,15 +203,19 @@ label_binary=function(data,var,bin="01",lang="en") {
   if(data %>% pull({{var}}) %>% is.labelled(.)==FALSE) {
 
     if (bin=="01"){
-      data=data %>% set_value_labels(
-        {{var}}:=c("Yes"=1,"No"=0)
-      )
+      if(lang=="en") data=data %>% set_value_labels({{var}}:=c("Yes"=1,"No"=0))
+      if(lang=="fr") data=data %>% set_value_labels({{var}}:=c("Oui"=1,"Non"=0))
+      if(lang=="es") data=data %>% set_value_labels({{var}}:=c("Si"=1,"No"=0))
+      if(lang=="pt") data=data %>% set_value_labels({{var}}:=c("Si"=1,"No"=0))
+      
     }
 
     if (bin=="12"){
-      data=data %>% set_value_labels(
-        {{var}}:=c("Yes"=1,"No"=2)
-      )
+     if(lang=="en") data=data %>% set_value_labels({{var}}:=c("Yes"=1,"No"=2))
+     if(lang=="fr") data=data %>% set_value_labels({{var}}:=c("Oui"=1,"Non"=2))
+     if(lang=="es") data=data %>% set_value_labels({{var}}:=c("Si"=1,"No"=2))
+     if(lang=="pt") data=data %>% set_value_labels({{var}}:=c("Si"=1,"No"=2))
+     
     }
 
 
