@@ -676,7 +676,7 @@ setup_anonymization <- function(agrisvy,
   }
 
   options(usethis.allow_nested_project = TRUE)
-  create_project(path = "SDC", open = open, rstudio = TRUE)
+  create_project(path = obj_name, open = open, rstudio = TRUE)
   agrisvy@workingDir <- file.path(agrisvy@workingDir,"SDC")
   setwd(agrisvy@workingDir)
 
