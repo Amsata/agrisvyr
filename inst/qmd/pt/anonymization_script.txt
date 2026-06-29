@@ -16,6 +16,8 @@ classoption: portrait, a4paper
 #| label: setup
 #| include: FALSE
 
+rm(list = ls()) # Clear the variables environment
+
 root=rprojroot::has_file_pattern("\\.Rproj$")$make_fix_file()
 knitr::opts_knit$set(root.dir =root(), echo = TRUE)
 
@@ -32,7 +34,6 @@ options(knitr.duplicate.label = "allow")
 ```{r}
 #| include: FALSE
 
-rm(list = ls()) # Clear the variables environment
 
 library(sdcMicro)
 library(agrisvyr)
@@ -46,7 +47,7 @@ library(labelled)
 sdcMessage("{{file_attributes$msg}}")
 
 # Charger l'object agrisvy et les autres éventuels fichiers(fontions) dnas le dossier "_R"
-purrr::walk(file.path(wd,"_R",list.files(path=file.path(wd,"_R"),pattern = ".R$")),source)
+purrr::walk(file.path(root(),"_R",list.files(path=file.path(root(),"_R"),pattern = ".R$")),source)
 
 ```
 
@@ -93,7 +94,7 @@ ano_variable=ano_variable[!is.na(ano_variable)]
 ## defining the SDC problem
 
 ```{r}
-#| include:FALSE
+#| include: FALSE
 
 sdc_obj=createSdcObj(
   dat=testdata2,
